@@ -6,24 +6,25 @@
              xmlns:local="clr-namespace:NetworkService.Views"
              xmlns:viewmodels="clr-namespace:NetworkService.ViewModel"
              mc:Ignorable="d" 
-             d:DesignHeight="250" d:DesignWidth="800">
+             d:DesignHeight="180" d:DesignWidth="800">
     
     <UserControl.DataContext>
         <viewmodels:TerminalViewModel/>
     </UserControl.DataContext>
 
-    <Grid Width="800" Height="250" 
+    <Grid Width="800" Height="180" 
           Background="Black"
-          FocusManager.FocusedElement="{Binding ElementName=TerminalInput}">
+          FocusManager.FocusedElement="{Binding ElementName=TerminalInput}" >
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Renewable_scada_terminal" TextAlignment="Center" Background="DarkGray" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
+        <TextBlock Text="Renewable_scada_terminal" TextAlignment="Center" Background="DarkGray" FontSize="15" FontWeight="Bold" VerticalAlignment="Top"
+                   FontFamily="Calibri" />
 
         <StackPanel Grid.Row="1">
             <ListView ItemsSource="{Binding TerminalLines, UpdateSourceTrigger=PropertyChanged}" 
-                          MaxHeight="210" 
+                          MaxHeight="140" 
                           Background="Black"
                           BorderThickness="0">
                 <ListView.ItemContainerStyle>

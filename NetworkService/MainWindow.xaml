@@ -6,13 +6,38 @@
         xmlns:local="clr-namespace:NetworkService"
         xmlns:views="clr-namespace:NetworkService.Views"
         mc:Ignorable="d"
+        WindowStyle="None"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
             <RowDefinition/>
-            <RowDefinition Height="250"/>
+            <RowDefinition Height="180"/>
         </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="NetworkService"
+                   Style="{StaticResource HeaderLabelStyle}"/>
+            <Button Grid.Column="1"
+                    Content="Entity"/>
+            <Button Grid.Column="2"
+                    Content="Display"/>
+            <Button Grid.Column="3"
+                    Content="Graph"/>
+            <Button Grid.Column="5"
+                    Content="Undo"/>
+
+        </Grid>
         
-        <views:TerminalView Grid.Row="1"/>
+        <views:TerminalView Grid.Row="2"/>
     </Grid>
 </Window>
