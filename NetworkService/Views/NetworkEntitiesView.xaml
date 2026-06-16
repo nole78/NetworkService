@@ -4,9 +4,214 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NetworkService.Views"
+             xmlns:viewmodels="clr-namespace:NetworkService.ViewModel"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+             d:DesignHeight="400" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <viewmodels:NetworkEntitiesViewModel/>
+    </UserControl.DataContext>
+    
+    <Grid Background="white">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="4*"/>
+                <RowDefinition/>
+                <RowDefinition Height="4*"/>
+            </Grid.RowDefinitions>
+
+            <Label Style="{StaticResource HeaderLabelStyle}"
+                   Content="Filter Nodes"
+                   HorizontalAlignment="Left"/>
+
+            <Grid Background="Gray" 
+                  Margin="5"
+                  Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <RadioButton Content="Name"
+                                 GroupName="Search"
+                                 IsChecked="{Binding SearchByName}"
+                                 Margin="5"/>
+
+                    <RadioButton Grid.Row="1"
+                                 Content="Type" 
+                                 GroupName="Search"
+                                 Margin="5"/>
+                </Grid>
+
+                <Label>
+                    <Label.Style>
+                        <Style TargetType="Label">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SearchByName}" Value="True">
+                                    <Setter Property="Content"
+                                            Value="Name"/>
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding SearchByName}" Value="False">
+                                    <Setter Property="Content"
+                                            Value="Type"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>    
+                </Label>
+                    
+                <TextBox Grid.Row="1"
+                         Text="{Binding SearchResourceName}">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SearchByName}" Value="True">
+                                    <Setter Property="Visibility" 
+                                            Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding SearchByName}" Value="False">
+                                    <Setter Property="Visibility" 
+                                            Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+                
+                <ComboBox Grid.Row="1"
+                          ItemsSource="{Binding EnergyResourceTypes}" 
+                          SelectedItem="{Binding SearchResourceType}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                    <ComboBox.Style>
+                        <Style TargetType="ComboBox">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SearchByName}" Value="True">
+                                    <Setter Property="Visibility" 
+                                                Value="Hidden"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding SearchByName}" Value="False">
+                                    <Setter Property="Visibility" 
+                                                Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ComboBox.Style>
+                </ComboBox>
+
+                <Button Grid.Column="1"
+                        Grid.Row="1"
+                        Content="Search"
+                        Command="{Binding SearchCommand}"/>
+                
+                <Button Grid.Column="1" 
+                        Grid.Row="2" 
+                        Content="Clear"
+                        Command="{Binding ClearSearchCommand}"/>
+            </Grid>
+
+            <Label Grid.Row="2"
+                   Style="{StaticResource HeaderLabelStyle}"
+                   Content="Add Node"
+                   HorizontalAlignment="Left"/>
+
+            <Grid Grid.Row="3"
+                  Background="Gray"
+                  Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="1.5*"/>
+                </Grid.RowDefinitions>
+
+                <Label Content="Name"/>
+                <TextBox Grid.Row="1" Text="{Binding CreateResourceName}"/>
+                <Label Content="Type" Grid.Row="2"/>
+                <ComboBox Grid.Row="3"
+                          ItemsSource="{Binding EnergyResourceTypes}" 
+                          SelectedItem="{Binding CreateResourceType}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <Button Content="Add" 
+                        Grid.Column="1" 
+                        Grid.Row="3"
+                        Command="{Binding CreateCommand}"/>
+            </Grid>
             
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="8*"/>
+            </Grid.RowDefinitions>
+            
+            <Button HorizontalAlignment="Right"
+                    Content="Delete"
+                    Margin="0 0 5 0"
+                    Command="{Binding DeleteCommand}"/>
+            
+            <DataGrid Grid.Row="1" 
+                      ItemsSource="{Binding EnergyResources}"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id"
+                                        Width="*"
+                                        Binding="{Binding Id}"
+                                        IsReadOnly="True"/>
+                    
+                    <DataGridTextColumn Header="Name"
+                                        Width="2*"
+                                        Binding="{Binding Name}"
+                                        IsReadOnly="True"/>
+                    
+                    <DataGridTextColumn Header="Type"
+                                        Width="2*"
+                                        Binding="{Binding Type.Name}"
+                                        IsReadOnly="True"/>
+                    
+                    <DataGridTemplateColumn Width="*"
+                                            Header="Value (MW)">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Value}"
+                                           HorizontalAlignment="Right"
+                                           Margin="0 0 5 0"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
     </Grid>
 </UserControl>
