@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NetworkService.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -14,9 +15,10 @@ namespace NetworkService.ViewModel
         private int count = 15; // Inicijalna vrednost broja objekata u sistemu
                                 // ######### ZAMENITI stvarnim brojem elemenata
                                 //           zavisno od broja entiteta u listi
-
+        private readonly LoggerService _loggerService;
         public MainWindowViewModel()
         {
+            _loggerService = new LoggerService("log.txt");
             createListener(); //Povezivanje sa serverskom aplikacijom
         }
 
@@ -59,7 +61,7 @@ namespace NetworkService.ViewModel
                             //################ IMPLEMENTACIJA ####################
                             // Obraditi poruku kako bi se dobile informacije o izmeni
                             // Azuriranje potrebnih stvari u aplikaciji
-
+                            _loggerService.LogMeasurment(incomming);
                         }
                     }, null);
                 }
