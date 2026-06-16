@@ -57,13 +57,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BindableBase.cs" />
     <Compile Include="Model\DistributedEnergyResource.cs" />
     <Compile Include="Model\EnergyResourceType.cs" />
+    <Compile Include="Model\TerminalLine.cs" />
+    <Compile Include="MyICommand.cs" />
     <Compile Include="Services\LoggerService.cs" />
+    <Compile Include="Services\TerminalService.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\MeasurmentGraphViewModel.cs" />
     <Compile Include="ViewModel\NetworkDisplayViewModel.cs" />
     <Compile Include="ViewModel\NetworkEntitiesViewModel.cs" />
+    <Compile Include="ViewModel\TerminalViewModel.cs" />
     <Compile Include="Views\MeasurmentGraphView.xaml.cs">
       <DependentUpon>MeasurmentGraphView.xaml</DependentUpon>
     </Compile>
@@ -72,6 +77,9 @@
     </Compile>
     <Compile Include="Views\NetworkEntitiesView.xaml.cs">
       <DependentUpon>NetworkEntitiesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TerminalView.xaml.cs">
+      <DependentUpon>TerminalView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -94,6 +102,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NetworkEntitiesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TerminalView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
