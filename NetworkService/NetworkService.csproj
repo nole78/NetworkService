@@ -62,6 +62,7 @@
     <Compile Include="Model\EnergyResourceType.cs" />
     <Compile Include="Model\TerminalLine.cs" />
     <Compile Include="MyICommand.cs" />
+    <Compile Include="Persistance\AppDatabase.cs" />
     <Compile Include="Services\LoggerService.cs" />
     <Compile Include="Services\TerminalService.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
