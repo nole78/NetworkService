@@ -59,7 +59,11 @@
     </ApplicationDefinition>
     <Compile Include="Model\DistributedEnergyResource.cs" />
     <Compile Include="Model\EnergyResourceType.cs" />
+    <Compile Include="Services\LoggerService.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\MeasurmentGraphViewModel.cs" />
+    <Compile Include="ViewModel\NetworkDisplayViewModel.cs" />
+    <Compile Include="ViewModel\NetworkEntitiesViewModel.cs" />
     <Compile Include="Views\MeasurmentGraphView.xaml.cs">
       <DependentUpon>MeasurmentGraphView.xaml</DependentUpon>
     </Compile>
