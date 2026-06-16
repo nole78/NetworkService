@@ -1,4 +1,5 @@
 ﻿using NetworkService.Model;
+using NetworkService.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Input;
 
 namespace NetworkService.ViewModel
@@ -14,6 +16,10 @@ namespace NetworkService.ViewModel
     {
         private string _command;
         private const string COMMAND_BEGINING = "renewable_scada_terminal> ";
+        private readonly TerminalService _terminalService;
+        private List<string> _terminalCommandsHistory { get; set; } = new List<string>();
+        private int _historyIndex = -1;
+        private string _savedInput = "";
 
         #region Properties
         public string Command
@@ -28,23 +34,80 @@ namespace NetworkService.ViewModel
                 }
             }
         }
-        public MyICommand TerminalCommand { get; set; }
-        public List<TerminalLine> TerminalCommandsHistory { get; set; } = new List<TerminalLine>();
+        public MyICommand ExecuteTerminalCommand { get; set; }
+        public MyICommand GetOlderCommand { get; set; }
+        public MyICommand GetNewerCommand { get; set; }
         public ObservableCollection<TerminalLine> TerminalLines { get; set; } = new ObservableCollection<TerminalLine>();
         #endregion
 
         public TerminalViewModel()
         {
-            TerminalCommand = new MyICommand(OnTerminalCommand);
+            ExecuteTerminalCommand = new MyICommand(OnTerminalCommandExecute);
+            GetOlderCommand = new MyICommand(OnGetOlderCommand);
+            GetNewerCommand = new MyICommand(OnGetNewerCommand);
+            _terminalService = new TerminalService();
+            Command = "";
         }
 
-        private void OnTerminalCommand()
+        private void OnTerminalCommandExecute()
         {
             var commandLine = new TerminalLine(COMMAND_BEGINING + Command, LineType.Command);
             TerminalLines.Add(commandLine);
-            TerminalCommandsHistory.Add(commandLine);
-            TerminalLines.Add(new TerminalLine("Command received", LineType.Success));
+
+            if (!Command.Equals(string.Empty))
+            {
+                _terminalCommandsHistory.Add(Command);
+            }
+
+            var response = _terminalService.HandleCommand(Command);
+            if (response != null)
+            {
+                TerminalLines.Add(response);
+            }
+
             Command = "";
+            _historyIndex = -1;
+            _savedInput = "";
+        }
+ 
+        private void OnGetOlderCommand()
+        {
+            int cnt = _terminalCommandsHistory.Count() - 1;
+
+            if (_historyIndex == cnt)
+            {
+                return;
+            }
+
+            _historyIndex++;
+
+            if(_historyIndex == 0)
+            {
+                _savedInput = Command;
+            }
+
+            Command = _terminalCommandsHistory[cnt - _historyIndex];
+        }
+
+        private void OnGetNewerCommand()
+        {
+            if (_historyIndex == -1)
+            {
+                return;
+            }
+
+            _historyIndex--;
+            if (_historyIndex == -1)
+            {
+                Command = _savedInput;
+                return;
+            }
+            
+            int cnt = _terminalCommandsHistory.Count() - 1;
+            if (cnt > 0)
+            {
+                Command = _terminalCommandsHistory[cnt - _historyIndex];
+            }
         }
     }
 }

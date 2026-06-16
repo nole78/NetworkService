@@ -11,70 +11,74 @@
     <UserControl.DataContext>
         <viewmodels:TerminalViewModel/>
     </UserControl.DataContext>
-    
-    <Canvas Background="Black" Width="800" Height="250">
-        <Grid Width="800" Height="250">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="20"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <TextBlock Text="Renewable_scada_terminal" TextAlignment="Center" Background="DarkGray" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
 
-            <StackPanel Grid.Row="1">
-                <ListView ItemsSource="{Binding TerminalLines, UpdateSourceTrigger=PropertyChanged}" 
+    <Grid Width="800" Height="250" 
+          Background="Black"
+          FocusManager.FocusedElement="{Binding ElementName=TerminalInput}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Renewable_scada_terminal" TextAlignment="Center" Background="DarkGray" FontSize="14" FontWeight="Bold" VerticalAlignment="Top"/>
+
+        <StackPanel Grid.Row="1">
+            <ListView ItemsSource="{Binding TerminalLines, UpdateSourceTrigger=PropertyChanged}" 
                           MaxHeight="210" 
                           Background="Black"
                           BorderThickness="0">
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
-                            <Setter Property="IsHitTestVisible" Value="False"/>
-                            <Setter Property="Focusable" Value="False"/>
-                        </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Text}" FontSize="13" FontFamily="Consolas">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="White"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Type}" Value="Command">
-                                                <Setter Property="Foreground" Value="Cyan"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Type}" Value="Error">
-                                                <Setter Property="Foreground" Value="Red"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding Type}" Value="Success">
-                                                <Setter Property="Foreground" Value="LimeGreen"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="IsHitTestVisible" Value="False"/>
+                        <Setter Property="Focusable" Value="False"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Text}" FontSize="13" FontFamily="Consolas">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Type}" Value="Command">
+                                            <Setter Property="Foreground" Value="Cyan"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Type}" Value="Error">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Type}" Value="Success">
+                                            <Setter Property="Foreground" Value="LimeGreen"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
 
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="renewable__scada__terminal>"
+            <StackPanel Orientation="Horizontal">
+                <Label Content="renewable__scada__terminal>"
                            Foreground="Cyan"
                            FontSize="13"
                            FontFamily="Consolas"
                            VerticalContentAlignment="Center"/>
-                    <TextBox Text="{Binding  Command, UpdateSourceTrigger=PropertyChanged}" 
-                             Background="Transparent" 
-                             Foreground="Cyan"
-                             VerticalAlignment="Center"
-                             BorderThickness="0" 
-                             FontSize="13" 
-                             FontFamily="Consolas"
-                             Width="618">
-                        <TextBox.InputBindings>
-                            <KeyBinding Key="Enter" Command="{Binding TerminalCommand}"/>
-                        </TextBox.InputBindings>
-                    </TextBox>
-                </StackPanel>
+                <TextBox Text="{Binding  Command, UpdateSourceTrigger=PropertyChanged}" 
+                         Name="TerminalInput"
+                         Background="Transparent" 
+                         Foreground="Cyan"
+                         VerticalAlignment="Center"
+                         BorderThickness="0" 
+                         FontSize="13" 
+                         FontFamily="Consolas"
+                         Width="618"
+                         CaretBrush="White">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding ExecuteTerminalCommand}"/>
+                        <KeyBinding Key="Up" Command="{Binding GetOlderCommand}"/>
+                        <KeyBinding Key="Down" Command="{Binding GetNewerCommand}"/>
+                    </TextBox.InputBindings>
+                </TextBox>
             </StackPanel>
-        </Grid>
-    </Canvas>
+        </StackPanel>
+    </Grid>
 </UserControl>
