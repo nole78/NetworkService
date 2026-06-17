@@ -57,15 +57,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BindableBase.cs" />
+    <Compile Include="Helpers\BindableBase.cs" />
     <Compile Include="Model\DistributedEnergyResource.cs" />
     <Compile Include="Model\EnergyResourceType.cs" />
     <Compile Include="Model\TerminalLine.cs" />
-    <Compile Include="MyICommand.cs" />
+    <Compile Include="Helpers\MyICommand.cs" />
     <Compile Include="Persistance\AppDatabase.cs" />
     <Compile Include="Services\LoggerService.cs" />
     <Compile Include="Services\TerminalService.cs" />
-    <Compile Include="VML\ViewModelLocator.cs" />
+    <Compile Include="Helpers\ViewModelLocator.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\MeasurmentGraphViewModel.cs" />
     <Compile Include="ViewModel\NetworkDisplayViewModel.cs" />
