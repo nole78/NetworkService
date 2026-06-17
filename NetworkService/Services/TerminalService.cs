@@ -91,11 +91,11 @@ namespace NetworkService.Services
                 return new TerminalLine($"Error: Resource type \"{resourceTypeName}\" doesn't exist!\n=> Existing types:\n" + typeNames, LineType.Error);
             }
 
-            bool nameExists = AppDatabase.Resources.Any(r => r.Name == resourceName);
-            if (nameExists)
-            {
-                return new TerminalLine($"Error: Resource with name \"{resourceName}\" already exists!", LineType.Error);
-            }
+            //bool nameExists = AppDatabase.Resources.Any(r => r.Name == resourceName);
+            //if (nameExists)
+            //{
+            //    return new TerminalLine($"Error: Resource with name \"{resourceName}\" already exists!", LineType.Error);
+            //}
 
             var newResource = new DistributedEnergyResource(0, resourceName, type, 0);
             AppDatabase.AddResource(newResource);
