@@ -66,6 +66,8 @@
     <Compile Include="Services\LoggerService.cs" />
     <Compile Include="Services\TerminalService.cs" />
     <Compile Include="Helpers\ViewModelLocator.cs" />
+    <Compile Include="Helpers\ValidationBase.cs" />
+    <Compile Include="Helpers\ValidationErrors.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\MeasurmentGraphViewModel.cs" />
     <Compile Include="ViewModel\NetworkDisplayViewModel.cs" />
