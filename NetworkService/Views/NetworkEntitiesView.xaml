@@ -14,15 +14,15 @@
     <Grid Background="white">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1.6*"/>
         </Grid.ColumnDefinitions>
 
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition/>
-                <RowDefinition Height="4*"/>
+                <RowDefinition Height="3*"/>
                 <RowDefinition/>
-                <RowDefinition Height="4*"/>
+                <RowDefinition Height="5*"/>
             </Grid.RowDefinitions>
 
             <Label Style="{StaticResource HeaderLabelStyle}"
@@ -143,27 +143,37 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition/>
-                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="1.2*"/>
                     <RowDefinition/>
-                    <RowDefinition Height="1.5*"/>
+                    <RowDefinition Height="1.2*"/>
+                    <RowDefinition Height="1.8*"/>
                 </Grid.RowDefinitions>
 
                 <Label Content="Name"/>
-                <TextBox Grid.Row="1" Text="{Binding CreateResourceName}"/>
+                <TextBox  Text="{Binding CreateEnergyResource.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                          Grid.Row="1"/>
+                <Label Content="{Binding CreateEnergyResource.ValidationErrors[Name]}"
+                       Foreground="Red"
+                       Grid.Row="1" Grid.Column="1"/>
+
                 <Label Content="Type" Grid.Row="2"/>
-                <ComboBox Grid.Row="3"
-                          ItemsSource="{Binding EnergyResourceTypes}" 
-                          SelectedItem="{Binding CreateResourceType}">
+                <ComboBox ItemsSource="{Binding EnergyResourceTypes}" 
+                          SelectedItem="{Binding CreateEnergyResource.Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                          Grid.Row="3">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
+                <Label Content="{Binding CreateEnergyResource.ValidationErrors[Type]}"
+                       Foreground="Red"
+                       Grid.Row="3"
+                       Grid.Column="1"/>
 
                 <Button Content="Add" 
                         Grid.Column="1" 
-                        Grid.Row="3"
+                        Grid.Row="4"
                         Command="{Binding CreateCommand}"/>
             </Grid>
             

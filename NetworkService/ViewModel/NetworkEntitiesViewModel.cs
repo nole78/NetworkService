@@ -1,4 +1,5 @@
-﻿using NetworkService.Model;
+﻿using NetworkService.Helpers;
+using NetworkService.Model;
 using NetworkService.Persistance;
 using System;
 using System.Collections.Generic;
@@ -14,23 +15,17 @@ namespace NetworkService.ViewModel
 {
     public class NetworkEntitiesViewModel : BindableBase
     {
-        private string _createResourceName;
-        private EnergyResourceType _createResourceType;
+        private DistributedEnergyResource _createEnergyResource = new DistributedEnergyResource();
         private string _searchResourceName;
         private EnergyResourceType _searchResourceType;
         private bool _searchByName = true;
         private DistributedEnergyResource _selectedResource;
 
         #region Properties
-        public string CreateResourceName
+        public DistributedEnergyResource CreateEnergyResource
         {
-            get => _createResourceName;
-            set => SetProperty(ref _createResourceName, value);
-        }
-        public EnergyResourceType CreateResourceType
-        {
-            get => _createResourceType;
-            set => SetProperty(ref _createResourceType, value);
+            get => _createEnergyResource;
+            set => SetProperty(ref _createEnergyResource, value);
         }
         public string SearchResourceName
         {
@@ -96,15 +91,16 @@ namespace NetworkService.ViewModel
 
         public void OnCreateCommand()
         {
-            // TODO: Add validation
-            string name = CreateResourceName;
-            EnergyResourceType type = CreateResourceType;
+            CreateEnergyResource.Validate();
+            if(CreateEnergyResource.IsValid)
+            {
+                DistributedEnergyResource newResource = new DistributedEnergyResource(0, CreateEnergyResource.Name, CreateEnergyResource.Type, 0);
+                AppDatabase.AddResource(newResource);
 
-            var newResource = new DistributedEnergyResource(0, CreateResourceName, CreateResourceType, 0);
-            AppDatabase.AddResource(newResource);
 
-            CreateResourceName = "";
-            CreateResourceType = null;
+                CreateEnergyResource.Name = "";
+                CreateEnergyResource.Type = null;
+            }
         }
         public void OnDeleteCommand()
         {

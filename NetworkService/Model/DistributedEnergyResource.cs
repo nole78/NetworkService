@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NetworkService.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NetworkService.Model
 {
-    public class DistributedEnergyResource : INotifyPropertyChanged
+    public class DistributedEnergyResource : ValidationBase
     {
         private int _id;
         private string _name;
@@ -18,52 +19,23 @@ namespace NetworkService.Model
         public int Id
         {
             get => _id;
-            set
-            {
-                if (value != _id)
-                {
-                    _id = value;
-                    OnPropertyChanged(nameof(Id));
-                }
-            }
+            set => SetProperty(ref _id, value);
         }
         public string Name
         {
             get => _name;
-            set
-            {
-                if (value != _name)
-                {
-                    _name = value;
-                    OnPropertyChanged(nameof(Name));
-                }
-            }
+            set => SetProperty(ref _name, value);
         }
         public EnergyResourceType Type
         {
             get => _type;
-            set
-            {
-                if (value != _type)
-                {
-                    _type = value;
-                    OnPropertyChanged(nameof(Type));
-                }
-            }
+            set => SetProperty(ref _type, value);
         }
         public double Value
         {
             get => _value;
-            set
-            {
-                if (value != _value)
-                {
-                    _value = value;
-                    OnPropertyChanged(nameof(Value));
-                }
-            }
+            set => SetProperty(ref _value, value);
         }
-
         #endregion
 
         public DistributedEnergyResource() { }
@@ -75,14 +47,16 @@ namespace NetworkService.Model
             Value = value;
         }
 
-        #region PropertyChanged Implementation
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(string propertyName)
+        protected override void ValidateSelf()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            if (string.IsNullOrEmpty(this._name))
+            {
+                this.ValidationErrors["Name"] = "Name is required";
+            }
+            if (this._type == null) 
+            {
+                this.ValidationErrors["Type"] = "Type is required";
+            }
         }
-
-        #endregion
     }
 }
