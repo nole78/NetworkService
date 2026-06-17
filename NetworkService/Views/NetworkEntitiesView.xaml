@@ -183,6 +183,7 @@
             <DataGrid Grid.Row="1" 
                       ItemsSource="{Binding EnergyResources}"
                       AutoGenerateColumns="False"
+                      SelectedItem="{Binding SelectedResource}"
                       CanUserAddRows="False">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id"
