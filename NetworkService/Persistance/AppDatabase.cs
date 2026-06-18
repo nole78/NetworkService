@@ -19,8 +19,8 @@ namespace NetworkService.Persistance
 
             ResourceTypes = new List<EnergyResourceType>()
             {
-                new EnergyResourceType("Solar panel", "solar.png"),
-                new EnergyResourceType("Wind generator", "wind.png")
+                new EnergyResourceType("Solar panel", "solar panel.png"),
+                new EnergyResourceType("Wind generator", "wind generator.png")
             };
 
             Resources.Add(new DistributedEnergyResource(1, "Solar-North", ResourceTypes[0], 3.4));
