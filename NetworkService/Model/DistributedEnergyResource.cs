@@ -10,10 +10,11 @@ namespace NetworkService.Model
 {
     public class DistributedEnergyResource : ValidationBase
     {
-        private int _id;
-        private string _name;
+        private int _id = 0;
+        private string _name = "";
         private EnergyResourceType _type;
-        private double _value;
+        private double _value = 0;
+        private bool _isAlarm = false;
 
         #region Properties
         public int Id
@@ -35,6 +36,11 @@ namespace NetworkService.Model
         {
             get => _value;
             set => SetProperty(ref _value, value);
+        }
+        public bool IsAlarm
+        {
+            get => _isAlarm;
+            set => SetProperty(ref _isAlarm, value);
         }
         #endregion
 
