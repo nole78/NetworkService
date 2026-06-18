@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace NetworkService.ViewModel
 {
-    public class MeasurmentGraphViewModel
+    public class MeasurmentGraphViewModel : BindableBase
     {
+        public MeasurmentGraphViewModel()
+        {
+        }
     }
 }
