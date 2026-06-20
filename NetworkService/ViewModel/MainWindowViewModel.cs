@@ -1,4 +1,5 @@
-﻿using NetworkService.Services;
+﻿using NetworkService.Persistance;
+using NetworkService.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +18,6 @@ namespace NetworkService.ViewModel
         public MeasurmentGraphViewModel measurmentGraphViewModel;
         private BindableBase _currentViewModel;
         private readonly LoggerService _loggerService;
-        private int count = 15; // Inicijalna vrednost broja objekata u sistemu
-                                // ######### ZAMENITI stvarnim brojem elemenata
-                                //           zavisno od broja entiteta u listi
 
         #region Properties
         public BindableBase CurrentViewModel
@@ -60,7 +58,7 @@ namespace NetworkService.ViewModel
                         byte[] bytes = new byte[1024];
                         int i = stream.Read(bytes, 0, bytes.Length);
                         //Primljena poruka je sacuvana u incomming stringu
-                        incomming = System.Text.Encoding.ASCII.GetString(bytes, 0, i);
+                        incomming = Encoding.ASCII.GetString(bytes, 0, i);
 
                         //Ukoliko je primljena poruka pitanje koliko objekata ima u sistemu -> odgovor
                         if (incomming.Equals("Need object count"))
@@ -70,7 +68,7 @@ namespace NetworkService.ViewModel
                              * duzinu liste koja sadrzi sve objekte pod monitoringom, odnosno
                              * njihov ukupan broj (NE BROJATI OD NULE, VEC POSLATI UKUPAN BROJ)
                              * */
-                            Byte[] data = System.Text.Encoding.ASCII.GetBytes(count.ToString());
+                            Byte[] data = Encoding.ASCII.GetBytes(AppDatabase.Resources.Count.ToString());
                             stream.Write(data, 0, data.Length);
                         }
                         else
