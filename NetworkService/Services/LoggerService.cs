@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Shapes;
 
 namespace NetworkService.Services
 {
@@ -16,13 +17,13 @@ namespace NetworkService.Services
             _logFilePath = logFilePath; 
         }
 
-        public void LogMeasurment(string measurment)
+        public void LogLine(string message)
         {
             try
             {
                 using (var writer = new StreamWriter(_logFilePath, true))
                 {
-                    writer.WriteLine($"{DateTime.Now} [MEASURMENT]: {measurment}");
+                    writer.WriteLine(message);
                 }
             }
             catch (Exception ex)
