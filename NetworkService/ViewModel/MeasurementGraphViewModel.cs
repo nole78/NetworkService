@@ -1,6 +1,7 @@
 ﻿using NetworkService.Helpers;
 using NetworkService.Model;
 using NetworkService.Persistance;
+using NetworkService.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,16 +38,23 @@ namespace NetworkService.ViewModel
     }
     public class MeasurementGraphViewModel : BindableBase
     {
+        private const int NODE_OFFSET = 400;
         private DistributedEnergyResource _selectedResource;
+        private readonly MeasurmentsReader _reader;
 
         #region Properties
         public DistributedEnergyResource SelectedResource
         {
             get => _selectedResource;
-            set => SetProperty(ref _selectedResource, value);
+            set 
+            {
+                SetProperty(ref _selectedResource, value);
+                DrawGraph();
+            }
         }
         public ObservableCollection<DistributedEnergyResource> Resources { get => AppDatabase.Resources; }
         public GraphNode[] Nodes { get; }
+        public string[] Times { get; }
         #endregion
         public MeasurementGraphViewModel()
         {
@@ -56,6 +64,51 @@ namespace NetworkService.ViewModel
                 Nodes[2] = new GraphNode(),
                 Nodes[3] = new GraphNode()
             };
+            Times = new string[4] { "", "", "", "" };
+
+            _reader = new MeasurmentsReader("log.txt");
+
+            MeasurementProcessingService.OnMeasurementProcessed += OnNewMeasurment;
+        }
+
+        private void OnNewMeasurment(int idx, double value)
+        {
+            if (SelectedResource == null)
+                return;
+
+            int selectedIdx = AppDatabase.Resources.IndexOf(SelectedResource);
+            if(selectedIdx == idx)
+                DrawGraph();
+        }
+
+        private void DrawGraph()
+        {
+            if (SelectedResource == null)
+                return;
+
+            int selectedIdx = AppDatabase.Resources.IndexOf(SelectedResource);
+            if (selectedIdx < 0)
+                return;
+
+            var measurements = _reader.ReadMeasurments(selectedIdx);
+
+            double max = 0;
+            for(int i = 0; i < measurements.Count; i++)
+            {
+                var value = measurements[i].Value;
+                Nodes[0].Value = value;
+                Times[0] = measurements[i].Time;
+                if(max < value)
+                    max = value;
+            }
+
+            Nodes.FirstOrDefault(n => n.Value == max).IsHighest = true;
+
+            for(int i = 0; i < 4; i++)
+            {
+                var ratio = (max == 0 || Nodes[i].Value == 0)? 0 : max/Nodes[i].Value;
+                Nodes[i].Position = ratio * NODE_OFFSET;
+            }
         }
     }
 }
