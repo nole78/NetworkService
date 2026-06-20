@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace NetworkService.Model
 {
-    public class Measurment
+    public class Measurement
     {
         public string Time { get; set; }
         public double Value { get; set; }
-        public Measurment() { }
-        public Measurment(string time, double value)
+        public Measurement() { }
+        public Measurement(string time, double value)
         {
             Time = time;
             Value = value;
