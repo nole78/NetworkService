@@ -10,14 +10,34 @@ using System.Threading.Tasks;
 
 namespace NetworkService.ViewModel
 {
-    public class MainWindowViewModel
+    public class MainWindowViewModel : BindableBase
     {
+        public NetworkEntitiesViewModel networkEntitiesViewModel;
+        public NetworkDisplayViewModel networkDisplayViewModel;
+        public MeasurmentGraphViewModel measurmentGraphViewModel;
+        private BindableBase _currentViewModel;
+        private readonly LoggerService _loggerService;
         private int count = 15; // Inicijalna vrednost broja objekata u sistemu
                                 // ######### ZAMENITI stvarnim brojem elemenata
                                 //           zavisno od broja entiteta u listi
-        private readonly LoggerService _loggerService;
+
+        #region Properties
+        public BindableBase CurrentViewModel
+        {
+            get => _currentViewModel;
+            set => SetProperty(ref _currentViewModel, value);
+        }
+        public MyICommand<string> NavCommand { get; private set; }
+        #endregion
         public MainWindowViewModel()
         {
+            NavCommand = new MyICommand<string>(OnNavCommand);
+
+            networkEntitiesViewModel = new NetworkEntitiesViewModel();
+            networkDisplayViewModel = new NetworkDisplayViewModel();
+            measurmentGraphViewModel = new MeasurmentGraphViewModel();
+            CurrentViewModel = networkDisplayViewModel;
+
             _loggerService = new LoggerService("log.txt");
             createListener(); //Povezivanje sa serverskom aplikacijom
         }
@@ -69,6 +89,22 @@ namespace NetworkService.ViewModel
 
             listeningThread.IsBackground = true;
             listeningThread.Start();
+        }
+
+        private void OnNavCommand(string destination)
+        {
+            switch (destination) 
+            {
+                case "entity":
+                    CurrentViewModel = networkEntitiesViewModel;
+                    break;
+                case "graph":
+                    CurrentViewModel = measurmentGraphViewModel;
+                    break;
+                case "display":
+                    CurrentViewModel = networkDisplayViewModel;
+                    break;
+            }
         }
     }
 }

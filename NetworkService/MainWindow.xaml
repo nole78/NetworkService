@@ -5,9 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NetworkService"
         xmlns:views="clr-namespace:NetworkService.Views"
+        xmlns:viewmodels="clr-namespace:NetworkService.ViewModel"
         mc:Ignorable="d"
         WindowStyle="None"
         Title="MainWindow" Height="600" Width="800">
+    <Window.DataContext>
+        <viewmodels:MainWindowViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewmodels:MeasurmentGraphViewModel}">
+            <views:MeasurmentGraphView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:NetworkDisplayViewModel}">
+            <views:NetworkDisplayView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodels:NetworkEntitiesViewModel}">
+            <views:NetworkEntitiesView/>
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -28,16 +43,22 @@
             <Label Content="NetworkService"
                    Style="{StaticResource HeaderLabelStyle}"/>
             <Button Grid.Column="1"
-                    Content="Entity"/>
+                    Content="Entity"
+                    Command="{Binding NavCommand}"
+                    CommandParameter="entity"/>
             <Button Grid.Column="2"
-                    Content="Display"/>
+                    Content="Display"
+                    Command="{Binding NavCommand}"
+                    CommandParameter="display"/>
             <Button Grid.Column="3"
-                    Content="Graph"/>
+                    Content="Graph"
+                    Command="{Binding NavCommand}"
+                    CommandParameter="graph"/>
             <Button Grid.Column="5"
                     Content="Undo"/>
 
         </Grid>
-        <views:NetworkEntitiesView Grid.Row="1"/>
+        <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}"/>
         <views:TerminalView Grid.Row="2"/>
     </Grid>
 </Window>
