@@ -15,9 +15,10 @@ namespace NetworkService.ViewModel
     {
         public NetworkEntitiesViewModel networkEntitiesViewModel;
         public NetworkDisplayViewModel networkDisplayViewModel;
-        public MeasurmentGraphViewModel measurmentGraphViewModel;
+        public MeasurementGraphViewModel measurementGraphViewModel;
         private BindableBase _currentViewModel;
-        private readonly LoggerService _loggerService;
+        private readonly LoggerService _logger;
+        private readonly MeasurementProcessingService _processor;
 
         #region Properties
         public BindableBase CurrentViewModel
@@ -33,10 +34,12 @@ namespace NetworkService.ViewModel
 
             networkEntitiesViewModel = new NetworkEntitiesViewModel();
             networkDisplayViewModel = new NetworkDisplayViewModel();
-            measurmentGraphViewModel = new MeasurmentGraphViewModel();
+            measurementGraphViewModel = new MeasurementGraphViewModel();
             CurrentViewModel = networkDisplayViewModel;
 
-            _loggerService = new LoggerService("log.txt");
+            _logger = new LoggerService("log.txt");
+            _processor = new MeasurementProcessingService(_logger);
+
             createListener(); //Povezivanje sa serverskom aplikacijom
         }
 
@@ -79,7 +82,7 @@ namespace NetworkService.ViewModel
                             //################ IMPLEMENTACIJA ####################
                             // Obraditi poruku kako bi se dobile informacije o izmeni
                             // Azuriranje potrebnih stvari u aplikaciji
-                            _loggerService.LogMeasurment(incomming);
+                            _processor.ProcessMeasurement(incomming);
                         }
                     }, null);
                 }
@@ -97,7 +100,7 @@ namespace NetworkService.ViewModel
                     CurrentViewModel = networkEntitiesViewModel;
                     break;
                 case "graph":
-                    CurrentViewModel = measurmentGraphViewModel;
+                    CurrentViewModel = measurementGraphViewModel;
                     break;
                 case "display":
                     CurrentViewModel = networkDisplayViewModel;
