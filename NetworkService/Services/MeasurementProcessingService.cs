@@ -36,7 +36,7 @@ namespace NetworkService.Services
                 });
 
                 var date = DateTime.Now;
-                string logLine = $"{date.ToShortDateString()}, {date.ToShortTimeString()}: {idx}, {value}";
+                string logLine = $"{date.ToShortDateString()}, {date.ToString("HH:mm")}: {idx}, {value}";
                 _loggerService.LogLine(logLine);
 
                 OnMeasurementProcessed?.Invoke(idx, value);

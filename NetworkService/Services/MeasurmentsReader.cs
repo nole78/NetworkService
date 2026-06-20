@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Security.RightsManagement;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Shapes;
 
@@ -21,7 +22,9 @@ namespace NetworkService.Services
 
         public List<Measurement> ReadMeasurments(int idx) 
         {
-            Queue<Measurement> buffer = new Queue<Measurement>(5);
+            Queue<Measurement> buffer = new Queue<Measurement>(4);
+            string pattern = @",\s*(?<time>\d{1,2}:\d{2}):\s*(?<idx>\d+),\s*(?<value>[\d.,]+)";
+            Regex regex = new Regex(pattern);
             try
             {
                 using (var sr = new StreamReader(_measurmentsfilePath,true))
@@ -29,24 +32,22 @@ namespace NetworkService.Services
                     string line;
                     while ((line = sr.ReadLine()) != null)
                     {
-                        var parts = line.Trim().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        Match match = regex.Match(line);
 
-                        if (parts.Length != 4)
+                        if (!match.Success)
                             continue;
 
-                        if (!int.TryParse(parts[2], out int objectIdx))
-                            continue;
-
+                        int objectIdx = int.Parse(match.Groups["idx"].Value);
                         if (objectIdx != idx)
                             continue;
 
-                        if (!double.TryParse(parts[3], out double value))
-                            continue;
+                        string time = match.Groups["time"].Value;
 
-                        string time = parts[1];
+                        string valueStr = match.Groups["value"].Value.Replace(',', '.');
+                        double value = double.Parse(valueStr, System.Globalization.CultureInfo.InvariantCulture);
 
                         buffer.Enqueue(new Measurement(time, value));
-                        if(buffer.Count > 4)
+                        if (buffer.Count > 4) 
                         {
                             buffer.Dequeue();
                         }
