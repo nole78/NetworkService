@@ -67,21 +67,24 @@
     <Compile Include="Helpers\BindableBase.cs" />
     <Compile Include="Model\DistributedEnergyResource.cs" />
     <Compile Include="Model\EnergyResourceType.cs" />
+    <Compile Include="Model\Measurement.cs" />
     <Compile Include="Model\TerminalLine.cs" />
     <Compile Include="Helpers\MyICommand.cs" />
     <Compile Include="Persistance\AppDatabase.cs" />
     <Compile Include="Services\LoggerService.cs" />
+    <Compile Include="Services\MeasurementProcessingService.cs" />
+    <Compile Include="Services\MeasurmentsReader.cs" />
     <Compile Include="Services\TerminalService.cs" />
     <Compile Include="Helpers\ViewModelLocator.cs" />
     <Compile Include="Helpers\ValidationBase.cs" />
     <Compile Include="Helpers\ValidationErrors.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
-    <Compile Include="ViewModel\MeasurmentGraphViewModel.cs" />
+    <Compile Include="ViewModel\MeasurementGraphViewModel.cs" />
     <Compile Include="ViewModel\NetworkDisplayViewModel.cs" />
     <Compile Include="ViewModel\NetworkEntitiesViewModel.cs" />
     <Compile Include="ViewModel\TerminalViewModel.cs" />
-    <Compile Include="Views\MeasurmentGraphView.xaml.cs">
-      <DependentUpon>MeasurmentGraphView.xaml</DependentUpon>
+    <Compile Include="Views\MeasurementGraphView.xaml.cs">
+      <DependentUpon>MeasurementGraphView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NetworkDisplayView.xaml.cs">
       <DependentUpon>NetworkDisplayView.xaml</DependentUpon>
@@ -112,7 +115,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MeasurmentGraphView.xaml">
+    <Page Include="Views\MeasurementGraphView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

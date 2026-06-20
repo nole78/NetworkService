@@ -13,7 +13,7 @@
         <viewmodels:MainWindowViewModel/>
     </Window.DataContext>
     <Window.Resources>
-        <DataTemplate DataType="{x:Type viewmodels:MeasurmentGraphViewModel}">
+        <DataTemplate DataType="{x:Type viewmodels:MeasurementGraphViewModel}">
             <views:MeasurmentGraphView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewmodels:NetworkDisplayViewModel}">
