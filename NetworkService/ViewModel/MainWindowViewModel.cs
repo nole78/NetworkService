@@ -34,6 +34,14 @@ namespace NetworkService.ViewModel
             NavCommand = new MyICommand<string>(OnNavCommand);
             UndoCommand = new MyICommand(OnUndoCommand, CanUndo);
 
+            AppDatabase.Instance.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == nameof(AppDatabase.Instance.LastAction))
+                {
+                    UndoCommand.RaiseCanExecuteChanged();
+                }
+            };
+
             networkEntitiesViewModel = new NetworkEntitiesViewModel();
             networkDisplayViewModel = new NetworkDisplayViewModel();
             measurementGraphViewModel = new MeasurementGraphViewModel();
@@ -115,9 +123,7 @@ namespace NetworkService.ViewModel
             AppDatabase.Instance.Undo();
         }
 
-        private bool CanUndo()
-        {
-            return AppDatabase.Instance.LastAction != null;
-        }
+        private bool CanUndo() => AppDatabase.Instance.LastAction != null;
+
     }
 }
