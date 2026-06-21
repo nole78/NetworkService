@@ -21,8 +21,6 @@ namespace NetworkService.Model.Actions
 
         public bool Do()
         {
-            if (_slots[_targetSlotIdx] == null) return false;
-
             _slots[_targetSlotIdx] = _resource;
             return true;
         }
