@@ -58,6 +58,11 @@
                         </Canvas.Background>
                     </Canvas>
                     <StackPanel Grid.Row="1" Orientation="Horizontal">
+                        <Button Width="30" Height="30" 
+                                Command="{Binding DataContext.RemoveFromGridCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                CommandParameter="{Binding Content.Id, RelativeSource={RelativeSource TemplatedParent}}">
+                            <fa5:SvgAwesome Icon="Regular_WindowClose"/>
+                        </Button>
                         <TextBlock Text="{Binding Content.Id, RelativeSource={RelativeSource TemplatedParent}, StringFormat='Id: #{0}'}"/>
                         <TextBlock Text="{Binding Content.Value, RelativeSource={RelativeSource TemplatedParent}, StringFormat=' {0} MW'}"/>
                     </StackPanel>

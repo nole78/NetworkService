@@ -72,6 +72,7 @@
     <Compile Include="Model\Actions\MoveResourceAction.cs" />
     <Compile Include="Model\Actions\PlaceResourceAction.cs" />
     <Compile Include="Model\Actions\IUndoableAction.cs" />
+    <Compile Include="Model\Actions\RemoveFromGridAction.cs" />
     <Compile Include="Model\Actions\RemoveResourceAction.cs" />
     <Compile Include="Model\DistributedEnergyResource.cs" />
     <Compile Include="Model\EnergyResourceType.cs" />

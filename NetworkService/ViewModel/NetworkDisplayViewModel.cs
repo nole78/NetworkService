@@ -38,8 +38,9 @@ namespace NetworkService.ViewModel
             get => _selectedResource;
             set => SetProperty(ref _selectedResource, value);
         }
+        public MyICommand<int> RemoveFromGridCommand { get; set; }
         #endregion
-        
+
         public NetworkDisplayViewModel() 
         {
             RefreshTreeView();
@@ -53,6 +54,8 @@ namespace NetworkService.ViewModel
                     OnPropertyChanged(nameof(Slots)); 
                 } 
             };
+
+            RemoveFromGridCommand = new MyICommand<int>(OnRemoveFromGrid);
         }
 
         #region Event subscribers
@@ -76,6 +79,7 @@ namespace NetworkService.ViewModel
                 }).ToList();
         }
 
+        #region DragAndDrop Events
         public void OnDragStart(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (e.NewValue is DistributedEnergyResource resource)
@@ -145,6 +149,25 @@ namespace NetworkService.ViewModel
 
                 SelectedResource = null;
                 _sourceSlotIdx = -1;
+            }
+        }
+        #endregion
+
+        private void OnRemoveFromGrid(int id)
+        {
+            int idx = -1;
+            for (int i = 0; i < Slots.Length; i++)
+            {
+                if (Slots[i].Id == id)
+                {
+                    idx = i;
+                    break;
+                }
+            }
+
+            if(idx != -1)
+            {
+                AppDatabase.Instance.RemoveResourceFromGrid(idx);
             }
         }
     }
