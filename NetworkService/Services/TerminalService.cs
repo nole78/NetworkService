@@ -21,11 +21,11 @@ namespace NetworkService.Services
             _validCommands = new List<string>()
             {
                 "help",
+                "undo",
                 "add",
                 "delete",
                 "search",
-                "nav",
-                "undo"
+                "nav"
             };
         }
 
@@ -46,13 +46,14 @@ namespace NetworkService.Services
             {
                 case "help": 
                     return HelpCommand();
+                case "undo":
+                    return UndoCommand();
                 case "add": 
                     return AddCommand(line);
                 case "delete":
                     return DeleteCommand(line);
                 case "search": 
                 case "nav": 
-                case "undo":
                     return new TerminalLine("Not implemented yet!", LineType.Error);
                 default:
                     return new TerminalLine("Unknown error", LineType.Error);
@@ -91,13 +92,7 @@ namespace NetworkService.Services
                 return new TerminalLine($"Error: Resource type \"{resourceTypeName}\" doesn't exist!\n=> Existing types:\n" + typeNames, LineType.Error);
             }
 
-            //bool nameExists = AppDatabase.Resources.Any(r => r.Name == resourceName);
-            //if (nameExists)
-            //{
-            //    return new TerminalLine($"Error: Resource with name \"{resourceName}\" already exists!", LineType.Error);
-            //}
-
-            var newResource = new DistributedEnergyResource(0, resourceName, type, 0);
+            var newResource = new DistributedEnergyResource(0, resourceName, type, null);
             AppDatabase.Instance.AddResource(newResource);
 
             return new TerminalLine($"Succesfully added new resource:\nID: {newResource.Id} | Name: {resourceName} | Type: {type.Name}", LineType.Success);
@@ -139,5 +134,17 @@ namespace NetworkService.Services
             }
         }
 
+        private TerminalLine UndoCommand()
+        {
+            if(AppDatabase.Instance.Undo())
+            {
+                return new TerminalLine($"Succesfuly undone the last action", LineType.Success);
+            }
+            else
+            {
+                return new TerminalLine($"Error: There is no action to undo!", LineType.Error);
+            }
+
+        }
     }
 }

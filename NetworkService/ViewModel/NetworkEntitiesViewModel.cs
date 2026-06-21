@@ -94,7 +94,7 @@ namespace NetworkService.ViewModel
             CreateEnergyResource.Validate();
             if(CreateEnergyResource.IsValid)
             {
-                DistributedEnergyResource newResource = new DistributedEnergyResource(0, CreateEnergyResource.Name, CreateEnergyResource.Type, 0);
+                DistributedEnergyResource newResource = new DistributedEnergyResource(0, CreateEnergyResource.Name, CreateEnergyResource.Type, null);
                 AppDatabase.Instance.AddResource(newResource);
 
 

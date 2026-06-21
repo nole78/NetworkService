@@ -13,7 +13,7 @@ namespace NetworkService.Model
         private int _id = 0;
         private string _name = "";
         private EnergyResourceType _type;
-        private double _value = 0;
+        private double? _value = null;
         private bool _isAlarm = false;
 
         #region Properties
@@ -32,7 +32,7 @@ namespace NetworkService.Model
             get => _type;
             set => SetProperty(ref _type, value);
         }
-        public double Value
+        public double? Value
         {
             get => _value;
             set => SetProperty(ref _value, value);
@@ -45,7 +45,7 @@ namespace NetworkService.Model
         #endregion
 
         public DistributedEnergyResource() { }
-        public DistributedEnergyResource(int id, string name, EnergyResourceType type, double value)
+        public DistributedEnergyResource(int id, string name, EnergyResourceType type, double? value)
         {
             Id = id;
             Name = name;
