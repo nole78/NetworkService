@@ -27,10 +27,12 @@ namespace NetworkService.ViewModel
             set => SetProperty(ref _currentViewModel, value);
         }
         public MyICommand<string> NavCommand { get; private set; }
+        public MyICommand UndoCommand { get; private set; }
         #endregion
         public MainWindowViewModel()
         {
             NavCommand = new MyICommand<string>(OnNavCommand);
+            UndoCommand = new MyICommand(OnUndoCommand, CanUndo);
 
             networkEntitiesViewModel = new NetworkEntitiesViewModel();
             networkDisplayViewModel = new NetworkDisplayViewModel();
@@ -40,10 +42,10 @@ namespace NetworkService.ViewModel
             _logger = new LoggerService("log.txt");
             _processor = new MeasurementProcessingService(_logger);
 
-            createListener(); //Povezivanje sa serverskom aplikacijom
+            CreateListener(); //Povezivanje sa serverskom aplikacijom
         }
 
-        private void createListener()
+        private void CreateListener()
         {
             var tcp = new TcpListener(IPAddress.Any, 25675);
             tcp.Start();
@@ -71,7 +73,7 @@ namespace NetworkService.ViewModel
                              * duzinu liste koja sadrzi sve objekte pod monitoringom, odnosno
                              * njihov ukupan broj (NE BROJATI OD NULE, VEC POSLATI UKUPAN BROJ)
                              * */
-                            Byte[] data = Encoding.ASCII.GetBytes(AppDatabase.Resources.Count.ToString());
+                            Byte[] data = Encoding.ASCII.GetBytes(AppDatabase.Instance.Resources.Count.ToString());
                             stream.Write(data, 0, data.Length);
                         }
                         else
@@ -106,6 +108,16 @@ namespace NetworkService.ViewModel
                     CurrentViewModel = networkDisplayViewModel;
                     break;
             }
+        }
+
+        private void OnUndoCommand()
+        {
+            AppDatabase.Instance.Undo();
+        }
+
+        private bool CanUndo()
+        {
+            return AppDatabase.Instance.LastAction != null;
         }
     }
 }

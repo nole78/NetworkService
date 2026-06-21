@@ -48,7 +48,7 @@ namespace NetworkService.ViewModel
             set => SetProperty(ref _selectedResource, value);
         }
         public ICollectionView EnergyResources { get; set; }
-        public IReadOnlyList<EnergyResourceType> EnergyResourceTypes { get { return AppDatabase.ResourceTypes; } }
+        public IReadOnlyList<EnergyResourceType> EnergyResourceTypes { get { return AppDatabase.Instance.ResourceTypes; } }
         public MyICommand CreateCommand { get; set; }
         public MyICommand DeleteCommand { get; set; }
         public MyICommand SearchCommand { get; set; }
@@ -57,7 +57,7 @@ namespace NetworkService.ViewModel
 
         public NetworkEntitiesViewModel() 
         {
-            EnergyResources = CollectionViewSource.GetDefaultView(AppDatabase.Resources);
+            EnergyResources = CollectionViewSource.GetDefaultView(AppDatabase.Instance.Resources);
             EnergyResources.Filter = ResourceFilter;
             
             CreateCommand = new MyICommand(OnCreateCommand);
@@ -95,7 +95,7 @@ namespace NetworkService.ViewModel
             if(CreateEnergyResource.IsValid)
             {
                 DistributedEnergyResource newResource = new DistributedEnergyResource(0, CreateEnergyResource.Name, CreateEnergyResource.Type, 0);
-                AppDatabase.AddResource(newResource);
+                AppDatabase.Instance.AddResource(newResource);
 
 
                 CreateEnergyResource.Name = "";
@@ -106,7 +106,7 @@ namespace NetworkService.ViewModel
         {
             if(SelectedResource != null)
             {
-                AppDatabase.RemoveResource(SelectedResource.Id);
+                AppDatabase.Instance.RemoveResource(SelectedResource.Id);
             }
         }
 

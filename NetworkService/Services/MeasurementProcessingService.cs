@@ -28,12 +28,12 @@ namespace NetworkService.Services
                 double value = double.Parse(parts[1]);
 
                 Application.Current.Dispatcher.Invoke(() => {
-                    if (AppDatabase.Resources.Count > idx)
+                    if (AppDatabase.Instance.Resources.Count > idx)
                     {
-                        var resource = AppDatabase.Resources[idx];
+                        var resource = AppDatabase.Instance.Resources[idx];
                         if (resource != null)
                         {
-                            AppDatabase.SetValue(resource.Id, value);
+                            AppDatabase.Instance.SetValue(resource.Id, value);
                         }
                         else
                         {

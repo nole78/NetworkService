@@ -19,7 +19,7 @@ namespace NetworkService.ViewModel
     public class NetworkDisplayViewModel : BindableBase
     {
         private List<TreeViewTypeGroup> _treeViewNodes;
-        public DistributedEnergyResource[] Slots => AppDatabase.GridSlots;
+        public DistributedEnergyResource[] Slots => AppDatabase.Instance.GridSlots;
 
         #region Properties
         public List<TreeViewTypeGroup> TreeViewNodes 
@@ -33,7 +33,7 @@ namespace NetworkService.ViewModel
         {
             RefreshTreeView();
 
-            AppDatabase.Resources.CollectionChanged += Resource_CollectionChanged;
+            AppDatabase.Instance.Resources.CollectionChanged += Resource_CollectionChanged;
         }
 
         #region Event subscribers
@@ -47,7 +47,7 @@ namespace NetworkService.ViewModel
 
         public void RefreshTreeView()
         {
-            TreeViewNodes = AppDatabase.Resources.GroupBy(r => r.Type.Name)
+            TreeViewNodes = AppDatabase.Instance.Resources.GroupBy(r => r.Type.Name)
                 .Select(group => new TreeViewTypeGroup
                 {
                     TypeName = group.Key,

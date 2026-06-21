@@ -58,7 +58,7 @@ namespace NetworkService.ViewModel
                 DrawGraph();
             }
         }
-        public ObservableCollection<DistributedEnergyResource> Resources { get => AppDatabase.Resources; }
+        public ObservableCollection<DistributedEnergyResource> Resources { get => AppDatabase.Instance.Resources; }
         public GraphNode[] Nodes { get; }
         public ObservableCollection<string> Times { get; }
         #endregion
@@ -77,7 +77,7 @@ namespace NetworkService.ViewModel
             if (SelectedResource == null)
                 return;
 
-            int selectedIdx = AppDatabase.Resources.IndexOf(SelectedResource);
+            int selectedIdx = AppDatabase.Instance.Resources.IndexOf(SelectedResource);
             if(selectedIdx == idx)
                 DrawGraph();
         }
@@ -94,7 +94,7 @@ namespace NetworkService.ViewModel
             if (SelectedResource == null)
                 return;
 
-            int selectedIdx = AppDatabase.Resources.IndexOf(SelectedResource);
+            int selectedIdx = AppDatabase.Instance.Resources.IndexOf(SelectedResource);
             if (selectedIdx < 0)
                 return;
 

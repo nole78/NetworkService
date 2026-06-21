@@ -83,10 +83,10 @@ namespace NetworkService.Services
             string resourceName = match.Groups[1].Value.Trim();
             string resourceTypeName = match.Groups[2].Value.Trim();
 
-            var type = AppDatabase.ResourceTypes.FirstOrDefault(r => r.Name.ToLower() == resourceTypeName.ToLower());
+            var type = AppDatabase.Instance.ResourceTypes.FirstOrDefault(r => r.Name.ToLower() == resourceTypeName.ToLower());
             if(type == null)
             {
-                var typeList = AppDatabase.ResourceTypes.Select(r => r.Name);
+                var typeList = AppDatabase.Instance.ResourceTypes.Select(r => r.Name);
                 string typeNames = "\t" + string.Join("\n\t", typeList);
                 return new TerminalLine($"Error: Resource type \"{resourceTypeName}\" doesn't exist!\n=> Existing types:\n" + typeNames, LineType.Error);
             }
@@ -98,7 +98,7 @@ namespace NetworkService.Services
             //}
 
             var newResource = new DistributedEnergyResource(0, resourceName, type, 0);
-            AppDatabase.AddResource(newResource);
+            AppDatabase.Instance.AddResource(newResource);
 
             return new TerminalLine($"Succesfully added new resource:\nID: {newResource.Id} | Name: {resourceName} | Type: {type.Name}", LineType.Success);
         }
@@ -116,14 +116,14 @@ namespace NetworkService.Services
 
             if (int.TryParse(param, out int id) && id > 0)
             {
-                var resource = AppDatabase.Resources.FirstOrDefault(r => r.Id == id);
+                var resource = AppDatabase.Instance.Resources.FirstOrDefault(r => r.Id == id);
                 if(resource == null)
                 {
                     return new TerminalLine($"Error: Resource with ID: {id} doesn't exist", LineType.Error);
                 }
                 else
                 {
-                    if(AppDatabase.RemoveResource(id))
+                    if(AppDatabase.Instance.RemoveResource(id))
                     {
                         return new TerminalLine($"Succesfuly removed resource:\nID: {id} | Name: {resource.Name} | Type: {resource.Type.Name}", LineType.Success);
                     }
