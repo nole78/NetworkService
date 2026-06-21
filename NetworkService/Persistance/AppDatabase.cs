@@ -47,11 +47,11 @@ namespace NetworkService.Persistance
             if (LastAction != null)
             {
                 LastAction.Undo();
+                LastAction = null;
 
-                if(LastAction is RemoveResourceAction)
+                if(!(LastAction is AddResourceAction))
                     OnPropertyChanged(nameof(GridSlots));
 
-                LastAction = null;
                 return true;
             }
             else
@@ -125,6 +125,19 @@ namespace NetworkService.Persistance
             if (placeAction.Do())
             {
                 LastAction = placeAction;
+
+                OnPropertyChanged(nameof(GridSlots));
+                return true;
+            }
+            return false;
+        }
+
+        public bool MoveResourceOnGrid(int fromSlotIdx, int toSlotIdx)
+        {
+            var moveAction = new MoveResourceAction(fromSlotIdx, toSlotIdx, GridSlots);
+            if (moveAction.Do())
+            {
+                LastAction = moveAction;
 
                 OnPropertyChanged(nameof(GridSlots));
                 return true;
