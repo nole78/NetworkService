@@ -55,7 +55,8 @@
                     Command="{Binding NavCommand}"
                     CommandParameter="graph"/>
             <Button Grid.Column="5"
-                    Content="Undo"/>
+                    Content="Undo"
+                    Command="{Binding UndoCommand}"/>
 
         </Grid>
         <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}"/>

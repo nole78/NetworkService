@@ -65,6 +65,9 @@
     </ApplicationDefinition>
     <Compile Include="Converters\AddValueConverter.cs" />
     <Compile Include="Helpers\BindableBase.cs" />
+    <Compile Include="Model\Actions\AddResourceAction.cs" />
+    <Compile Include="Model\Actions\IUndoableAction.cs" />
+    <Compile Include="Model\Actions\RemoveResourceAction.cs" />
     <Compile Include="Model\DistributedEnergyResource.cs" />
     <Compile Include="Model\EnergyResourceType.cs" />
     <Compile Include="Model\Measurement.cs" />
@@ -159,9 +162,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\Actions\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Assets\solar panel.png" />
     <Resource Include="Assets\wind generator.png" />
