@@ -16,20 +16,38 @@
     <UserControl.Resources>
         <converters:AddValueConverter x:Key="AddValueConverter"/>
         <ControlTemplate x:Key="GraphNode" TargetType="ContentControl">
-            <Rectangle RadiusX="50" RadiusY="50" 
-                       Width="30" Height="30" 
-                       Stroke="Black" Fill="Lime">
-                <Rectangle.Style>
-                    <Style TargetType="Rectangle">
+            <Grid>
+                <TextBlock Text="{Binding Content.Value, RelativeSource={RelativeSource TemplatedParent}}"
+                           Panel.ZIndex="2"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           FontWeight="Bold"/>
+                <Rectangle RadiusX="50" RadiusY="50" 
+                           Width="30" Height="30" 
+                           Stroke="Black">
+                    <Rectangle.Style>
+                        <Style TargetType="Rectangle">
+                            <Setter Property="Fill" Value="Lime"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Content.IsValid, RelativeSource={RelativeSource TemplatedParent}}" Value="False">
+                                    <Setter Property="Fill"
+                                            Value="Red"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Rectangle.Style>
+                </Rectangle>
+                <Grid.Style>
+                    <Style TargetType="Grid">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Content.IsHighest, RelativeSource={RelativeSource TemplatedParent}}" Value="False">
-                                <Setter Property="Fill"
-                            Value="Red"/>
+                            <DataTrigger Binding="{Binding Content.IsVisible, RelativeSource={RelativeSource TemplatedParent}}" Value="False">
+                                <Setter Property="Visibility"
+                                            Value="Collapsed"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </Rectangle.Style>
-            </Rectangle>
+                </Grid.Style>
+            </Grid>
         </ControlTemplate>
     </UserControl.Resources>
     
@@ -75,28 +93,73 @@
                   X1="{Binding (Canvas.Left), ElementName=Circle1, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
                   Y1="{Binding (Canvas.Top), ElementName=Circle1, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
                   X2="{Binding (Canvas.Left), ElementName=Circle2, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
-                  Y2="{Binding (Canvas.Top), ElementName=Circle2, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"/>
-            
+                  Y2="{Binding (Canvas.Top), ElementName=Circle2, Converter={StaticResource AddValueConverter}, ConverterParameter=15}">
+                <Line.Style>
+                    <Style  TargetType="Line">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Nodes[1].IsVisible}" Value="False">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Line.Style>
+            </Line>
+
             <Line Stroke="Black" StrokeThickness="2"
                   X1="{Binding (Canvas.Left), ElementName=Circle2, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
                   Y1="{Binding (Canvas.Top), ElementName=Circle2, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
                   X2="{Binding (Canvas.Left), ElementName=Circle3, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
-                  Y2="{Binding (Canvas.Top), ElementName=Circle3, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"/>
-            
+                  Y2="{Binding (Canvas.Top), ElementName=Circle3, Converter={StaticResource AddValueConverter}, ConverterParameter=15}">
+                <Line.Style>
+                    <Style  TargetType="Line">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Nodes[2].IsVisible}" Value="False">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Line.Style>
+            </Line>
+
             <Line Stroke="Black" StrokeThickness="2"
                   X1="{Binding (Canvas.Left), ElementName=Circle3, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
                   Y1="{Binding (Canvas.Top), ElementName=Circle3, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
                   X2="{Binding (Canvas.Left), ElementName=Circle4, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
-                  Y2="{Binding (Canvas.Top), ElementName=Circle4, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"/>
+                  Y2="{Binding (Canvas.Top), ElementName=Circle4, Converter={StaticResource AddValueConverter}, ConverterParameter=15}">
+                <Line.Style>
+                    <Style  TargetType="Line">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Nodes[3].IsVisible}" Value="False">
+                                <Setter Property="Visibility"
+                                        Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Line.Style>
+            </Line>
 
             <ContentControl Template="{StaticResource GraphNode}" Content="{Binding Nodes[0]}" Name="Circle1" 
-                            Canvas.Left="100" Canvas.Top="{Binding Nodes[0].Position}"/>
+                            Canvas.Left="80" Canvas.Top="{Binding Nodes[0].Position}"/>
             <ContentControl Template="{StaticResource GraphNode}" Content="{Binding Nodes[1]}" Name="Circle2" 
                             Canvas.Left="200" Canvas.Top="{Binding Nodes[1].Position}"/>
             <ContentControl Template="{StaticResource GraphNode}" Content="{Binding Nodes[2]}" Name="Circle3" 
-                            Canvas.Left="300" Canvas.Top="{Binding Nodes[2].Position}"/>
+                            Canvas.Left="320" Canvas.Top="{Binding Nodes[2].Position}"/>
             <ContentControl Template="{StaticResource GraphNode}" Content="{Binding Nodes[3]}" Name="Circle4" 
-                            Canvas.Left="400" Canvas.Top="{Binding Nodes[3].Position}"/>
+                            Canvas.Left="440" Canvas.Top="{Binding Nodes[3].Position}"/>
+
+            <Line X1="150" Y1="0" X2="150" Y2="340" Stroke="Gray"/>
+            <Line X1="270" Y1="0" X2="270" Y2="340" Stroke="Gray"/>
+            <Line X1="390" Y1="0" X2="390" Y2="340" Stroke="Gray"/>
+            
+            <Label Canvas.Bottom="0" Content="{Binding Times[0]}" Canvas.Left="80"/>
+            <Label Canvas.Bottom="0" Content="{Binding Times[1]}" Canvas.Left="200"/>
+            <Label Canvas.Bottom="0" Content="{Binding Times[2]}" Canvas.Left="320"/>
+            <Label Canvas.Bottom="0" Content="{Binding Times[3]}" Canvas.Left="440"/>
         </Canvas>
     </Grid>
 </UserControl>

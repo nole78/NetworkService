@@ -16,7 +16,8 @@ namespace NetworkService.ViewModel
     {
         private double _position = 10.0;
         private double _value = 0.0;
-        private bool _isHighest = false;
+        private bool _isValid = false;
+        private bool _isVisible = false;
 
         #region Properties
         public double Position
@@ -29,16 +30,21 @@ namespace NetworkService.ViewModel
             get => _value;
             set => SetProperty(ref _value, value);
         }
-        public bool IsHighest
+        public bool IsValid
         {
-            get => _isHighest;
-            set => SetProperty(ref _isHighest, value);
+            get => _isValid;
+            set => SetProperty(ref _isValid, value);
+        }
+        public bool IsVisible
+        {
+            get => _isVisible;
+            set => SetProperty(ref _isVisible, value);
         }
         #endregion
     }
     public class MeasurementGraphViewModel : BindableBase
     {
-        private const int NODE_OFFSET = 400;
+        private const int NODE_OFFSET = 265;
         private DistributedEnergyResource _selectedResource;
         private readonly MeasurmentsReader _reader;
 
@@ -54,17 +60,12 @@ namespace NetworkService.ViewModel
         }
         public ObservableCollection<DistributedEnergyResource> Resources { get => AppDatabase.Resources; }
         public GraphNode[] Nodes { get; }
-        public string[] Times { get; }
+        public ObservableCollection<string> Times { get; }
         #endregion
         public MeasurementGraphViewModel()
         {
-            Nodes = new GraphNode[4] {
-                Nodes[0] = new GraphNode(),
-                Nodes[1] = new GraphNode(),
-                Nodes[2] = new GraphNode(),
-                Nodes[3] = new GraphNode()
-            };
-            Times = new string[4] { "", "", "", "" };
+            Nodes = new GraphNode[4] {new GraphNode(),new GraphNode(),new GraphNode(), new GraphNode()};
+            Times = new ObservableCollection<string>(new string[]{ "", "", "", "" });
 
             _reader = new MeasurmentsReader("log.txt");
 
@@ -83,6 +84,13 @@ namespace NetworkService.ViewModel
 
         private void DrawGraph()
         {
+            foreach (var node in Nodes) 
+            {
+                node.IsVisible = false;
+                node.IsValid = false;
+                node.Value = 0;
+            }
+
             if (SelectedResource == null)
                 return;
 
@@ -96,17 +104,23 @@ namespace NetworkService.ViewModel
             for(int i = 0; i < measurements.Count; i++)
             {
                 var value = measurements[i].Value;
-                Nodes[0].Value = value;
-                Times[0] = measurements[i].Time;
+                Nodes[i].Value = value;
+                Nodes[i].IsVisible = true;
+
+                if(value >= 1 && value <= 5)
+                    Nodes[i].IsValid = true;
+
+                Times[i] = measurements[i].Time;
                 if(max < value)
                     max = value;
             }
 
-            Nodes.FirstOrDefault(n => n.Value == max).IsHighest = true;
-
             for(int i = 0; i < 4; i++)
             {
-                var ratio = (max == 0 || Nodes[i].Value == 0)? 0 : max/Nodes[i].Value;
+                var ratio = Math.Abs(Nodes[i].Value - max);
+                if (ratio != 0 && max != 0)
+                    ratio = ratio / max;
+
                 Nodes[i].Position = ratio * NODE_OFFSET;
             }
         }
