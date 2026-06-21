@@ -114,5 +114,18 @@ namespace NetworkService.Persistance
             }
             return true;
         }
+
+        public bool PlaceResourceOnGrid(DistributedEnergyResource resource, int slotIdx)
+        {
+            var placeAction = new PlaceResourceAction(resource, GridSlots, slotIdx);
+            if (placeAction.Do())
+            {
+                LastAction = placeAction;
+
+                OnPropertyChanged(nameof(GridSlots));
+                return true;
+            }
+            return false;
+        }
     }
 }
