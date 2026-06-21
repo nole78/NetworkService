@@ -106,7 +106,7 @@ namespace NetworkService.Persistance
             resource.Value = value;
             resource.IsAlarm = alarm;
 
-            var gridResource = GridSlots.FirstOrDefault(r => r.Id == id);
+            var gridResource = GridSlots.FirstOrDefault(r => r != null && r.Id == id);
             if (gridResource != null)
             {
                 gridResource.Value = value;
