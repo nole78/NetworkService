@@ -31,7 +31,14 @@ namespace NetworkService.Services
                     if (AppDatabase.Resources.Count > idx)
                     {
                         var resource = AppDatabase.Resources[idx];
-                        resource.Value = value;
+                        if (resource != null)
+                        {
+                            AppDatabase.SetValue(resource.Id, value);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Error updating resource value: no resource at index {idx}");
+                        }
                     }
                 });
 
