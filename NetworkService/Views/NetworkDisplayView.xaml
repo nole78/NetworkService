@@ -7,6 +7,7 @@
              xmlns:model="clr-namespace:NetworkService.Model"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:viewmodels="clr-namespace:NetworkService.ViewModel"
+             xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.DataContext>
@@ -70,6 +71,13 @@
         <TreeView Grid.Row="1" 
                   Margin="5"
                   ItemsSource="{Binding TreeViewNodes}">
+            <behaviors:Interaction.Triggers>
+                <behaviors:EventTrigger EventName="SelectedItemChanged">
+                    <behaviors:CallMethodAction TargetObject="{Binding}"
+                                                MethodName="OnDragStart"/>
+                </behaviors:EventTrigger>
+            </behaviors:Interaction.Triggers>
+            
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type viewmodels:TreeViewTypeGroup}"
                                           ItemsSource="{Binding Resources}">
@@ -108,29 +116,148 @@
             </Grid.RowDefinitions>
 
             <ContentControl Template="{StaticResource Node}"
-                            Content="{Binding Slots[0]}"/>
+                            Content="{Binding Slots[0]}"
+                            AllowDrop="True"
+                            Tag="0">
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="Drop">
+                        <behaviors:CallMethodAction TargetObject="{Binding}"
+                                                    MethodName="OnDrop"/>
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </ContentControl>
+            
             <ContentControl Template="{StaticResource Node}" Grid.Column="1"
-                            Content="{Binding Slots[1]}"/>
+                            Content="{Binding Slots[1]}"
+                            AllowDrop="True"
+                            Tag="1">
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="Drop">
+                        <behaviors:CallMethodAction TargetObject="{Binding}"
+                                                    MethodName="OnDrop"/>
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </ContentControl>
+
             <ContentControl Template="{StaticResource Node}" Grid.Column="2"
-                            Content="{Binding Slots[2]}"/>
+                            Content="{Binding Slots[2]}"
+                            AllowDrop="True"
+                            Tag="2">
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="Drop">
+                        <behaviors:CallMethodAction TargetObject="{Binding}"
+                                                    MethodName="OnDrop"/>
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </ContentControl>
+
             <ContentControl Template="{StaticResource Node}" Grid.Column="3"
-                            Content="{Binding Slots[3]}"/>
+                            Content="{Binding Slots[3]}"
+                            AllowDrop="True"
+                            Tag="3">
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="Drop">
+                        <behaviors:CallMethodAction TargetObject="{Binding}"
+                                                    MethodName="OnDrop"/>
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </ContentControl>
+
             <ContentControl Template="{StaticResource Node}" Grid.Row="1"
-                            Content="{Binding Slots[4]}"/>
+                            Content="{Binding Slots[4]}"
+                            AllowDrop="True"
+                            Tag="4">
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="Drop">
+                        <behaviors:CallMethodAction TargetObject="{Binding}"
+                                                    MethodName="OnDrop"/>
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </ContentControl>
+
             <ContentControl Template="{StaticResource Node}" Grid.Row="1" Grid.Column="1"
-                            Content="{Binding Slots[5]}"/>
+                            Content="{Binding Slots[5]}"
+                            AllowDrop="True"
+                            Tag="5">
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="Drop">
+                        <behaviors:CallMethodAction TargetObject="{Binding}"
+                                                    MethodName="OnDrop"/>
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </ContentControl>
+
             <ContentControl Template="{StaticResource Node}" Grid.Row="1" Grid.Column="2"
-                            Content="{Binding Slots[6]}"/>
+                            Content="{Binding Slots[6]}"
+                            AllowDrop="True"
+                            Tag="6">
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="Drop">
+                        <behaviors:CallMethodAction TargetObject="{Binding}"
+                                                    MethodName="OnDrop"/>
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </ContentControl>
+
             <ContentControl Template="{StaticResource Node}" Grid.Row="1" Grid.Column="3"
-                            Content="{Binding Slots[7]}"/>
+                            Content="{Binding Slots[7]}"
+                            AllowDrop="True"
+                            Tag="7">
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="Drop">
+                        <behaviors:CallMethodAction TargetObject="{Binding}"
+                                                    MethodName="OnDrop"/>
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </ContentControl>
+
             <ContentControl Template="{StaticResource Node}" Grid.Row="2"
-                            Content="{Binding Slots[8]}"/>
+                            Content="{Binding Slots[8]}"
+                            AllowDrop="True"
+                            Tag="8">
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="Drop">
+                        <behaviors:CallMethodAction TargetObject="{Binding}"
+                                                    MethodName="OnDrop"/>
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </ContentControl>
+
             <ContentControl Template="{StaticResource Node}" Grid.Row="2" Grid.Column="1"
-                            Content="{Binding Slots[9]}"/>
+                            Content="{Binding Slots[9]}"
+                            AllowDrop="True"
+                            Tag="9">
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="Drop">
+                        <behaviors:CallMethodAction TargetObject="{Binding}"
+                                                    MethodName="OnDrop"/>
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </ContentControl>
+
             <ContentControl Template="{StaticResource Node}" Grid.Row="2" Grid.Column="2"
-                            Content="{Binding Slots[10]}"/>
+                            Content="{Binding Slots[10]}"
+                            AllowDrop="True"
+                            Tag="10">
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="Drop">
+                        <behaviors:CallMethodAction TargetObject="{Binding}"
+                                                    MethodName="OnDrop"/>
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </ContentControl>
+
             <ContentControl Template="{StaticResource Node}" Grid.Row="2" Grid.Column="3"
-                            Content="{Binding Slots[11]}"/>
+                            Content="{Binding Slots[11]}"
+                            AllowDrop="True"
+                            Tag="11">
+                <behaviors:Interaction.Triggers>
+                    <behaviors:EventTrigger EventName="Drop">
+                        <behaviors:CallMethodAction TargetObject="{Binding}"
+                                                    MethodName="OnDrop"/>
+                    </behaviors:EventTrigger>
+                </behaviors:Interaction.Triggers>
+            </ContentControl>
 
         </Grid>
     </Grid>
