@@ -39,14 +39,9 @@ namespace NetworkService.Persistance
         {
             var resource = Resources.FirstOrDefault(r => r.Id == id);
 
-            for(int i = 0; i < GridSlots.Length; i++)
-            {
-                if(GridSlots[i] != null && GridSlots[i].Id == id)
-                {
-                    GridSlots[i] = null;
-                    break;
-                }
-            }
+            var gridResource = GridSlots.FirstOrDefault(r => r.Id == id);
+            if (gridResource != null)
+                gridResource = null;
 
             if(resource == null) return false;
 
@@ -61,15 +56,25 @@ namespace NetworkService.Persistance
             {
                 return false;
             }
-                   
-            resource.Value = value;
+
+            bool alarm = false;
             if(value < 1 || value > 5)
             {
-                resource.IsAlarm = true;
+                alarm = true;
             }
             else
             {
-                resource.IsAlarm = false;
+                alarm = false;
+            }
+
+            resource.Value = value;
+            resource.IsAlarm = alarm;
+
+            var gridResource = GridSlots.FirstOrDefault(r => r.Id == id);
+            if (gridResource != null)
+            {
+                gridResource.Value = value;
+                gridResource.IsAlarm = alarm;
             }
             return true;
         }
