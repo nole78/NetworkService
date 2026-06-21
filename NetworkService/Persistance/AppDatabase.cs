@@ -1,4 +1,5 @@
 ﻿using NetworkService.Model;
+using NetworkService.Model.Actions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,6 +14,7 @@ namespace NetworkService.Persistance
         public static DistributedEnergyResource[] GridSlots { get; set; } = new DistributedEnergyResource[12];
         public static ObservableCollection<DistributedEnergyResource> Resources { get; private set; }
         public static IReadOnlyList<EnergyResourceType> ResourceTypes { get; private set; }
+        public static IUndoableAction LastAction { get; set; }
     
         static AppDatabase()
         {
@@ -31,22 +33,29 @@ namespace NetworkService.Persistance
 
         public static void AddResource(DistributedEnergyResource resource)
         {
-            resource.Id = Resources.Count > 0 ? Resources.Max(r => r.Id) + 1 : 1;
-            Resources.Add(resource);
+            var addAction = new AddResourceAction(resource,Resources);
+            if(addAction.Do())
+            {
+                LastAction = addAction;
+            }
         }
 
         public static bool RemoveResource(int id)
         {
             var resource = Resources.FirstOrDefault(r => r.Id == id);
+            if(resource == null)
+                return false;
 
-            var gridResource = GridSlots.FirstOrDefault(r => r.Id == id);
-            if (gridResource != null)
-                gridResource = null;
+            int idx = Resources.IndexOf(resource);
 
-            if(resource == null) return false;
+            var removeAction = new RemoveResourceAction(resource, idx, Resources, GridSlots);
 
-            Resources.Remove(resource);
-            return true;
+            if(removeAction.Do())
+            {
+                LastAction = removeAction;
+                return true;
+            }
+            return false;
         }
 
         public static bool SetValue(int id, double value)
