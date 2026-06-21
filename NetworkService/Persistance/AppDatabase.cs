@@ -47,6 +47,10 @@ namespace NetworkService.Persistance
             if (LastAction != null)
             {
                 LastAction.Undo();
+
+                if(LastAction is RemoveResourceAction)
+                    OnPropertyChanged(nameof(GridSlots));
+
                 LastAction = null;
                 return true;
             }
