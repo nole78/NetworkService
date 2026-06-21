@@ -3,20 +3,31 @@ using NetworkService.Model.Actions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace NetworkService.Persistance
 {
-    public class AppDatabase
+    public class AppDatabase : BindableBase
     {
-        public static DistributedEnergyResource[] GridSlots { get; set; } = new DistributedEnergyResource[12];
-        public static ObservableCollection<DistributedEnergyResource> Resources { get; private set; }
-        public static IReadOnlyList<EnergyResourceType> ResourceTypes { get; private set; }
-        public static IUndoableAction LastAction { get; set; }
+        #region Singleton Implementation
+        private static AppDatabase _instance;
+        public static AppDatabase Instance => _instance ?? (_instance = new AppDatabase());
+        #endregion
+
+        private IUndoableAction _lastAction;
+        public DistributedEnergyResource[] GridSlots { get; private set; } = new DistributedEnergyResource[12];
+        public ObservableCollection<DistributedEnergyResource> Resources { get; private set; }
+        public IReadOnlyList<EnergyResourceType> ResourceTypes { get; private set; }
+        public IUndoableAction LastAction
+        {
+            get => _lastAction;
+            private set => SetProperty(ref _lastAction, value);
+        }
     
-        static AppDatabase()
+        private AppDatabase()
         {
             Resources = new ObservableCollection<DistributedEnergyResource>();
 
@@ -31,16 +42,32 @@ namespace NetworkService.Persistance
             Resources.Add(new DistributedEnergyResource(3, "Solar-South", ResourceTypes[0], 2.8));
         }
 
-        public static void AddResource(DistributedEnergyResource resource)
+        public bool Undo()
         {
-            var addAction = new AddResourceAction(resource,Resources);
-            if(addAction.Do())
+            if (LastAction != null)
             {
-                LastAction = addAction;
+                LastAction.Undo();
+                LastAction = null;
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
-        public static bool RemoveResource(int id)
+        public bool AddResource(DistributedEnergyResource resource)
+        {
+            var addAction = new AddResourceAction(resource, Resources);
+            if(addAction.Do())
+            {
+                LastAction = addAction;
+                return true;
+            }
+            return false;
+        }
+
+        public bool RemoveResource(int id)
         {
             var resource = Resources.FirstOrDefault(r => r.Id == id);
             if(resource == null)
@@ -58,7 +85,7 @@ namespace NetworkService.Persistance
             return false;
         }
 
-        public static bool SetValue(int id, double value)
+        public bool SetValue(int id, double value)
         {
             var resource = Resources.FirstOrDefault(r => r.Id == id);
             if (resource == null)
