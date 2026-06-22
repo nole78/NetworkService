@@ -49,6 +49,9 @@
                                         <DataTrigger Binding="{Binding Type}" Value="Success">
                                             <Setter Property="Foreground" Value="LimeGreen"/>
                                         </DataTrigger>
+                                        <DataTrigger Binding="{Binding Type}" Value="Question">
+                                            <Setter Property="Foreground" Value="Yellow"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </TextBlock.Style>

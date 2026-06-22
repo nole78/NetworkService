@@ -12,7 +12,8 @@ namespace NetworkService.Model
         Command,
         Response,
         Error,
-        Success
+        Success,
+        Question
     }
     public class TerminalLine : INotifyPropertyChanged
     {
