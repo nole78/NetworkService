@@ -3,6 +3,8 @@ using NetworkService.Persistance;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Configuration;
 using System.Linq;
 using System.Text;
@@ -46,23 +48,24 @@ namespace NetworkService.ViewModel
             RefreshTreeView();
 
             AppDatabase.Instance.Resources.CollectionChanged += Resource_CollectionChanged;
-            AppDatabase.Instance.PropertyChanged += (s, e) => 
-            { 
-                if (e.PropertyName == nameof(AppDatabase.GridSlots)) 
-                { 
-                    RefreshTreeView(); 
-                    OnPropertyChanged(nameof(Slots)); 
-                } 
-            };
+            AppDatabase.Instance.PropertyChanged += Database_PropertyChanged;
 
             RemoveFromGridCommand = new MyICommand<int>(OnRemoveFromGrid);
         }
 
         #region Event subscribers
-        private void Resource_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void Resource_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             RefreshTreeView();
             OnPropertyChanged(nameof(Slots));
+        }
+        private void Database_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(AppDatabase.GridSlots))
+            {
+                RefreshTreeView();
+                OnPropertyChanged(nameof(Slots));
+            }
         }
         #endregion
 
