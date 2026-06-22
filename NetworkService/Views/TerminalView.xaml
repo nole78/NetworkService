@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NetworkService.Views"
              xmlns:viewmodels="clr-namespace:NetworkService.ViewModel"
+             xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="180" d:DesignWidth="800">
     
@@ -14,7 +15,8 @@
 
     <Grid Width="800" Height="180" 
           Background="Black"
-          FocusManager.FocusedElement="{Binding ElementName=TerminalInput}" >
+          FocusManager.FocusedElement="{Binding ElementName=TerminalInput}" MouseDown="Grid_MouseDown">
+
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition/>

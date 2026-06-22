@@ -24,5 +24,11 @@ namespace NetworkService.Views
         {
             InitializeComponent();
         }
+
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            TerminalInput.Focus();
+            TerminalInput.CaretIndex = TerminalInput.Text.Length;
+        }
     }
 }
