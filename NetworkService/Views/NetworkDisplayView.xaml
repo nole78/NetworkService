@@ -159,7 +159,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <ItemsControl ItemsSource="{Binding Connections}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Grid.ColumnSpan="4" Panel.ZIndex="0">
+            <ItemsControl ItemsSource="{Binding Connections}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Grid.ColumnSpan="4" Panel.ZIndex="2" IsHitTestVisible="False">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Canvas Name="LineCanvas" IsItemsHost="True" Background="Transparent"/>
