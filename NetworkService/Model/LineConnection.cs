@@ -6,10 +6,20 @@ using System.Threading.Tasks;
 
 namespace NetworkService.Model
 {
-    public class LineConnection
+    public class LineConnection : BindableBase
     {
-        public int FromSlot { get; set; }
-        public int ToSlot { get; set; }
+        private int _fromSlot;
+        private int _toSlot;
+        public int FromSlot
+        {
+            get => _fromSlot;
+            set => SetProperty(ref _fromSlot, value);
+        }
+        public int ToSlot
+        {
+            get => _toSlot;
+            set => SetProperty(ref _toSlot, value);
+        }
 
         public LineConnection(){ }
 
