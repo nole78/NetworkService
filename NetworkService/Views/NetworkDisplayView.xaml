@@ -8,11 +8,13 @@
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:viewmodels="clr-namespace:NetworkService.ViewModel"
              xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:converters="clr-namespace:NetworkService.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.DataContext>
         <viewmodels:NetworkDisplayViewModel/>
     </UserControl.DataContext>
+    
     <UserControl.Resources>
         <ControlTemplate x:Key="Node" TargetType="ContentControl">
             <Border Margin="5" BorderBrush="Black" BorderThickness="2" CornerRadius="5" ClipToBounds="True" AllowDrop="True">
@@ -69,6 +71,7 @@
                 </Grid>
             </Border>
         </ControlTemplate>
+        <converters:SlotToPositionConverter x:Key="SlotToPositionConverter"/>
     </UserControl.Resources>
 
     <Grid Background="White">
@@ -110,12 +113,35 @@
             </TreeView.Resources>
         </TreeView>
 
+        <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
 
-        <Label Grid.Column="1"
-           Style="{StaticResource HeaderLabelStyle}"
-           Content="Network"
-           HorizontalAlignment="Left"
-           Margin="5 0 0 0"/>
+            <Label Style="{StaticResource HeaderLabelStyle}"
+                   Content="Network"
+                   HorizontalAlignment="Left"
+                   Margin="5 0 0 0"/>
+
+            <Button Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    Margin="0 0 5 0"
+                    Command="{Binding DrawModeChangeCommand}">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Content"
+                                Value="Draw Mode: Off"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DrawMode}" Value="True">
+                                <Setter Property="Content"
+                                        Value="Draw Mode: On"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </Grid>
 
         <Grid Grid.Column="1"
           Grid.Row="1"
@@ -132,6 +158,48 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
+
+            <ItemsControl ItemsSource="{Binding Connections}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Grid.ColumnSpan="4" Panel.ZIndex="0">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas Name="LineCanvas" IsItemsHost="True" Background="Transparent"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Line Stroke="Blue" StrokeThickness="3">
+                            <Line.X1>
+                                <MultiBinding Converter="{StaticResource SlotToPositionConverter}" ConverterParameter="X">
+                                    <Binding Path="FromSlot"/>
+                                    <Binding RelativeSource="{RelativeSource AncestorType=Canvas}"/>
+                                </MultiBinding>
+                            </Line.X1>
+
+                            <Line.Y1>
+                                <MultiBinding Converter="{StaticResource SlotToPositionConverter}" ConverterParameter="Y">
+                                    <Binding Path="FromSlot"/>
+                                    <Binding RelativeSource="{RelativeSource AncestorType=Canvas}"/>
+                                </MultiBinding>
+                            </Line.Y1>
+
+                            <Line.X2>
+                                <MultiBinding Converter="{StaticResource SlotToPositionConverter}" ConverterParameter="X">
+                                    <Binding Path="ToSlot"/>
+                                    <Binding RelativeSource="{RelativeSource AncestorType=Canvas}"/>
+                                </MultiBinding>
+                            </Line.X2>
+
+                            <Line.Y2>
+                                <MultiBinding Converter="{StaticResource SlotToPositionConverter}" ConverterParameter="Y">
+                                    <Binding Path="ToSlot"/>
+                                    <Binding RelativeSource="{RelativeSource AncestorType=Canvas}"/>
+                                </MultiBinding>
+                            </Line.Y2>
+                        </Line>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
             <ContentControl Template="{StaticResource Node}"
                             Content="{Binding Slots[0]}"

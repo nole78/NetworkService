@@ -67,8 +67,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\AddValueConverter.cs" />
+    <Compile Include="Converters\SlotToPositionConverter.cs" />
     <Compile Include="Helpers\BindableBase.cs" />
     <Compile Include="Model\Actions\AddResourceAction.cs" />
+    <Compile Include="Model\Actions\ConnectResourceAction.cs" />
     <Compile Include="Model\Actions\MoveResourceAction.cs" />
     <Compile Include="Model\Actions\PlaceResourceAction.cs" />
     <Compile Include="Model\Actions\IUndoableAction.cs" />
@@ -76,6 +78,7 @@
     <Compile Include="Model\Actions\RemoveResourceAction.cs" />
     <Compile Include="Model\DistributedEnergyResource.cs" />
     <Compile Include="Model\EnergyResourceType.cs" />
+    <Compile Include="Model\LineConnection.cs" />
     <Compile Include="Model\Measurement.cs" />
     <Compile Include="Model\TerminalLine.cs" />
     <Compile Include="Helpers\MyICommand.cs" />
