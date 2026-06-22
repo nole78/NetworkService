@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,12 +12,14 @@ namespace NetworkService.Model.Actions
         private readonly int _fromSlotIdx;
         private readonly int _toSlotIdx;
         private readonly DistributedEnergyResource[] _slots;
+        private readonly ObservableCollection<LineConnection> _connections;
 
-        public MoveResourceAction(int fromSlotIdx, int toSlotIdx, DistributedEnergyResource[] slots)
+        public MoveResourceAction(int fromSlotIdx, int toSlotIdx, DistributedEnergyResource[] slots, ObservableCollection<LineConnection> connections)
         {
             _fromSlotIdx = fromSlotIdx;
             _toSlotIdx = toSlotIdx;
             _slots = slots;
+            _connections = connections;
         }
 
         public bool Do()
@@ -30,8 +33,40 @@ namespace NetworkService.Model.Actions
                 helper = _slots[_toSlotIdx];
             }
 
+            var connections = _connections.Where(c => c.ToSlot == _fromSlotIdx || c.FromSlot == _fromSlotIdx).ToList();
+
+            foreach (var item in connections)
+            {
+                if (item.FromSlot == _fromSlotIdx)
+                {
+                    item.FromSlot = _toSlotIdx;
+                }
+                else if (item.ToSlot == _fromSlotIdx)
+                {
+                    item.ToSlot = _toSlotIdx;
+                }
+            }
+
+            if(helper != null)
+            {
+                var connectionsMoved = _connections.Where(c => c.ToSlot == _toSlotIdx || c.FromSlot == _toSlotIdx).ToList();
+
+                foreach (var item in connectionsMoved)
+                {
+                    if (item.FromSlot == _toSlotIdx)
+                    {
+                        item.FromSlot = _fromSlotIdx;
+                    }
+                    else if (item.ToSlot == _toSlotIdx)
+                    {
+                        item.ToSlot = _fromSlotIdx;
+                    }
+                }
+            }
+
             _slots[_toSlotIdx] = _slots[_fromSlotIdx];
             _slots[_fromSlotIdx] = helper;
+
             return true;
         }
 
@@ -41,6 +76,37 @@ namespace NetworkService.Model.Actions
             if( _slots[_fromSlotIdx] != null )
             {
                 helper = _slots[_fromSlotIdx];
+            }
+
+            var connections = _connections.Where(c => c.ToSlot == _toSlotIdx || c.FromSlot == _toSlotIdx).ToList(); 
+            
+            foreach (var item in connections)
+            {
+                if (item.FromSlot == _toSlotIdx)
+                {
+                    item.FromSlot = _fromSlotIdx;
+                }
+                else if (item.ToSlot == _toSlotIdx)
+                {
+                    item.ToSlot = _fromSlotIdx;
+                }
+            }
+
+            if (helper != null)
+            {
+                var connectionsMoved = _connections.Where(c => c.ToSlot == _fromSlotIdx || c.FromSlot == _fromSlotIdx).ToList();
+
+                foreach (var item in connectionsMoved)
+                {
+                    if (item.FromSlot == _fromSlotIdx)
+                    {
+                        item.FromSlot = _toSlotIdx;
+                    }
+                    else if (item.ToSlot == _fromSlotIdx)
+                    {
+                        item.ToSlot = _toSlotIdx;
+                    }
+                }
             }
 
             _slots[_fromSlotIdx] = _slots[_toSlotIdx];
