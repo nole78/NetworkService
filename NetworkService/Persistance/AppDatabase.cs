@@ -20,6 +20,7 @@ namespace NetworkService.Persistance
         private IUndoableAction _lastAction;
         public DistributedEnergyResource[] GridSlots { get; private set; } = new DistributedEnergyResource[12];
         public ObservableCollection<DistributedEnergyResource> Resources { get; private set; }
+        public ObservableCollection<LineConnection> Connections { get; private set; }
         public IReadOnlyList<EnergyResourceType> ResourceTypes { get; private set; }
         public IUndoableAction LastAction
         {
@@ -30,6 +31,7 @@ namespace NetworkService.Persistance
         private AppDatabase()
         {
             Resources = new ObservableCollection<DistributedEnergyResource>();
+            Connections = new ObservableCollection<LineConnection>();
 
             ResourceTypes = new List<EnergyResourceType>()
             {
@@ -49,7 +51,7 @@ namespace NetworkService.Persistance
                 LastAction.Undo();
                 LastAction = null;
 
-                if(!(LastAction is AddResourceAction))
+                if(!(LastAction is AddResourceAction) && !(LastAction is ConnectResourceAction))
                     OnPropertyChanged(nameof(GridSlots));
 
                 return true;
@@ -155,6 +157,19 @@ namespace NetworkService.Persistance
                 OnPropertyChanged(nameof(GridSlots));
                 return true;
             }
+            return false;
+        }
+
+        public bool ConnectResourcesOnGrid(int firstSlotIdx, int secondSlotIdx)
+        {
+            var connectAaction = new ConnectResourceAction(firstSlotIdx, secondSlotIdx, Connections, GridSlots);
+
+            if (connectAaction.Do())
+            {
+                LastAction = connectAaction;
+                return true;
+            }
+
             return false;
         }
     }
