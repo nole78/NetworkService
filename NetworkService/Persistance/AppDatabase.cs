@@ -136,7 +136,7 @@ namespace NetworkService.Persistance
 
         public bool MoveResourceOnGrid(int fromSlotIdx, int toSlotIdx)
         {
-            var moveAction = new MoveResourceAction(fromSlotIdx, toSlotIdx, GridSlots);
+            var moveAction = new MoveResourceAction(fromSlotIdx, toSlotIdx, GridSlots, Connections);
             if (moveAction.Do())
             {
                 LastAction = moveAction;
