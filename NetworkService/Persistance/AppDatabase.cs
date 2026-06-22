@@ -40,8 +40,6 @@ namespace NetworkService.Persistance
             Resources.Add(new DistributedEnergyResource(1, "Solar-North", ResourceTypes[0], 3.4));
             Resources.Add(new DistributedEnergyResource(2, "Wind-West", ResourceTypes[1], 4.1));
             Resources.Add(new DistributedEnergyResource(3, "Solar-South", ResourceTypes[0], 2.8));
-
-            GridSlots[0] = Resources[0];
         }
 
         public bool Undo()
