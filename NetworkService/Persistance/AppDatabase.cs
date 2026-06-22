@@ -149,7 +149,7 @@ namespace NetworkService.Persistance
 
         public bool RemoveResourceFromGrid(int idx)
         {
-            var removeFromGridAction = new RemoveFromGridAction(idx, GridSlots);
+            var removeFromGridAction = new RemoveFromGridAction(idx, GridSlots, Connections);
 
             if(removeFromGridAction.Do())
             {
