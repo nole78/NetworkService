@@ -14,14 +14,17 @@ namespace NetworkService.Model.Actions
         private readonly int _resourceIdx;
         private readonly ObservableCollection<DistributedEnergyResource> _collection;
         private readonly DistributedEnergyResource[] _slots;
+        private readonly ObservableCollection<LineConnection> _connections;
         private int _gridSlotIdx = -1;
+        private List<LineConnection> _removedConnections = new List<LineConnection>();
 
-        public RemoveResourceAction(DistributedEnergyResource deleteResource, int resourceIdx ,ObservableCollection<DistributedEnergyResource> collection, DistributedEnergyResource[] slots)
+        public RemoveResourceAction(DistributedEnergyResource deleteResource, int resourceIdx ,ObservableCollection<DistributedEnergyResource> collection, DistributedEnergyResource[] slots, ObservableCollection<LineConnection> connections)
         {
             _deleteResource = deleteResource;
             _resourceIdx = resourceIdx;
             _collection = collection;
             _slots = slots;
+            _connections = connections;
         }
         public bool Do()
         {
@@ -39,6 +42,15 @@ namespace NetworkService.Model.Actions
                 }
             }
 
+            if (_gridSlotIdx != -1)
+            {
+                _removedConnections = _connections.Where(c => c.ToSlot == _gridSlotIdx || c.FromSlot == _gridSlotIdx).ToList();
+
+                foreach(var connection in _removedConnections)
+                {
+                    _connections.Remove(connection);
+                }
+            }
 
             _collection.Remove(resource);
             return true;
@@ -58,6 +70,10 @@ namespace NetworkService.Model.Actions
             if (_gridSlotIdx != -1)
             {
                 _slots[_gridSlotIdx] = _deleteResource;
+                foreach (var connection in _removedConnections)
+                {
+                    _connections.Add(connection);
+                }
             }
         }
     }

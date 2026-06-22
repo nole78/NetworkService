@@ -81,7 +81,7 @@ namespace NetworkService.Persistance
 
             int idx = Resources.IndexOf(resource);
 
-            var removeAction = new RemoveResourceAction(resource, idx, Resources, GridSlots);
+            var removeAction = new RemoveResourceAction(resource, idx, Resources, GridSlots, Connections);
 
             if(removeAction.Do())
             {
