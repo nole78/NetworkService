@@ -13,7 +13,8 @@
         <viewmodels:TerminalViewModel/>
     </UserControl.DataContext>
 
-    <Border CornerRadius="10" BorderThickness="2" BorderBrush="{StaticResource TextInputBrush}" 
+    <Border BorderThickness="2" 
+            BorderBrush="{StaticResource TextInputBrush}" 
             ClipToBounds="True"
             Width="790" Height="180">
     <Grid Background="Black"

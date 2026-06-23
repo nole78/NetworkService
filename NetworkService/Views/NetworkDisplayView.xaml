@@ -19,7 +19,10 @@
         <converters:SlotToPositionConverter x:Key="SlotToPositionConverter"/>
         <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
         <ControlTemplate x:Key="Node" TargetType="ContentControl">
-            <Border Margin="5" BorderThickness="2" CornerRadius="5" ClipToBounds="True" AllowDrop="True">
+            <Border Margin="5" 
+                    BorderThickness="2" 
+                    ClipToBounds="True" 
+                    AllowDrop="True">
                 <Border.Style>
                     <Style TargetType="Border">
                         <Setter Property="BorderBrush"
