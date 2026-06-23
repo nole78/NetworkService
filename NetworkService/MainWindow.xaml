@@ -7,6 +7,7 @@
         xmlns:views="clr-namespace:NetworkService.Views"
         xmlns:viewmodels="clr-namespace:NetworkService.ViewModel"
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
+        xmlns:notifications="clr-namespace:Notification.Wpf.Controls;assembly=Notification.Wpf"
         mc:Ignorable="d"
         WindowStyle="None"
         Background="{StaticResource InputBackgroundBrush}"
@@ -14,6 +15,7 @@
     <Window.DataContext>
         <viewmodels:MainWindowViewModel/>
     </Window.DataContext>
+    
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewmodels:MeasurementGraphViewModel}">
             <views:MeasurmentGraphView/>
@@ -25,12 +27,18 @@
             <views:NetworkEntitiesView/>
         </DataTemplate>
     </Window.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition/>
             <RowDefinition Height="180"/>
         </Grid.RowDefinitions>
+        <notifications:NotificationArea MaxItems="3"
+                                        Position="TopRight"
+                                        Grid.RowSpan="2"
+                                        Name="WindowNotificationArea"
+                                        Panel.ZIndex="1000"/>
 
         <Grid Background="{StaticResource HeaderBackgroundBrush}">
             <Grid.ColumnDefinitions>

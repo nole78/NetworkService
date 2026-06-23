@@ -1,5 +1,6 @@
 ﻿using NetworkService.Persistance;
 using NetworkService.Services;
+using Notification.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using MVVMLight.Messaging;
 
 namespace NetworkService.ViewModel
 {
@@ -20,6 +22,7 @@ namespace NetworkService.ViewModel
         private BindableBase _currentViewModel;
         private readonly LoggerService _logger;
         private readonly MeasurementProcessingService _processor;
+        private readonly NotificationManager _notificationManager;
 
         #region Properties
         public BindableBase CurrentViewModel
@@ -56,6 +59,9 @@ namespace NetworkService.ViewModel
 
             _logger = new LoggerService("log.txt");
             _processor = new MeasurementProcessingService(_logger);
+            _notificationManager = new NotificationManager();
+
+            Messenger.Default.Register<NotificationContent>(this, ShowToastNotification);
 
             CreateListener(); //Povezivanje sa serverskom aplikacijom
         }
@@ -103,12 +109,14 @@ namespace NetworkService.ViewModel
                         }
                     }, null);
                 }
-            });
-
-            listeningThread.IsBackground = true;
+            })
+            {
+                IsBackground = true
+            };
             listeningThread.Start();
         }
 
+        #region Commands Implementation
         private void OnNavCommand(string destination)
         {
             switch (destination) 
@@ -146,6 +154,11 @@ namespace NetworkService.ViewModel
                     return true;
             }
         }
+        #endregion
 
+        private void ShowToastNotification(NotificationContent notificationContent)
+        {
+            _notificationManager.Show(notificationContent, "WindowNotificationArea");
+        }
     }
 }
