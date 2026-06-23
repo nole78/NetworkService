@@ -67,16 +67,18 @@
                HorizontalAlignment="Left"
                Margin="5 0 0 0"/>
 
-        <Grid Grid.Row="1" Margin="5">
+        <Grid Grid.Row="1" Margin="5"
+              Background="{StaticResource BackgroundBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition Height="1.5*"/>
             </Grid.RowDefinitions>
-            <Label Content="Resource"/>
+            <Label Content="Resource" Style="{StaticResource LabelInputStyle}"/>
             <ComboBox Grid.Row="1" 
                       ItemsSource="{Binding Resources}"
                       SelectedItem="{Binding SelectedResource}"
-                      Style="{StaticResource ComboStyle}">
+                      Style="{StaticResource ComboStyle}"
+                      Margin="5">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">

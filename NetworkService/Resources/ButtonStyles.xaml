@@ -17,7 +17,7 @@
         <Setter Property="Background"
                 Value="{StaticResource BackgroundBrush}"/>
         <Setter Property="BorderBrush"
-                Value="{StaticResource BorderBrush}"/>
+                Value="Transparent"/>
         <Setter Property="BorderThickness"
                 Value="2"/>
         <Setter Property="Foreground"

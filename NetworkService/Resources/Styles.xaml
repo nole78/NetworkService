@@ -24,7 +24,9 @@
         <Setter Property="FontFamily"
                 Value="Calibri"/>
         <Setter Property="Foreground"
-                Value="{StaticResource TextDisplayBrush}"/>
+                Value="{StaticResource BorderBrush}"/>
+        <Setter Property="Margin"
+                Value="5 0 0 0"/>
     </Style>
 
     <Style TargetType="Label" x:Key="ErrorLabel">

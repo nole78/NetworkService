@@ -36,17 +36,28 @@
     </Style>
 
     <Style TargetType="ComboBox" x:Key="ComboStyle">
-        <Setter Property="Background" Value="{StaticResource InputBackgroundBrush}"/>
-        <Setter Property="BorderThickness" Value="2"/>
-        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
-        <Setter Property="Foreground" Value="Black"/>
-        <Setter Property="Padding" Value="6,3"/>
-        <Setter Property="HorizontalContentAlignment" Value="Left"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Background" 
+                Value="{StaticResource InputBackgroundBrush}"/>
+        <Setter Property="BorderThickness" 
+                Value="2"/>
+        <Setter Property="BorderBrush" 
+                Value="{StaticResource BorderBrush}"/>
+        <Setter Property="Foreground" 
+                Value="Black"/>
+        <Setter Property="Padding" 
+                Value="6,3"/>
+        <Setter Property="HorizontalContentAlignment" 
+                Value="Left"/>
+        <Setter Property="VerticalContentAlignment" 
+                Value="Center"/>
         <Setter Property="FontFamily"
                 Value="Calibri"/>
         <Setter Property="FontSize"
                 Value="16"/>
+        <Setter Property="MaxWidth"
+                Value="200"/>
+        <Setter Property="Height"
+                Value="35"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">

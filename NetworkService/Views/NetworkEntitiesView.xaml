@@ -131,6 +131,7 @@
                         Content="Search"
                         Command="{Binding SearchCommand}"
                         Style="{StaticResource ConfirmButtonStyle}"
+                        BorderBrush="Transparent"
                         Foreground="White"
                         Background="{StaticResource BorderBrush}"/>
                 
