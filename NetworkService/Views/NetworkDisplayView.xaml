@@ -132,6 +132,11 @@
                                             <Setter Property="Visibility"
                                                     Value="Visible"/>
                                         </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding DataContext.DrawMode, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                                            <Setter Property="Visibility"
+                                                    Value="Collapsed"/>
+                                        </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
                             </Button.Style>
