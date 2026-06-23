@@ -53,15 +53,26 @@
                         <RowDefinition/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <RadioButton Content="Name"
-                                 GroupName="Search"
-                                 IsChecked="{Binding SearchByName}"
-                                 Margin="5"/>
 
-                    <RadioButton Grid.Row="1"
-                                 Content="Type" 
-                                 GroupName="Search"
-                                 Margin="5"/>
+                    <Label Content="Filter by"
+                           Style="{StaticResource LabelInputStyle}"/>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <RadioButton Content="Name"
+                                     GroupName="Search"
+                                     IsChecked="{Binding SearchByName}"
+                                     Margin="5"/>
+
+                        <RadioButton Grid.Row="1"
+                                     Content="Type" 
+                                     GroupName="Search"
+                                     Margin="5"
+                                     Grid.Column="1"/>
+                    </Grid>
                 </Grid>
 
                 <Label>
@@ -167,7 +178,8 @@
                 
                 <TextBox  Text="{Binding CreateEnergyResource.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                           Grid.Row="1"
-                          Style="{StaticResource InputTextBoxStyle}"/>
+                          Style="{StaticResource InputTextBoxStyle}"
+                          MaxLength="20"/>
                 <Label Content="{Binding CreateEnergyResource.ValidationErrors[Name]}"
                        Foreground="Red"
                        Grid.Row="1" Grid.Column="1"
@@ -227,10 +239,7 @@
             
             <DataGrid Grid.Row="1" 
                       ItemsSource="{Binding EnergyResources}"
-                      AutoGenerateColumns="False"
-                      SelectedItem="{Binding SelectedResource}"
-                      CanUserAddRows="False"
-                      Margin="0 0 0 5">
+                      SelectedItem="{Binding SelectedResource, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id"
                                         Width="*"
