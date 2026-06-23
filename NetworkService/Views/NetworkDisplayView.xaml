@@ -96,11 +96,34 @@
                             <ImageBrush ImageSource="{Binding Content.Resource.Type.ImagePath, RelativeSource={RelativeSource TemplatedParent}}"/>
                         </Canvas.Background>
                     </Canvas>
-                    <StackPanel Grid.Row="1" Orientation="Horizontal">
-                        <Button Width="30" Height="30" 
+
+                    <Grid Grid.Row="1" 
+                          Panel.ZIndex="10">
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Background" 
+                                        Value="{StaticResource TextInputBrush}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Content.IsSelected, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                        <Setter Property="Background"
+                                                Value="CadetBlue"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Width="30" Height="30"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                VerticalAlignment="Center"
                                 Command="{Binding DataContext.RemoveFromGridCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                 CommandParameter="{Binding Content.Resource.Id, RelativeSource={RelativeSource TemplatedParent}}">
-                            <fa5:SvgAwesome Icon="Solid_WindowClose"/>
+                            <fa5:SvgAwesome Icon="Solid_WindowClose"
+                                            Foreground="{StaticResource ErrorBorderBrush}"/>
                             <Button.Style>
                                 <Style TargetType="Button">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -113,9 +136,13 @@
                                 </Style>
                             </Button.Style>
                         </Button>
-                        <TextBlock Text="{Binding Content.Resource.Id, RelativeSource={RelativeSource TemplatedParent}, StringFormat='Id: #{0}'}"/>
-                        <TextBlock Text="{Binding Content.Resource.Value, RelativeSource={RelativeSource TemplatedParent}, StringFormat=' {0} MW'}"/>
-                    </StackPanel>
+                        <TextBlock Text="{Binding Content.Resource.Id, RelativeSource={RelativeSource TemplatedParent}, StringFormat='#{0}'}"
+                                   Grid.Column="1"
+                                   Style="{StaticResource SlotDescriptionStyle}"/>
+                        <TextBlock Text="{Binding Content.Resource.Value, RelativeSource={RelativeSource TemplatedParent}, StringFormat=' {0} MW'}"
+                                   Grid.Column="2"
+                                   Style="{StaticResource SlotDescriptionStyle}"/>
+                    </Grid>
                 </Grid>
             </Border>
         </ControlTemplate>
