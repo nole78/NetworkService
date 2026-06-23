@@ -19,6 +19,7 @@ namespace NetworkService.ViewModel
         private string _searchResourceName;
         private EnergyResourceType _searchResourceType;
         private bool _searchByName = true;
+        private bool _filterActive = false;
         private DistributedEnergyResource _selectedResource;
 
         #region Properties
@@ -42,6 +43,16 @@ namespace NetworkService.ViewModel
             get => _searchByName;
             set => SetProperty(ref _searchByName, value);
         }
+        public bool FilterActive
+        {
+            get => _filterActive;
+            set
+            {
+                SetProperty(ref _filterActive, value);
+                ClearSearchCommand.RaiseCanExecuteChanged();
+            }
+
+        }
         public DistributedEnergyResource SelectedResource
         {
             get => _selectedResource;
@@ -49,27 +60,28 @@ namespace NetworkService.ViewModel
         }
         public ICollectionView EnergyResources { get; set; }
         public IReadOnlyList<EnergyResourceType> EnergyResourceTypes { get { return AppDatabase.Instance.ResourceTypes; } }
-        public MyICommand CreateCommand { get; set; }
-        public MyICommand DeleteCommand { get; set; }
-        public MyICommand SearchCommand { get; set; }
-        public MyICommand ClearSearchCommand { get; set; }
+        public MyICommand CreateCommand { get; private set; }
+        public MyICommand DeleteCommand { get; private set; }
+        public MyICommand SearchCommand { get; private set; }
+        public MyICommand ClearSearchCommand { get; private set; }
         #endregion
 
         public NetworkEntitiesViewModel() 
         {
-            EnergyResources = CollectionViewSource.GetDefaultView(AppDatabase.Instance.Resources);
-            EnergyResources.Filter = ResourceFilter;
-            
             CreateCommand = new MyICommand(OnCreateCommand);
             DeleteCommand = new MyICommand(OnDeleteCommand);
             SearchCommand = new MyICommand(OnSearchCommand);
-            ClearSearchCommand = new MyICommand(OnClearSearchCommand);
+            ClearSearchCommand = new MyICommand(OnClearSearchCommand, CanClearSearch);
+
+            EnergyResources = CollectionViewSource.GetDefaultView(AppDatabase.Instance.Resources);
+            EnergyResources.Filter = ResourceFilter;
         }
 
         public bool ResourceFilter(object item)
         {
             if (string.IsNullOrEmpty(SearchResourceName) && SearchResourceType == null)
             {
+                FilterActive = false;
                 return true;
             }
 
@@ -78,11 +90,13 @@ namespace NetworkService.ViewModel
                 if(SearchByName)
                 {
                     if (string.IsNullOrEmpty(SearchResourceName)) return true;
+                    FilterActive = true;
                     return resource.Name.ToLower().Contains(SearchResourceName.ToLower());
                 }
                 else
                 {
                     if (SearchResourceType == null) return true;
+                    FilterActive = true;
                     return resource.Type == SearchResourceType;
                 }
             }
@@ -119,8 +133,11 @@ namespace NetworkService.ViewModel
         {
             SearchResourceType = null;
             SearchResourceName = "";
+            FilterActive = false;
 
             EnergyResources.Refresh();
         }
+
+        private bool CanClearSearch() => FilterActive;
     }
 }
