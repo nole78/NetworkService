@@ -49,7 +49,7 @@
                 </behaviors:Interaction.Triggers>
 
 
-                <Grid Background="LightGray">
+                <Grid Background="{StaticResource BackgroundBrush}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
                         <RowDefinition/>

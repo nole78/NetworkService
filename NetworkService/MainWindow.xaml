@@ -27,7 +27,7 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="50"/>
             <RowDefinition/>
             <RowDefinition Height="180"/>
         </Grid.RowDefinitions>
@@ -49,13 +49,13 @@
                     Command="{Binding NavCommand}"
                     CommandParameter="entity"
                     Style="{StaticResource NavigationButtonStyle}"/>
-            
+
             <Button Grid.Column="2"
                     Content="Display"
                     Command="{Binding NavCommand}"
                     CommandParameter="display"
                     Style="{StaticResource NavigationButtonStyle}"/>
-            
+
             <Button Grid.Column="3"
                     Content="Graph"
                     Command="{Binding NavCommand}"

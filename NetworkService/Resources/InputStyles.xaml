@@ -13,9 +13,13 @@
         <Setter Property="BorderBrush"
                 Value="{StaticResource BorderBrush}"/>
         <Setter Property="Foreground"
-                Value="{StaticResource TextInputBrush}"/>
+                Value="Black"/>
         <Setter Property="Padding"
                 Value="2"/>
+        <Setter Property="FontFamily"
+                Value="Calibri"/>
+        <Setter Property="FontSize"
+                Value="16"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
@@ -35,10 +39,14 @@
         <Setter Property="Background" Value="{StaticResource InputBackgroundBrush}"/>
         <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
-        <Setter Property="Foreground" Value="{StaticResource TextInputBrush}"/>
+        <Setter Property="Foreground" Value="Black"/>
         <Setter Property="Padding" Value="6,3"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontFamily"
+                Value="Calibri"/>
+        <Setter Property="FontSize"
+                Value="16"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ComboBox">

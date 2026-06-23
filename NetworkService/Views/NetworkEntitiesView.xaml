@@ -6,11 +6,16 @@
              xmlns:local="clr-namespace:NetworkService.Views"
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:viewmodels="clr-namespace:NetworkService.ViewModel"
+             xmlns:converters="clr-namespace:NetworkService.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="800">
     <UserControl.DataContext>
         <viewmodels:NetworkEntitiesViewModel/>
     </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
+    </UserControl.Resources>
     
     <Grid>
         <Grid.ColumnDefinitions>
@@ -30,7 +35,7 @@
                    Content="Filter Nodes"
                    HorizontalAlignment="Left"/>
 
-            <Grid Background="{StaticResource TextInputBrush}"
+            <Grid Background="{StaticResource BackgroundBrush}"
                   Margin="5"
                   Grid.Row="1">
                 <Grid.ColumnDefinitions>
@@ -125,13 +130,15 @@
                         Grid.Row="1"
                         Content="Search"
                         Command="{Binding SearchCommand}"
-                        Style="{StaticResource ConfirmButtonStyle}"/>
+                        Style="{StaticResource ConfirmButtonStyle}"
+                        Foreground="White"
+                        Background="{StaticResource BorderBrush}"/>
                 
                 <Button Grid.Column="1" 
                         Grid.Row="2" 
                         Content="Clear"
                         Command="{Binding ClearSearchCommand}"
-                        Style="{StaticResource ConfirmButtonStyle}"/>
+                        Style="{StaticResource CancelButtonStyle}"/>
             </Grid>
 
             <Label Grid.Row="2"
@@ -141,7 +148,7 @@
 
             <Grid Grid.Row="3"
                   Margin="5"
-                  Background="{StaticResource TextInputBrush}">
+                  Background="{StaticResource BackgroundBrush}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
@@ -189,7 +196,9 @@
                         Grid.Column="1" 
                         Grid.Row="4"
                         Command="{Binding CreateCommand}"
-                        Style="{StaticResource ConfirmButtonStyle}"/>
+                        Style="{StaticResource ConfirmButtonStyle}"
+                        Foreground="White"
+                        Background="{StaticResource BorderBrush}"/>
             </Grid>
             
         </Grid>
@@ -204,7 +213,8 @@
                     Content="Delete"
                     Margin="0 0 5 0"
                     Command="{Binding DeleteCommand}"
-                    Style="{StaticResource ConfirmButtonStyle}"/>
+                    Style="{StaticResource ConfirmButtonStyle}"
+                    IsEnabled="{Binding SelectedResource, Converter={StaticResource NullToBoolConverter}}"/>
             
             <DataGrid Grid.Row="1" 
                       ItemsSource="{Binding EnergyResources}"

@@ -21,7 +21,7 @@
         <Setter Property="BorderThickness"
                 Value="2"/>
         <Setter Property="Foreground"
-                Value="{StaticResource TextDisplayBrush}"/>
+                Value="Black"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -41,6 +41,12 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background"
+                        Value="{StaticResource TextInputBrush}"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="Button" x:Key="CancelButtonStyle">
@@ -98,6 +104,8 @@
             Value="Hand"/>
         <Setter Property="FontFamily"
             Value="Calibri"/>
+        <Setter Property="Background"
+                Value="{StaticResource InputBackgroundBrush}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -119,5 +127,15 @@
         </Setter>
     </Style>
 
+    <Style TargetType="RadioButton">
+        <Setter Property="FontWeight"
+                Value="Bold"/>
+        <Setter Property="FontSize"
+                Value="14"/>
+        <Setter Property="FontFamily"
+                Value="Calibri"/>
+        <Setter Property="Foreground"
+                Value="{StaticResource BorderBrush}"/>
+    </Style>
 
 </ResourceDictionary>
