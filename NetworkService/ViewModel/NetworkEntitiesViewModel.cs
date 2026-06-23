@@ -115,6 +115,10 @@ namespace NetworkService.ViewModel
                 CreateEnergyResource.Name = "";
                 CreateEnergyResource.Type = null;
             }
+            else
+            {
+                AppDatabase.Instance.ActionFailiure("Faield to add resource.");
+            }
         }
         public void OnDeleteCommand()
         {
