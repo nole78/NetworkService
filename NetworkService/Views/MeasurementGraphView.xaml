@@ -51,7 +51,7 @@
         </ControlTemplate>
     </UserControl.Resources>
     
-    <Grid Background="White">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="2*"/>
@@ -75,7 +75,8 @@
             <Label Content="Resource"/>
             <ComboBox Grid.Row="1" 
                       ItemsSource="{Binding Resources}"
-                      SelectedItem="{Binding SelectedResource}">
+                      SelectedItem="{Binding SelectedResource}"
+                      Style="{StaticResource ComboStyle}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -87,7 +88,8 @@
             </ComboBox>
         </Grid>
 
-        <Canvas Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="5" Background="LightGray">
+        <Canvas Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="5" 
+                Background="{StaticResource TextInputBrush}">
 
             <Line Stroke="Black" StrokeThickness="2"
                   X1="{Binding (Canvas.Left), ElementName=Circle1, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
@@ -152,14 +154,18 @@
             <ContentControl Template="{StaticResource GraphNode}" Content="{Binding Nodes[3]}" Name="Circle4" 
                             Canvas.Left="440" Canvas.Top="{Binding Nodes[3].Position}"/>
 
-            <Line X1="150" Y1="0" X2="150" Y2="340" Stroke="Gray"/>
-            <Line X1="270" Y1="0" X2="270" Y2="340" Stroke="Gray"/>
-            <Line X1="390" Y1="0" X2="390" Y2="340" Stroke="Gray"/>
+            <Line X1="150" Y1="0" X2="150" Y2="350" Stroke="{StaticResource InputBackgroundBrush}"/>
+            <Line X1="270" Y1="0" X2="270" Y2="350" Stroke="{StaticResource InputBackgroundBrush}"/>
+            <Line X1="390" Y1="0" X2="390" Y2="350" Stroke="{StaticResource InputBackgroundBrush}"/>
             
-            <Label Canvas.Bottom="0" Content="{Binding Times[0]}" Canvas.Left="80"/>
-            <Label Canvas.Bottom="0" Content="{Binding Times[1]}" Canvas.Left="200"/>
-            <Label Canvas.Bottom="0" Content="{Binding Times[2]}" Canvas.Left="320"/>
-            <Label Canvas.Bottom="0" Content="{Binding Times[3]}" Canvas.Left="440"/>
+            <Label Canvas.Bottom="0" Content="{Binding Times[0]}" Canvas.Left="80"
+                   Foreground="{StaticResource InputBackgroundBrush}"/>
+            <Label Canvas.Bottom="0" Content="{Binding Times[1]}" Canvas.Left="200"
+                   Foreground="{StaticResource InputBackgroundBrush}"/>
+            <Label Canvas.Bottom="0" Content="{Binding Times[2]}" Canvas.Left="320"
+                   Foreground="{StaticResource InputBackgroundBrush}"/>
+            <Label Canvas.Bottom="0" Content="{Binding Times[3]}" Canvas.Left="440"
+                   Foreground="{StaticResource InputBackgroundBrush}"/>
         </Canvas>
     </Grid>
 </UserControl>

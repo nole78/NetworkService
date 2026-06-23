@@ -10,7 +10,7 @@
              xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:converters="clr-namespace:NetworkService.Converters"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="400" d:DesignWidth="800">
     <UserControl.DataContext>
         <viewmodels:NetworkDisplayViewModel/>
     </UserControl.DataContext>
@@ -63,7 +63,7 @@
                         <Button Width="30" Height="30" 
                                 Command="{Binding DataContext.RemoveFromGridCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                 CommandParameter="{Binding Content.Id, RelativeSource={RelativeSource TemplatedParent}}">
-                            <fa5:SvgAwesome Icon="Regular_WindowClose"/>
+                            <fa5:SvgAwesome Icon="Solid_WindowClose"/>
                         </Button>
                         <TextBlock Text="{Binding Content.Id, RelativeSource={RelativeSource TemplatedParent}, StringFormat='Id: #{0}'}"/>
                         <TextBlock Text="{Binding Content.Value, RelativeSource={RelativeSource TemplatedParent}, StringFormat=' {0} MW'}"/>
@@ -74,14 +74,26 @@
         <converters:SlotToPositionConverter x:Key="SlotToPositionConverter"/>
     </UserControl.Resources>
 
-    <Grid Background="White">
+    <Grid>
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding DrawMode}" Value="True">
+                        <Setter Property="Background"
+                                Value="{StaticResource DrawingModBrush}"/>
+                        <Setter Property="Cursor"
+                                Value="Pen"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition Height="0.8*"/>
             <RowDefinition Height="8*"/>
         </Grid.RowDefinitions>
 
@@ -91,7 +103,10 @@
            Margin="5 0 0 0"/>
         <TreeView Grid.Row="1" 
                   Margin="5"
-                  ItemsSource="{Binding TreeViewNodes}">
+                  ItemsSource="{Binding TreeViewNodes}"
+                  Background="{StaticResource BackgroundBrush}"
+                  BorderThickness="2"
+                  BorderBrush="{StaticResource BorderBrush}">
             <behaviors:Interaction.Triggers>
                 <behaviors:EventTrigger EventName="SelectedItemChanged">
                     <behaviors:CallMethodAction TargetObject="{Binding}"
@@ -129,13 +144,17 @@
                     Margin="0 0 5 0"
                     Command="{Binding DrawModeChangeCommand}">
                 <Button.Style>
-                    <Style TargetType="Button">
+                    <Style TargetType="Button" BasedOn="{StaticResource ConfirmButtonStyle}">
                         <Setter Property="Content"
                                 Value="Draw Mode: Off"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding DrawMode}" Value="True">
                                 <Setter Property="Content"
                                         Value="Draw Mode: On"/>
+                                <Setter Property="Background"
+                                        Value="{StaticResource SelectedBorderBrush}"/>
+                                <Setter Property="BorderBrush"
+                                        Value="{StaticResource SelectedBorderBrush}"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

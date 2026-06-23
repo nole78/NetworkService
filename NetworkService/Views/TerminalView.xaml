@@ -7,28 +7,32 @@
              xmlns:viewmodels="clr-namespace:NetworkService.ViewModel"
              xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
-             d:DesignHeight="180" d:DesignWidth="800">
+             d:DesignHeight="180" d:DesignWidth="790">
     
     <UserControl.DataContext>
         <viewmodels:TerminalViewModel/>
     </UserControl.DataContext>
 
-    <Grid Width="800" Height="180" 
-          Background="Black"
-          FocusManager.FocusedElement="{Binding ElementName=TerminalInput}" MouseDown="Grid_MouseDown">
+    <Border CornerRadius="10" BorderThickness="2" BorderBrush="{StaticResource TextInputBrush}" 
+            ClipToBounds="True"
+            Width="790" Height="180">
+    <Grid Background="Black"
+          MouseDown="Grid_MouseDown">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Renewable_scada_terminal" TextAlignment="Center" Background="DarkGray" FontSize="15" FontWeight="Bold" VerticalAlignment="Top"
-                   FontFamily="Calibri" />
+        <TextBlock Text="Renewable_scada_terminal" TextAlignment="Center" FontSize="15" FontWeight="Bold" VerticalAlignment="Top"
+                   FontFamily="Calibri" 
+                   Background="{StaticResource HeaderBackgroundBrush}"
+                   Foreground="{StaticResource HeaderTextBrush}"/>
 
         <StackPanel Grid.Row="1">
             <ListView ItemsSource="{Binding TerminalLines, UpdateSourceTrigger=PropertyChanged}" 
-                          MaxHeight="140" 
-                          Background="Black"
-                          BorderThickness="0">
+                      MaxHeight="140" 
+                      Background="Transparent"
+                      BorderThickness="0">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="IsHitTestVisible" Value="False"/>
@@ -43,7 +47,7 @@
                                     <Setter Property="Foreground" Value="White"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Type}" Value="Command">
-                                            <Setter Property="Foreground" Value="Cyan"/>
+                                            <Setter Property="Foreground" Value="{StaticResource TextInputBrush}"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Type}" Value="Error">
                                             <Setter Property="Foreground" Value="Red"/>
@@ -64,20 +68,20 @@
 
             <StackPanel Orientation="Horizontal">
                 <Label Content="renewable__scada__terminal>"
-                           Foreground="Cyan"
-                           FontSize="13"
-                           FontFamily="Consolas"
-                           VerticalContentAlignment="Center"/>
+                       Foreground="{StaticResource InputBackgroundBrush}"   
+                       FontSize="13"
+                       FontFamily="Consolas"
+                       VerticalContentAlignment="Center"/>
                 <TextBox Text="{Binding  Command, UpdateSourceTrigger=PropertyChanged}" 
                          Name="TerminalInput"
                          Background="Transparent" 
-                         Foreground="Cyan"
+                         Foreground="{StaticResource InputBackgroundBrush}"
                          VerticalAlignment="Center"
                          BorderThickness="0" 
                          FontSize="13" 
                          FontFamily="Consolas"
                          Width="618"
-                         CaretBrush="White">
+                         CaretBrush="{StaticResource HeaderBackgroundBrush}">
                     <TextBox.InputBindings>
                         <KeyBinding Key="Enter" Command="{Binding ExecuteTerminalCommand}"/>
                         <KeyBinding Key="Up" Command="{Binding GetOlderCommand}"/>
@@ -87,4 +91,5 @@
             </StackPanel>
         </StackPanel>
     </Grid>
+    </Border>
 </UserControl>

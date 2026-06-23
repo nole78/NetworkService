@@ -12,7 +12,7 @@
         <viewmodels:NetworkEntitiesViewModel/>
     </UserControl.DataContext>
     
-    <Grid Background="white">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="1.6*"/>
@@ -20,17 +20,17 @@
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition/>
+                <RowDefinition Height="0.8*"/>
                 <RowDefinition Height="3*"/>
-                <RowDefinition/>
-                <RowDefinition Height="5*"/>
+                <RowDefinition Height="0.8*"/>
+                <RowDefinition Height="4.5*"/>
             </Grid.RowDefinitions>
 
             <Label Style="{StaticResource HeaderLabelStyle}"
                    Content="Filter Nodes"
                    HorizontalAlignment="Left"/>
 
-            <Grid Background="Gray" 
+            <Grid Background="{StaticResource TextInputBrush}"
                   Margin="5"
                   Grid.Row="1">
                 <Grid.ColumnDefinitions>
@@ -61,7 +61,7 @@
 
                 <Label>
                     <Label.Style>
-                        <Style TargetType="Label">
+                        <Style TargetType="Label" BasedOn="{StaticResource LabelInputStyle}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding SearchByName}" Value="True">
                                     <Setter Property="Content"
@@ -80,7 +80,7 @@
                 <TextBox Grid.Row="1"
                          Text="{Binding SearchResourceName}">
                     <TextBox.Style>
-                        <Style TargetType="TextBox">
+                        <Style TargetType="TextBox" BasedOn="{StaticResource InputTextBoxStyle}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding SearchByName}" Value="True">
                                     <Setter Property="Visibility" 
@@ -97,14 +97,16 @@
                 
                 <ComboBox Grid.Row="1"
                           ItemsSource="{Binding EnergyResourceTypes}" 
-                          SelectedItem="{Binding SearchResourceType}">
+                          SelectedItem="{Binding SearchResourceType}"
+                          Margin="5 0 0 0"
+                          Height="35">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                     <ComboBox.Style>
-                        <Style TargetType="ComboBox">
+                        <Style TargetType="ComboBox" BasedOn="{StaticResource ComboStyle}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding SearchByName}" Value="True">
                                     <Setter Property="Visibility" 
@@ -122,12 +124,14 @@
                 <Button Grid.Column="1"
                         Grid.Row="1"
                         Content="Search"
-                        Command="{Binding SearchCommand}"/>
+                        Command="{Binding SearchCommand}"
+                        Style="{StaticResource ConfirmButtonStyle}"/>
                 
                 <Button Grid.Column="1" 
                         Grid.Row="2" 
                         Content="Clear"
-                        Command="{Binding ClearSearchCommand}"/>
+                        Command="{Binding ClearSearchCommand}"
+                        Style="{StaticResource ConfirmButtonStyle}"/>
             </Grid>
 
             <Label Grid.Row="2"
@@ -136,8 +140,8 @@
                    HorizontalAlignment="Left"/>
 
             <Grid Grid.Row="3"
-                  Background="Gray"
-                  Margin="5">
+                  Margin="5"
+                  Background="{StaticResource TextInputBrush}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
@@ -150,17 +154,25 @@
                     <RowDefinition Height="1.8*"/>
                 </Grid.RowDefinitions>
 
-                <Label Content="Name"/>
+                <Label Content="Name"
+                       Style="{StaticResource LabelInputStyle}"/>
+                
                 <TextBox  Text="{Binding CreateEnergyResource.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                          Grid.Row="1"/>
+                          Grid.Row="1"
+                          Style="{StaticResource InputTextBoxStyle}"/>
                 <Label Content="{Binding CreateEnergyResource.ValidationErrors[Name]}"
                        Foreground="Red"
-                       Grid.Row="1" Grid.Column="1"/>
+                       Grid.Row="1" Grid.Column="1"
+                       Style="{StaticResource ErrorLabel}"/>
 
-                <Label Content="Type" Grid.Row="2"/>
+                <Label Content="Type" Grid.Row="2"
+                       Style="{StaticResource LabelInputStyle}"/>
+                
                 <ComboBox ItemsSource="{Binding EnergyResourceTypes}" 
                           SelectedItem="{Binding CreateEnergyResource.Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                          Grid.Row="3">
+                          Grid.Row="3"
+                          Margin="5 0 0 0"
+                          Style="{StaticResource ComboStyle}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}"/>
@@ -170,32 +182,36 @@
                 <Label Content="{Binding CreateEnergyResource.ValidationErrors[Type]}"
                        Foreground="Red"
                        Grid.Row="3"
-                       Grid.Column="1"/>
+                       Grid.Column="1"
+                       Style="{StaticResource ErrorLabel}"/>
 
                 <Button Content="Add" 
                         Grid.Column="1" 
                         Grid.Row="4"
-                        Command="{Binding CreateCommand}"/>
+                        Command="{Binding CreateCommand}"
+                        Style="{StaticResource ConfirmButtonStyle}"/>
             </Grid>
             
         </Grid>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition/>
+                <RowDefinition Height="0.9*"/>
                 <RowDefinition Height="8*"/>
             </Grid.RowDefinitions>
             
             <Button HorizontalAlignment="Right"
                     Content="Delete"
                     Margin="0 0 5 0"
-                    Command="{Binding DeleteCommand}"/>
+                    Command="{Binding DeleteCommand}"
+                    Style="{StaticResource ConfirmButtonStyle}"/>
             
             <DataGrid Grid.Row="1" 
                       ItemsSource="{Binding EnergyResources}"
                       AutoGenerateColumns="False"
                       SelectedItem="{Binding SelectedResource}"
-                      CanUserAddRows="False">
+                      CanUserAddRows="False"
+                      Margin="0 0 0 5">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Id"
                                         Width="*"

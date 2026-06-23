@@ -6,9 +6,11 @@
         xmlns:local="clr-namespace:NetworkService"
         xmlns:views="clr-namespace:NetworkService.Views"
         xmlns:viewmodels="clr-namespace:NetworkService.ViewModel"
+        xmlns:fa5="http://schemas.fontawesome.com/icons/"
         mc:Ignorable="d"
         WindowStyle="None"
-        Title="MainWindow" Height="600" Width="800">
+        Background="{StaticResource InputBackgroundBrush}"
+        Title="MainWindow" Height="650" Width="800">
     <Window.DataContext>
         <viewmodels:MainWindowViewModel/>
     </Window.DataContext>
@@ -30,7 +32,7 @@
             <RowDefinition Height="180"/>
         </Grid.RowDefinitions>
 
-        <Grid>
+        <Grid Background="{StaticResource HeaderBackgroundBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.5*"/>
                 <ColumnDefinition/>
@@ -41,22 +43,33 @@
             </Grid.ColumnDefinitions>
 
             <Label Content="NetworkService"
-                   Style="{StaticResource HeaderLabelStyle}"/>
+                   Style="{StaticResource MainHeaderLabelStyle}"/>
             <Button Grid.Column="1"
                     Content="Entity"
                     Command="{Binding NavCommand}"
-                    CommandParameter="entity"/>
+                    CommandParameter="entity"
+                    Style="{StaticResource NavigationButtonStyle}"/>
+            
             <Button Grid.Column="2"
                     Content="Display"
                     Command="{Binding NavCommand}"
-                    CommandParameter="display"/>
+                    CommandParameter="display"
+                    Style="{StaticResource NavigationButtonStyle}"/>
+            
             <Button Grid.Column="3"
                     Content="Graph"
                     Command="{Binding NavCommand}"
-                    CommandParameter="graph"/>
-            <Button Grid.Column="5"
+                    CommandParameter="graph"
+                    Style="{StaticResource NavigationButtonStyle}"/>
+            
+            <Button Grid.Column="4"
                     Content="Undo"
-                    Command="{Binding UndoCommand}"/>
+                    Command="{Binding UndoCommand}"
+                    Style="{StaticResource ConfirmButtonStyle}"/>
+
+            <Button Grid.Column="5"
+                    Content="Close"
+                    Style="{StaticResource CancelButtonStyle}" MouseDown="Button_MouseDown"/>
 
         </Grid>
         <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}"/>
