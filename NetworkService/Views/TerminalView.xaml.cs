@@ -30,5 +30,10 @@ namespace NetworkService.Views
             TerminalInput.Focus();
             TerminalInput.CaretIndex = TerminalInput.Text.Length;
         }
+
+        private void TerminalListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            TerminalListView.ScrollIntoView(TerminalListView.SelectedItem);
+        }
     }
 }
