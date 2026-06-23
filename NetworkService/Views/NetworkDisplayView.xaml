@@ -33,6 +33,10 @@
                                 <Setter Property="BorderThickness"
                                         Value="4"/>
                             </DataTrigger>
+                            <DataTrigger Binding="{Binding DataContext.DrawMode, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                                <Setter Property="Cursor"
+                                        Value="Pen"/>
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Border.Style>
@@ -131,10 +135,7 @@
            Margin="5 0 0 0"/>
         <TreeView Grid.Row="1" 
                   Margin="5"
-                  ItemsSource="{Binding TreeViewNodes}"
-                  Background="{StaticResource BackgroundBrush}"
-                  BorderThickness="2"
-                  BorderBrush="{StaticResource BorderBrush}">
+                  ItemsSource="{Binding TreeViewNodes}">
             <behaviors:Interaction.Triggers>
                 <behaviors:EventTrigger EventName="SelectedItemChanged">
                     <behaviors:CallMethodAction TargetObject="{Binding}"
@@ -149,8 +150,23 @@
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type model:DistributedEnergyResource}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Id, StringFormat='#{0} '}"/>
-                        <TextBlock Text="{Binding Name}"/>
+                        <TextBlock Text="{Binding Id, StringFormat='#{0} '}"
+                                   Foreground="White"
+                                   FontWeight="ExtraBold"/>
+                        <TextBlock Text="{Binding Name}"
+                                   FontWeight="Bold"/>
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Cursor"
+                                        Value="Hand"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding DataContext.DrawMode, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                                        <Setter Property="Cursor"
+                                                Value="No"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
                     </StackPanel>
                 </DataTemplate>
             </TreeView.Resources>
@@ -162,10 +178,20 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Label Style="{StaticResource HeaderLabelStyle}"
-                   Content="Network"
+            <Label Content="Network"
                    HorizontalAlignment="Left"
-                   Margin="5 0 0 0"/>
+                   Margin="5 0 0 0">
+                <Label.Style>
+                    <Style TargetType="Label" BasedOn="{StaticResource HeaderLabelStyle}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DrawMode}" Value="True">
+                                <Setter Property="Foreground"
+                                        Value="{StaticResource SelectedBorderBrush}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
 
             <Button Grid.Column="1"
                     HorizontalAlignment="Right"
@@ -180,8 +206,6 @@
                                 <Setter Property="Content"
                                         Value="Draw Mode: On"/>
                                 <Setter Property="Background"
-                                        Value="{StaticResource SelectedBorderBrush}"/>
-                                <Setter Property="BorderBrush"
                                         Value="{StaticResource SelectedBorderBrush}"/>
                             </DataTrigger>
                         </Style.Triggers>
