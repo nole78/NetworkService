@@ -10,7 +10,7 @@
         mc:Ignorable="d"
         WindowStyle="None"
         Background="{StaticResource InputBackgroundBrush}"
-        Title="MainWindow" Height="650" Width="800">
+        Title="MainWindow" Height="650" Width="800" MouseLeftButtonDown="Window_MouseLeftButtonDown">
     <Window.DataContext>
         <viewmodels:MainWindowViewModel/>
     </Window.DataContext>
