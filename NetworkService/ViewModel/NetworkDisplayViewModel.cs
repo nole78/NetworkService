@@ -95,6 +95,9 @@ namespace NetworkService.ViewModel
         #region DragAndDrop Events
         public void OnDragStart(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            if (DrawMode)
+                return;
+
             if (e.NewValue is DistributedEnergyResource resource)
             {
                 SelectedResource = resource;
