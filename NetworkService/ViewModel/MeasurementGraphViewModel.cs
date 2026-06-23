@@ -64,8 +64,8 @@ namespace NetworkService.ViewModel
         #endregion
         public MeasurementGraphViewModel()
         {
-            Nodes = new GraphNode[4] {new GraphNode(),new GraphNode(),new GraphNode(), new GraphNode()};
-            Times = new ObservableCollection<string>(new string[]{ "", "", "", "" });
+            Nodes = new GraphNode[5] {new GraphNode(),new GraphNode(),new GraphNode(), new GraphNode(), new GraphNode()};
+            Times = new ObservableCollection<string>(new string[]{ "", "", "", "" , ""});
 
             _reader = new MeasurmentsReader("log.txt");
 
@@ -115,13 +115,13 @@ namespace NetworkService.ViewModel
                     max = value;
             }
 
-            for(int i = 0; i < 4; i++)
+            for(int i = 0; i < Nodes.Length; i++)
             {
                 var ratio = Math.Abs(Nodes[i].Value - max);
                 if (ratio != 0 && max != 0)
-                    ratio = ratio / max;
+                    ratio /= max;
 
-                Nodes[i].Position = ratio * NODE_OFFSET;
+                Nodes[i].Position = ratio * NODE_OFFSET + 10;
             }
         }
     }

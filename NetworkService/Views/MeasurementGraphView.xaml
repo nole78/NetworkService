@@ -54,7 +54,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2.3*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.5*"/>
@@ -89,9 +89,10 @@
         </Grid>
 
         <Canvas Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="5" 
-                Background="{StaticResource TextInputBrush}">
+                Background="{StaticResource BackgroundBrush}"
+                Name="GraphCanvas">
 
-            <Line Stroke="Black" StrokeThickness="2"
+            <Line Stroke="Black" StrokeThickness="2" Panel.ZIndex="1"
                   X1="{Binding (Canvas.Left), ElementName=Circle1, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
                   Y1="{Binding (Canvas.Top), ElementName=Circle1, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
                   X2="{Binding (Canvas.Left), ElementName=Circle2, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
@@ -109,7 +110,7 @@
                 </Line.Style>
             </Line>
 
-            <Line Stroke="Black" StrokeThickness="2"
+            <Line Stroke="Black" StrokeThickness="2" Panel.ZIndex="1"
                   X1="{Binding (Canvas.Left), ElementName=Circle2, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
                   Y1="{Binding (Canvas.Top), ElementName=Circle2, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
                   X2="{Binding (Canvas.Left), ElementName=Circle3, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
@@ -127,7 +128,7 @@
                 </Line.Style>
             </Line>
 
-            <Line Stroke="Black" StrokeThickness="2"
+            <Line Stroke="Black" StrokeThickness="2" Panel.ZIndex="1"
                   X1="{Binding (Canvas.Left), ElementName=Circle3, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
                   Y1="{Binding (Canvas.Top), ElementName=Circle3, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
                   X2="{Binding (Canvas.Left), ElementName=Circle4, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
@@ -145,27 +146,64 @@
                 </Line.Style>
             </Line>
 
-            <ContentControl Template="{StaticResource GraphNode}" Content="{Binding Nodes[0]}" Name="Circle1" 
-                            Canvas.Left="80" Canvas.Top="{Binding Nodes[0].Position}"/>
-            <ContentControl Template="{StaticResource GraphNode}" Content="{Binding Nodes[1]}" Name="Circle2" 
-                            Canvas.Left="200" Canvas.Top="{Binding Nodes[1].Position}"/>
-            <ContentControl Template="{StaticResource GraphNode}" Content="{Binding Nodes[2]}" Name="Circle3" 
-                            Canvas.Left="320" Canvas.Top="{Binding Nodes[2].Position}"/>
-            <ContentControl Template="{StaticResource GraphNode}" Content="{Binding Nodes[3]}" Name="Circle4" 
-                            Canvas.Left="440" Canvas.Top="{Binding Nodes[3].Position}"/>
+            <Line Stroke="Black" StrokeThickness="2" Panel.ZIndex="1"
+                  X1="{Binding (Canvas.Left), ElementName=Circle4, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
+                  Y1="{Binding (Canvas.Top), ElementName=Circle4, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
+                  X2="{Binding (Canvas.Left), ElementName=Circle5, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
+                  Y2="{Binding (Canvas.Top), ElementName=Circle5, Converter={StaticResource AddValueConverter}, ConverterParameter=15}">
+                <Line.Style>
+                    <Style  TargetType="Line">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Nodes[3].IsVisible}" Value="False">
+                                <Setter Property="Visibility"
+                            Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Line.Style>
+            </Line>
 
-            <Line X1="150" Y1="0" X2="150" Y2="350" Stroke="{StaticResource InputBackgroundBrush}"/>
-            <Line X1="270" Y1="0" X2="270" Y2="350" Stroke="{StaticResource InputBackgroundBrush}"/>
-            <Line X1="390" Y1="0" X2="390" Y2="350" Stroke="{StaticResource InputBackgroundBrush}"/>
+            <ContentControl Template="{StaticResource GraphNode}" Content="{Binding Nodes[0]}" Name="Circle1" 
+                            Canvas.Left="40" Canvas.Top="{Binding Nodes[0].Position}"
+                            Panel.ZIndex="2"/>
+            <ContentControl Template="{StaticResource GraphNode}" Content="{Binding Nodes[1]}" Name="Circle2" 
+                            Canvas.Left="150" Canvas.Top="{Binding Nodes[1].Position}"
+                            Panel.ZIndex="2"/>
+            <ContentControl Template="{StaticResource GraphNode}" Content="{Binding Nodes[2]}" Name="Circle3" 
+                            Canvas.Left="260" Canvas.Top="{Binding Nodes[2].Position}"
+                            Panel.ZIndex="2"/>
+            <ContentControl Template="{StaticResource GraphNode}" Content="{Binding Nodes[3]}" Name="Circle4" 
+                            Canvas.Left="370" Canvas.Top="{Binding Nodes[3].Position}"
+                            Panel.ZIndex="2"/>
+            <ContentControl Template="{StaticResource GraphNode}" Content="{Binding Nodes[4]}" Name="Circle5" 
+                            Canvas.Left="480" Canvas.Top="{Binding Nodes[3].Position}"
+                            Panel.ZIndex="2"/>
+
+            <Line X1="110" Y1="0" X2="110" Y2="{Binding ActualHeight, ElementName=GraphCanvas}" Stroke="{StaticResource BorderBrush}" Panel.ZIndex="0"/>
+            <Line X1="220" Y1="0" X2="220" Y2="{Binding ActualHeight, ElementName=GraphCanvas}" Stroke="{StaticResource BorderBrush}" Panel.ZIndex="0"/>
+            <Line X1="330" Y1="0" X2="330" Y2="{Binding ActualHeight, ElementName=GraphCanvas}" Stroke="{StaticResource BorderBrush}" Panel.ZIndex="0"/>
+            <Line X1="440" Y1="0" X2="440" Y2="{Binding ActualHeight, ElementName=GraphCanvas}" Stroke="{StaticResource BorderBrush}" Panel.ZIndex="0"/>
             
-            <Label Canvas.Bottom="0" Content="{Binding Times[0]}" Canvas.Left="80"
-                   Foreground="{StaticResource InputBackgroundBrush}"/>
-            <Label Canvas.Bottom="0" Content="{Binding Times[1]}" Canvas.Left="200"
-                   Foreground="{StaticResource InputBackgroundBrush}"/>
-            <Label Canvas.Bottom="0" Content="{Binding Times[2]}" Canvas.Left="320"
-                   Foreground="{StaticResource InputBackgroundBrush}"/>
-            <Label Canvas.Bottom="0" Content="{Binding Times[3]}" Canvas.Left="440"
-                   Foreground="{StaticResource InputBackgroundBrush}"/>
+            <Label Canvas.Bottom="0" Content="{Binding Times[0]}" Canvas.Left="40"
+                   Foreground="{StaticResource BorderBrush}"
+                   FontWeight="Bold"/>
+            
+            <Label Canvas.Bottom="0" Content="{Binding Times[1]}" Canvas.Left="150"
+                   Foreground="{StaticResource BorderBrush}"
+                   FontWeight="Bold"/>
+            
+            <Label Canvas.Bottom="0" Content="{Binding Times[2]}" Canvas.Left="260"
+                   Foreground="{StaticResource BorderBrush}"
+                   FontWeight="Bold"/>
+            
+            <Label Canvas.Bottom="0" Content="{Binding Times[3]}" Canvas.Left="370"
+                   Foreground="{StaticResource BorderBrush}"
+                   FontWeight="Bold"/>
+            
+            <Label Canvas.Bottom="0" Content="{Binding Times[4]}" Canvas.Left="480"
+                   Foreground="{StaticResource BorderBrush}"
+                   FontWeight="Bold"/>
         </Canvas>
     </Grid>
 </UserControl>

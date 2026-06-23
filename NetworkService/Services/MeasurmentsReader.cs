@@ -14,6 +14,7 @@ namespace NetworkService.Services
     public class MeasurmentsReader
     {
         private readonly string _measurmentsfilePath;
+        private const int MEASURMENT_WINDOW = 5;
 
         public MeasurmentsReader(string measurmentsfilePath)
         {
@@ -22,7 +23,7 @@ namespace NetworkService.Services
 
         public List<Measurement> ReadMeasurments(int idx) 
         {
-            Queue<Measurement> buffer = new Queue<Measurement>(4);
+            Queue<Measurement> buffer = new Queue<Measurement>(MEASURMENT_WINDOW);
             string pattern = @",\s*(?<time>\d{1,2}:\d{2}):\s*(?<idx>\d+),\s*(?<value>[\d.,]+)";
             Regex regex = new Regex(pattern);
             try
@@ -47,7 +48,7 @@ namespace NetworkService.Services
                         double value = double.Parse(valueStr, System.Globalization.CultureInfo.InvariantCulture);
 
                         buffer.Enqueue(new Measurement(time, value));
-                        if (buffer.Count > 4) 
+                        if (buffer.Count > MEASURMENT_WINDOW) 
                         {
                             buffer.Dequeue();
                         }
