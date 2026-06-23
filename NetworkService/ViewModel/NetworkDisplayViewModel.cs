@@ -210,7 +210,10 @@ namespace NetworkService.ViewModel
                     Slots[secondSelectedSlotIdx].IsSelected = false;
                     AppDatabase.Instance.ConnectResourcesOnGrid(_firstSelectedSlotIdx, secondSelectedSlotIdx);
                 }
-
+                else
+                {
+                    Slots[clickedSlotIdx].IsSelected = false;
+                }
                 _firstSelectedSlotIdx = -1;
             }
         }

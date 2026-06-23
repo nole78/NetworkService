@@ -53,7 +53,19 @@
                 </behaviors:Interaction.Triggers>
 
 
-                <Grid Background="{StaticResource BackgroundBrush}">
+                <Grid>
+                    <Grid.Style>
+                        <Style TargetType="Grid">
+                            <Setter Property="Background"
+                                    Value="{StaticResource BackgroundBrush}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Content.IsSelected, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                    <Setter Property="Background"
+                                            Value="LightBlue"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
                         <RowDefinition/>
@@ -135,7 +147,8 @@
            Margin="5 0 0 0"/>
         <TreeView Grid.Row="1" 
                   Margin="5"
-                  ItemsSource="{Binding TreeViewNodes}">
+                  ItemsSource="{Binding TreeViewNodes}"
+                  Cursor="Arrow">
             <behaviors:Interaction.Triggers>
                 <behaviors:EventTrigger EventName="SelectedItemChanged">
                     <behaviors:CallMethodAction TargetObject="{Binding}"
@@ -186,7 +199,7 @@
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding DrawMode}" Value="True">
                                 <Setter Property="Foreground"
-                                        Value="{StaticResource SelectedBorderBrush}"/>
+                                        Value="DarkBlue"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
