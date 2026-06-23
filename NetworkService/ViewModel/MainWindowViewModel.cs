@@ -8,6 +8,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace NetworkService.ViewModel
 {
@@ -28,11 +29,13 @@ namespace NetworkService.ViewModel
         }
         public MyICommand<string> NavCommand { get; private set; }
         public MyICommand UndoCommand { get; private set; }
+        public MyICommand CloseCommand { get; private set; }
         #endregion
         public MainWindowViewModel()
         {
             NavCommand = new MyICommand<string>(OnNavCommand);
             UndoCommand = new MyICommand(OnUndoCommand, CanUndo);
+            CloseCommand = new MyICommand(() => Application.Current.Shutdown());
 
             AppDatabase.Instance.PropertyChanged += (sender, e) =>
             {

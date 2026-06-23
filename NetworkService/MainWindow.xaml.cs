@@ -24,10 +24,5 @@ namespace NetworkService
         {
             InitializeComponent();
         }
-
-        private void Button_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.Close();
-        }
     }
 }
