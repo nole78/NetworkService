@@ -1,4 +1,5 @@
-﻿using NetworkService.Persistance;
+﻿using NetworkService.Model;
+using NetworkService.Persistance;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,27 +27,29 @@ namespace NetworkService.Services
                 var parts = incoming.Trim().Split(':');
                 int idx = int.Parse(parts[0].Split('_')[1]);
                 double value = double.Parse(parts[1]);
+                DistributedEnergyResource resource = null;
+
+                if (AppDatabase.Instance.Resources.Count > idx)
+                {
+                    resource = AppDatabase.Instance.Resources[idx];
+                }
+
+                if (resource == null)
+                {
+                    Console.WriteLine($"Error updating resource value: no resource at index {idx}");
+                    return;
+                }
 
                 Application.Current.Dispatcher.Invoke(() => {
-                    if (AppDatabase.Instance.Resources.Count > idx)
-                    {
-                        var resource = AppDatabase.Instance.Resources[idx];
-                        if (resource != null)
-                        {
-                            AppDatabase.Instance.SetValue(resource.Id, value);
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Error updating resource value: no resource at index {idx}");
-                        }
-                    }
+                    
+                    AppDatabase.Instance.SetValue(resource.Id, value);
                 });
 
                 var date = DateTime.Now;
-                string logLine = $"{date.ToShortDateString()}, {date.ToString("HH:mm")}: {idx}, {value}";
+                string logLine = $"{date.ToShortDateString()}, {date:HH:mm}: {resource.Id}, {value}";
                 _loggerService.LogLine(logLine);
 
-                OnMeasurementProcessed?.Invoke(idx, value);
+                OnMeasurementProcessed?.Invoke(resource.Id, value);
             }
             catch(Exception ex)
             {

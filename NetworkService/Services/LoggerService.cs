@@ -15,6 +15,10 @@ namespace NetworkService.Services
         public LoggerService(string logFilePath) 
         { 
             _logFilePath = logFilePath; 
+            if(File.Exists(_logFilePath))
+            {
+                File.Delete(_logFilePath);
+            }
         }
 
         public void LogLine(string message)

@@ -21,10 +21,10 @@ namespace NetworkService.Services
             _measurmentsfilePath = measurmentsfilePath;
         }
 
-        public List<Measurement> ReadMeasurments(int idx) 
+        public List<Measurement> ReadMeasurments(int id) 
         {
             Queue<Measurement> buffer = new Queue<Measurement>(MEASURMENT_WINDOW);
-            string pattern = @",\s*(?<time>\d{1,2}:\d{2}):\s*(?<idx>\d+),\s*(?<value>[\d.,]+)";
+            string pattern = @",\s*(?<time>\d{1,2}:\d{2}):\s*(?<id>\d+),\s*(?<value>[\d.,]+)";
             Regex regex = new Regex(pattern);
             try
             {
@@ -38,8 +38,8 @@ namespace NetworkService.Services
                         if (!match.Success)
                             continue;
 
-                        int objectIdx = int.Parse(match.Groups["idx"].Value);
-                        if (objectIdx != idx)
+                        int objectIdx = int.Parse(match.Groups["id"].Value);
+                        if (objectIdx != id)
                             continue;
 
                         string time = match.Groups["time"].Value;

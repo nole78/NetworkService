@@ -12,6 +12,7 @@ namespace NetworkService.Model.Actions
     {
         private readonly DistributedEnergyResource _addResource;
         private readonly ObservableCollection<DistributedEnergyResource> _collection;
+        private static int _lastIndex = -1;
 
         public AddResourceAction(DistributedEnergyResource addResource, ObservableCollection<DistributedEnergyResource> collection)
         {
@@ -21,7 +22,9 @@ namespace NetworkService.Model.Actions
 
         public bool Do()
         {
-            _addResource.Id = _collection.Count > 0 ? _collection.Max(r => r.Id) + 1 : 1;
+            if(_lastIndex == -1)
+                _lastIndex = _collection.Count > 0 ? _collection.Max(r => r.Id) : 0;
+            _addResource.Id = ++_lastIndex;
             _collection.Add(_addResource);
             return true;
         }

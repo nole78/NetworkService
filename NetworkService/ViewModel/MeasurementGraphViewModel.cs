@@ -72,13 +72,12 @@ namespace NetworkService.ViewModel
             MeasurementProcessingService.OnMeasurementProcessed += OnNewMeasurment;
         }
 
-        private void OnNewMeasurment(int idx, double value)
+        private void OnNewMeasurment(int id, double value)
         {
             if (SelectedResource == null)
                 return;
 
-            int selectedIdx = AppDatabase.Instance.Resources.IndexOf(SelectedResource);
-            if(selectedIdx == idx)
+            if(SelectedResource.Id == id)
                 DrawGraph();
         }
 
@@ -94,11 +93,7 @@ namespace NetworkService.ViewModel
             if (SelectedResource == null)
                 return;
 
-            int selectedIdx = AppDatabase.Instance.Resources.IndexOf(SelectedResource);
-            if (selectedIdx < 0)
-                return;
-
-            var measurements = _reader.ReadMeasurments(selectedIdx);
+            var measurements = _reader.ReadMeasurments(SelectedResource.Id);
 
             double max = 0;
             for(int i = 0; i < measurements.Count; i++)
