@@ -25,7 +25,11 @@ namespace NetworkService.ViewModel
         public BindableBase CurrentViewModel
         {
             get => _currentViewModel;
-            set => SetProperty(ref _currentViewModel, value);
+            set
+            {
+                SetProperty(ref _currentViewModel, value);
+                NavCommand.RaiseCanExecuteChanged();
+            }
         }
         public MyICommand<string> NavCommand { get; private set; }
         public MyICommand UndoCommand { get; private set; }
@@ -33,7 +37,7 @@ namespace NetworkService.ViewModel
         #endregion
         public MainWindowViewModel()
         {
-            NavCommand = new MyICommand<string>(OnNavCommand);
+            NavCommand = new MyICommand<string>(OnNavCommand, CanNavigate);
             UndoCommand = new MyICommand(OnUndoCommand, CanUndo);
             CloseCommand = new MyICommand(() => Application.Current.Shutdown());
 
@@ -127,6 +131,21 @@ namespace NetworkService.ViewModel
         }
 
         private bool CanUndo() => AppDatabase.Instance.LastAction != null;
+
+        private bool CanNavigate(string destination)
+        {
+            switch (destination)
+            {
+                case "entity":
+                    return CurrentViewModel != networkEntitiesViewModel;
+                case "graph":
+                    return CurrentViewModel != measurementGraphViewModel;
+                case "display":
+                    return CurrentViewModel != networkDisplayViewModel;
+                default: 
+                    return true;
+            }
+        }
 
     }
 }
