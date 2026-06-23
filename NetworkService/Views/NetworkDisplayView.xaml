@@ -16,8 +16,26 @@
     </UserControl.DataContext>
     
     <UserControl.Resources>
+        <converters:SlotToPositionConverter x:Key="SlotToPositionConverter"/>
+        <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
         <ControlTemplate x:Key="Node" TargetType="ContentControl">
-            <Border Margin="5" BorderBrush="Black" BorderThickness="2" CornerRadius="5" ClipToBounds="True" AllowDrop="True">
+            <Border Margin="5" BorderThickness="2" CornerRadius="5" ClipToBounds="True" AllowDrop="True">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderBrush"
+                                Value="{StaticResource BorderBrush}"/>
+                        <Setter Property="Cursor"
+                                Value="Hand"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Content.IsSelected, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                <Setter Property="BorderBrush"
+                                        Value="{StaticResource SelectedBorderBrush}"/>
+                                <Setter Property="BorderThickness"
+                                        Value="4"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
                 <behaviors:Interaction.Triggers>
                     <behaviors:EventTrigger EventName="Drop">
                         <behaviors:CallMethodAction TargetObject="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}"
@@ -29,8 +47,8 @@
                                                     MethodName="OnGridDragStart"/>
                     </behaviors:EventTrigger>
                 </behaviors:Interaction.Triggers>
-                
-                
+
+
                 <Grid Background="LightGray">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="3*"/>
@@ -47,7 +65,7 @@
                             <Style TargetType="fa5:SvgAwesome">
                                 <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Content.IsAlarm, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                    <DataTrigger Binding="{Binding Content.Resource.IsAlarm, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -56,22 +74,32 @@
                     </fa5:SvgAwesome>
                     <Canvas Panel.ZIndex="1">
                         <Canvas.Background>
-                            <ImageBrush ImageSource="{Binding Content.Type.ImagePath, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            <ImageBrush ImageSource="{Binding Content.Resource.Type.ImagePath, RelativeSource={RelativeSource TemplatedParent}}"/>
                         </Canvas.Background>
                     </Canvas>
                     <StackPanel Grid.Row="1" Orientation="Horizontal">
                         <Button Width="30" Height="30" 
                                 Command="{Binding DataContext.RemoveFromGridCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                CommandParameter="{Binding Content.Id, RelativeSource={RelativeSource TemplatedParent}}">
+                                CommandParameter="{Binding Content.Resource.Id, RelativeSource={RelativeSource TemplatedParent}}">
                             <fa5:SvgAwesome Icon="Solid_WindowClose"/>
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Content.Resource, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullToBoolConverter}}" Value="True">
+                                            <Setter Property="Visibility"
+                                                    Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
                         </Button>
-                        <TextBlock Text="{Binding Content.Id, RelativeSource={RelativeSource TemplatedParent}, StringFormat='Id: #{0}'}"/>
-                        <TextBlock Text="{Binding Content.Value, RelativeSource={RelativeSource TemplatedParent}, StringFormat=' {0} MW'}"/>
+                        <TextBlock Text="{Binding Content.Resource.Id, RelativeSource={RelativeSource TemplatedParent}, StringFormat='Id: #{0}'}"/>
+                        <TextBlock Text="{Binding Content.Resource.Value, RelativeSource={RelativeSource TemplatedParent}, StringFormat=' {0} MW'}"/>
                     </StackPanel>
                 </Grid>
             </Border>
         </ControlTemplate>
-        <converters:SlotToPositionConverter x:Key="SlotToPositionConverter"/>
     </UserControl.Resources>
 
     <Grid>

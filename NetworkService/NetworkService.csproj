@@ -67,6 +67,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Converters\AddValueConverter.cs" />
+    <Compile Include="Converters\NullToBooleanConverter.cs" />
     <Compile Include="Converters\SlotToPositionConverter.cs" />
     <Compile Include="Helpers\BindableBase.cs" />
     <Compile Include="Model\Actions\AddResourceAction.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="Model\Actions\RemoveResourceAction.cs" />
     <Compile Include="Model\DistributedEnergyResource.cs" />
     <Compile Include="Model\EnergyResourceType.cs" />
+    <Compile Include="Model\GridSlot.cs" />
     <Compile Include="Model\LineConnection.cs" />
     <Compile Include="Model\Measurement.cs" />
     <Compile Include="Model\TerminalLine.cs" />

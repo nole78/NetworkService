@@ -48,7 +48,7 @@ namespace NetworkService.ViewModel
         }
         public MyICommand<int> RemoveFromGridCommand { get; set; }
         public MyICommand DrawModeChangeCommand { get; set; }
-        public DistributedEnergyResource[] Slots { get => AppDatabase.Instance.GridSlots; }
+        public GridSlot[] Slots { get => AppDatabase.Instance.GridSlots; }
         public ObservableCollection<LineConnection> Connections { get => AppDatabase.Instance.Connections; }
         #endregion
 
@@ -82,7 +82,7 @@ namespace NetworkService.ViewModel
         public void RefreshTreeView()
         {
             var availableResource = AppDatabase.Instance.Resources
-                .Where(r => !AppDatabase.Instance.GridSlots.Any(slot => slot != null && slot.Id == r.Id));
+                .Where(r => !AppDatabase.Instance.GridSlots.Any(slot => slot.Resource != null && slot.Resource.Id == r.Id));
 
             TreeViewNodes = availableResource.GroupBy(r => r.Type.Name)
                 .Select(group => new TreeViewTypeGroup
@@ -117,19 +117,20 @@ namespace NetworkService.ViewModel
                 element = VisualTreeHelper.GetParent(element);
             }
 
-            if (contentControl != null && contentControl.Content is DistributedEnergyResource resource)
+            if (contentControl != null && contentControl.Content is GridSlot slot)
             {
                 if (contentControl.Tag != null && int.TryParse(contentControl.Tag.ToString(), out int slotIdx))
                 {
                     if(DrawMode)
                     {
+                        slot.IsSelected = true;
                         HandleSlotClickInDrawMode(slotIdx);
                         return;
                     }
 
-                    SelectedResource = resource;
+                    SelectedResource = slot.Resource;
                     _sourceSlotIdx = slotIdx;
-                    DragDrop.DoDragDrop((DependencyObject)sender, resource, DragDropEffects.Move);
+                    DragDrop.DoDragDrop((DependencyObject)sender, slot.Resource, DragDropEffects.Move);
                 }
             }
         }
@@ -177,7 +178,7 @@ namespace NetworkService.ViewModel
             int idx = -1;
             for (int i = 0; i < Slots.Length; i++)
             {
-                if (Slots[i] != null && Slots[i].Id == id)
+                if (Slots[i].Resource != null && Slots[i].Resource.Id == id)
                 {
                     idx = i;
                     break;
@@ -202,6 +203,8 @@ namespace NetworkService.ViewModel
 
                 if (_firstSelectedSlotIdx != secondSelectedSlotIdx)
                 {
+                    Slots[_firstSelectedSlotIdx].IsSelected = false;
+                    Slots[secondSelectedSlotIdx].IsSelected = false;
                     AppDatabase.Instance.ConnectResourcesOnGrid(_firstSelectedSlotIdx, secondSelectedSlotIdx);
                 }
 

@@ -12,9 +12,9 @@ namespace NetworkService.Model.Actions
         private readonly int _firstSlotIdx;
         private readonly int _secondSlotIdx;
         private readonly ObservableCollection<LineConnection> _connections;
-        private readonly DistributedEnergyResource[] _slots;
+        private readonly GridSlot[] _slots;
 
-        public ConnectResourceAction(int firstSlotIdx, int secondSlotIdx, ObservableCollection<LineConnection> connections, DistributedEnergyResource[] slots)
+        public ConnectResourceAction(int firstSlotIdx, int secondSlotIdx, ObservableCollection<LineConnection> connections, GridSlot[] slots)
         {
             _firstSlotIdx = firstSlotIdx;
             _secondSlotIdx = secondSlotIdx;
@@ -27,7 +27,7 @@ namespace NetworkService.Model.Actions
             if (_slots.Length < _firstSlotIdx || _slots.Length < _secondSlotIdx)
                 return false;
 
-            if (_slots[_firstSlotIdx] == null || _slots[_secondSlotIdx] == null)
+            if (_slots[_firstSlotIdx].Resource == null || _slots[_secondSlotIdx].Resource == null)
                 return false;
 
             _connections.Add(new LineConnection(_firstSlotIdx, _secondSlotIdx));

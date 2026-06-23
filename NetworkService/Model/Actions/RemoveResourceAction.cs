@@ -13,12 +13,12 @@ namespace NetworkService.Model.Actions
         private readonly DistributedEnergyResource _deleteResource;
         private readonly int _resourceIdx;
         private readonly ObservableCollection<DistributedEnergyResource> _collection;
-        private readonly DistributedEnergyResource[] _slots;
+        private readonly GridSlot[] _slots;
         private readonly ObservableCollection<LineConnection> _connections;
         private int _gridSlotIdx = -1;
         private List<LineConnection> _removedConnections = new List<LineConnection>();
 
-        public RemoveResourceAction(DistributedEnergyResource deleteResource, int resourceIdx ,ObservableCollection<DistributedEnergyResource> collection, DistributedEnergyResource[] slots, ObservableCollection<LineConnection> connections)
+        public RemoveResourceAction(DistributedEnergyResource deleteResource, int resourceIdx ,ObservableCollection<DistributedEnergyResource> collection, GridSlot[] slots, ObservableCollection<LineConnection> connections)
         {
             _deleteResource = deleteResource;
             _resourceIdx = resourceIdx;
@@ -34,10 +34,11 @@ namespace NetworkService.Model.Actions
 
             for (int i = 0; i < _slots.Length; i++)
             {
-                if (_slots[i] != null && _slots[i].Id == _deleteResource.Id)
+                if (_slots[i].Resource != null && _slots[i].Resource.Id == _deleteResource.Id)
                 {
                     _gridSlotIdx = i;
-                    _slots[i] = null; 
+                    _slots[i].Resource = null;
+                    _slots[i].IsSelected = false;
                     break;
                 }
             }
@@ -69,7 +70,7 @@ namespace NetworkService.Model.Actions
 
             if (_gridSlotIdx != -1)
             {
-                _slots[_gridSlotIdx] = _deleteResource;
+                _slots[_gridSlotIdx].Resource = _deleteResource;
                 foreach (var connection in _removedConnections)
                 {
                     _connections.Add(connection);

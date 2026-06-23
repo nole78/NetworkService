@@ -11,10 +11,10 @@ namespace NetworkService.Model.Actions
     {
         private readonly int _fromSlotIdx;
         private readonly int _toSlotIdx;
-        private readonly DistributedEnergyResource[] _slots;
+        private readonly GridSlot[] _slots;
         private readonly ObservableCollection<LineConnection> _connections;
 
-        public MoveResourceAction(int fromSlotIdx, int toSlotIdx, DistributedEnergyResource[] slots, ObservableCollection<LineConnection> connections)
+        public MoveResourceAction(int fromSlotIdx, int toSlotIdx, GridSlot[] slots, ObservableCollection<LineConnection> connections)
         {
             _fromSlotIdx = fromSlotIdx;
             _toSlotIdx = toSlotIdx;
@@ -28,9 +28,9 @@ namespace NetworkService.Model.Actions
             if (len < _fromSlotIdx || len < _toSlotIdx) return false;
 
             DistributedEnergyResource helper = null;
-            if (_slots[_toSlotIdx] != null)
+            if (_slots[_toSlotIdx].Resource != null)
             {
-                helper = _slots[_toSlotIdx];
+                helper = _slots[_toSlotIdx].Resource;
             }
 
             var connections = _connections.Where(c => c.ToSlot == _fromSlotIdx || c.FromSlot == _fromSlotIdx).ToList();
@@ -64,8 +64,8 @@ namespace NetworkService.Model.Actions
                 }
             }
 
-            _slots[_toSlotIdx] = _slots[_fromSlotIdx];
-            _slots[_fromSlotIdx] = helper;
+            _slots[_toSlotIdx].Resource = _slots[_fromSlotIdx].Resource;
+            _slots[_fromSlotIdx].Resource = helper;
 
             return true;
         }
@@ -73,9 +73,9 @@ namespace NetworkService.Model.Actions
         public void Undo()
         {
             DistributedEnergyResource helper = null;
-            if( _slots[_fromSlotIdx] != null )
+            if( _slots[_fromSlotIdx].Resource != null )
             {
-                helper = _slots[_fromSlotIdx];
+                helper = _slots[_fromSlotIdx].Resource;
             }
 
             var connections = _connections.Where(c => c.ToSlot == _toSlotIdx || c.FromSlot == _toSlotIdx).ToList(); 
@@ -109,8 +109,8 @@ namespace NetworkService.Model.Actions
                 }
             }
 
-            _slots[_fromSlotIdx] = _slots[_toSlotIdx];
-            _slots[_toSlotIdx] = helper;
+            _slots[_fromSlotIdx].Resource = _slots[_toSlotIdx].Resource;
+            _slots[_toSlotIdx].Resource = helper;
         }
     }
 }

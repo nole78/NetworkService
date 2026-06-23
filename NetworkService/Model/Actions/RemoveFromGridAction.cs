@@ -10,12 +10,12 @@ namespace NetworkService.Model.Actions
     public class RemoveFromGridAction : IUndoableAction
     {
         private readonly int _idx;
-        private readonly DistributedEnergyResource[] _slots;
+        private readonly GridSlot[] _slots;
         private DistributedEnergyResource _removedResource;
         private readonly ObservableCollection<LineConnection> _connections;
         private List<LineConnection> _removedConnections = new List<LineConnection>();
 
-        public RemoveFromGridAction(int idx, DistributedEnergyResource[] slots, ObservableCollection<LineConnection> connections)
+        public RemoveFromGridAction(int idx, GridSlot[] slots, ObservableCollection<LineConnection> connections)
         {
             _idx = idx;
             _slots = slots;
@@ -32,15 +32,16 @@ namespace NetworkService.Model.Actions
                 _connections.Remove(connection);
             }
 
-            _removedResource = _slots[_idx];
-            _slots[_idx] = null;
+            _removedResource = _slots[_idx].Resource;
+            _slots[_idx].Resource = null;
+            _slots[_idx].IsSelected = false;
 
             return true;
         }
 
         public void Undo()
         {
-            _slots[_idx] = _removedResource;
+            _slots[_idx].Resource = _removedResource;
             foreach (var connection in _removedConnections)
             {
                 _connections.Add(connection);

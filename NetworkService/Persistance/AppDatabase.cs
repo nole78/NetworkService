@@ -18,7 +18,20 @@ namespace NetworkService.Persistance
         #endregion
 
         private IUndoableAction _lastAction;
-        public DistributedEnergyResource[] GridSlots { get; private set; } = new DistributedEnergyResource[12];
+        public GridSlot[] GridSlots { get; private set; } = new GridSlot[12]{
+            new GridSlot(),
+            new GridSlot(),
+            new GridSlot(),
+            new GridSlot(),
+            new GridSlot(),
+            new GridSlot(),
+            new GridSlot(),
+            new GridSlot(),
+            new GridSlot(),
+            new GridSlot(),
+            new GridSlot(),
+            new GridSlot()
+        };
         public ObservableCollection<DistributedEnergyResource> Resources { get; private set; }
         public ObservableCollection<LineConnection> Connections { get; private set; }
         public IReadOnlyList<EnergyResourceType> ResourceTypes { get; private set; }
@@ -112,11 +125,11 @@ namespace NetworkService.Persistance
             resource.Value = value;
             resource.IsAlarm = alarm;
 
-            var gridResource = GridSlots.FirstOrDefault(r => r != null && r.Id == id);
+            var gridResource = GridSlots.FirstOrDefault(r => r != null && r.Resource.Id == id);
             if (gridResource != null)
             {
-                gridResource.Value = value;
-                gridResource.IsAlarm = alarm;
+                gridResource.Resource.Value = value;
+                gridResource.Resource.IsAlarm = alarm;
             }
             return true;
         }
