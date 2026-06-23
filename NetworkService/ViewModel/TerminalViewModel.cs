@@ -17,22 +17,21 @@ namespace NetworkService.ViewModel
         private string _command;
         private const string COMMAND_BEGINING = "renewable_scada_terminal> ";
         private readonly TerminalService _terminalService;
-        private List<string> _terminalCommandsHistory { get; set; } = new List<string>();
+        private readonly List<string> _terminalCommandsHistory = new List<string>();
         private int _historyIndex = -1;
         private string _savedInput = "";
+        private TerminalLine _newestLine;
 
         #region Properties
         public string Command
         {
             get => _command;
-            set 
-            {
-                if (_command != value)
-                {
-                    _command = value;
-                    OnPropertyChanged(nameof(Command));
-                }
-            }
+            set => SetProperty(ref _command, value);
+        }
+        public TerminalLine NewestLine
+        {
+            get => _newestLine;
+            set => SetProperty(ref _newestLine, value);
         }
         public MyICommand ExecuteTerminalCommand { get; set; }
         public MyICommand GetOlderCommand { get; set; }
@@ -68,8 +67,9 @@ namespace NetworkService.ViewModel
             Command = "";
             _historyIndex = -1;
             _savedInput = "";
+            NewestLine = TerminalLines.Last();
         }
- 
+
         private void OnGetOlderCommand()
         {
             int cnt = _terminalCommandsHistory.Count() - 1;

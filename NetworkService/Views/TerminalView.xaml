@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:NetworkService.Views"
              xmlns:viewmodels="clr-namespace:NetworkService.ViewModel"
-             xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="180" d:DesignWidth="790">
     
@@ -30,42 +29,57 @@
                    Foreground="{StaticResource HeaderTextBrush}"/>
 
         <StackPanel Grid.Row="1">
-            <ListView ItemsSource="{Binding TerminalLines, UpdateSourceTrigger=PropertyChanged}" 
-                      MaxHeight="140" 
-                      Background="Transparent"
-                      BorderThickness="0">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="IsHitTestVisible" Value="False"/>
-                        <Setter Property="Focusable" Value="False"/>
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Text}" FontSize="13" FontFamily="Consolas">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="White"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Type}" Value="Command">
-                                            <Setter Property="Foreground" Value="{StaticResource TextInputBrush}"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Type}" Value="Error">
-                                            <Setter Property="Foreground" Value="Red"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Type}" Value="Success">
-                                            <Setter Property="Foreground" Value="LimeGreen"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Type}" Value="Question">
-                                            <Setter Property="Foreground" Value="Yellow"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                <ListView x:Name="TerminalListView"
+                          ItemsSource="{Binding TerminalLines, UpdateSourceTrigger=PropertyChanged}" 
+                          MaxHeight="130" 
+                          Background="Transparent"
+                          BorderThickness="0"
+                          SelectedItem="{Binding NewestLine}" 
+                          SelectionChanged="TerminalListView_SelectionChanged" >
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="IsHitTestVisible" Value="False"/>
+                            <Setter Property="Focusable" Value="False"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <ContentPresenter Margin="{TemplateBinding Padding}" 
+                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Text}" FontSize="13" FontFamily="Consolas">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="White"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Type}" Value="Command">
+                                                <Setter Property="Foreground" Value="{StaticResource TextInputBrush}"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Type}" Value="Error">
+                                                <Setter Property="Foreground" Value="Red"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Type}" Value="Success">
+                                                <Setter Property="Foreground" Value="LimeGreen"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Type}" Value="Question">
+                                                <Setter Property="Foreground" Value="Yellow"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
 
             <StackPanel Orientation="Horizontal">
                 <Label Content="renewable__scada__terminal>"
@@ -81,7 +95,7 @@
                          BorderThickness="0" 
                          FontSize="13" 
                          FontFamily="Consolas"
-                         Width="618"
+                         Width="600"
                          CaretBrush="{StaticResource HeaderBackgroundBrush}">
                     <TextBox.InputBindings>
                         <KeyBinding Key="Enter" Command="{Binding ExecuteTerminalCommand}"/>
