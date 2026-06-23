@@ -60,7 +60,7 @@ namespace NetworkService.ViewModel
             AppDatabase.Instance.PropertyChanged += Database_PropertyChanged;
 
             RemoveFromGridCommand = new MyICommand<int>(OnRemoveFromGrid);
-            DrawModeChangeCommand = new MyICommand(() => DrawMode = !DrawMode);
+            DrawModeChangeCommand = new MyICommand(OnDrawModeChanged);
         }
 
         #region Event subscribers
@@ -123,8 +123,10 @@ namespace NetworkService.ViewModel
                 {
                     if(DrawMode)
                     {
-                        slot.IsSelected = true;
-                        HandleSlotClickInDrawMode(slotIdx);
+                        if (slot.Resource != null)
+                        {
+                            HandleSlotClickInDrawMode(slotIdx);
+                        }
                         return;
                     }
 
@@ -196,6 +198,7 @@ namespace NetworkService.ViewModel
             if (_firstSelectedSlotIdx == -1)
             {
                 _firstSelectedSlotIdx = clickedSlotIdx;
+                Slots[clickedSlotIdx].IsSelected = true;
             }
             else
             {
@@ -208,13 +211,20 @@ namespace NetworkService.ViewModel
                     AppDatabase.Instance.ConnectResourcesOnGrid(_firstSelectedSlotIdx, secondSelectedSlotIdx);
                 }
 
-                ResetDrawState();
+                _firstSelectedSlotIdx = -1;
             }
         }
 
-        private void ResetDrawState()
+        private void OnDrawModeChanged()
         {
-            _firstSelectedSlotIdx = -1;
+            DrawMode = !DrawMode;
+            if (!DrawMode)
+            {
+                foreach (var slot in Slots)
+                {
+                    slot.IsSelected = false;
+                }
+            }
         }
     }
 }
