@@ -55,6 +55,18 @@
     </Window.Resources>
 
     <Grid>
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding DialogViewModel, Converter={StaticResource NullToBoolConverter}}" Value="True">
+                        <Setter Property="Focusable" 
+                                Value="False"/>
+                        <Setter Property="KeyboardNavigation.DirectionalNavigation" 
+                                Value="None"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition/>
@@ -67,20 +79,30 @@
                                         Name="WindowNotificationArea"
                                         Panel.ZIndex="999"/>
 
-        <Grid Background="#A0000000" Grid.RowSpan="3" Panel.ZIndex="1000">
+        <Grid Background="#A0000000" 
+              Grid.RowSpan="3" 
+              Panel.ZIndex="1000">
             <Grid.Style>
                 <Style TargetType="Grid">
                     <Setter Property="Visibility"
-                    Value="Collapsed"/>
+                            Value="Collapsed"/>
+                    <Setter Property="KeyboardNavigation.TabNavigation"
+                            Value="Cycle"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding DialogViewModel, Converter={StaticResource NullToBoolConverter}}" Value="True">
                             <Setter Property="Visibility"
-                            Value="Visible"/>
+                                    Value="Visible"/>
+                            <Setter Property="FocusManager.FocusedElement"
+                                    Value="{Binding ElementName=DialogContainer}"/>
+                            <Setter Property="KeyboardNavigation.DirectionalNavigation" 
+                                    Value="Cycle"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </Grid.Style>
-            <ContentControl Content="{Binding DialogViewModel}"
+            <ContentControl x:Name="DialogContainer"
+                            IsTabStop="False"
+                            Content="{Binding DialogViewModel}"
                             Height="150"
                             Width="250"
                             HorizontalAlignment="Center"
@@ -116,7 +138,7 @@
                     Command="{Binding NavCommand}"
                     CommandParameter="graph"
                     Style="{StaticResource NavigationButtonStyle}"/>
-            
+
             <Button Grid.Column="4"
                     Content="Undo"
                     IsTabStop="False"

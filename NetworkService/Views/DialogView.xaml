@@ -19,9 +19,8 @@
                         Value="{Binding ElementName=ConfirmButton}"/>
             </Style>
         </Border.Style>
-    <Grid>
-
-        <Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
             <RowDefinition Height="0.8*"/>
             <RowDefinition Height="2*"/>
             <RowDefinition/>
@@ -45,6 +44,11 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="KeyboardNavigation.DirectionalNavigation" Value="Continue"/>
+                    </Style>
+                </Grid.Style>
 
                 <Button Content="Confirm"
                         Name="ConfirmButton"
