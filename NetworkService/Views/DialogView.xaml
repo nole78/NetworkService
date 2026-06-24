@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="NetworkService.Views.ConfirmActionView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NetworkService.Views"
+             xmlns:viewmodels="clr-namespace:NetworkService.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="250">
+
+    <Border CornerRadius="5" 
+            Background="{StaticResource BackgroundBrush}"
+            BorderThickness="2"
+            BorderBrush="{StaticResource BorderBrush}">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <Label Content="Confirmation"
+               Grid.Column="1"
+               Style="{StaticResource HeaderLabelStyle}"/>
+
+        <TextBlock Grid.Row="1"
+                   Margin="5"
+                   TextWrapping="WrapWithOverflow"
+                   Text="{Binding Message}"/>
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button Content="Confirm"
+                        Style="{StaticResource ConfirmButtonStyle}"
+                        Background="{StaticResource BorderBrush}"
+                        Foreground="White"
+                        Command="{Binding ResponseCommand}"
+                        CommandParameter="True"/>
+                <Button Content="Cancel"
+                        Grid.Column="1"
+                        Style="{StaticResource  CancelButtonStyle}"
+                        Command="{Binding ResponseCommand}"
+                        CommandParameter="False"/>
+            </Grid>
+    </Grid>
+    </Border>
+
+</UserControl>

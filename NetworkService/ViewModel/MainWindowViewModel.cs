@@ -19,6 +19,7 @@ namespace NetworkService.ViewModel
         public NetworkEntitiesViewModel networkEntitiesViewModel;
         public NetworkDisplayViewModel networkDisplayViewModel;
         public MeasurementGraphViewModel measurementGraphViewModel;
+        private object _dialogViewModel;
         private BindableBase _currentViewModel;
         private BindableBase _prevViewModel;
         private readonly LoggerService _logger;
@@ -34,6 +35,11 @@ namespace NetworkService.ViewModel
                 SetProperty(ref _currentViewModel, value);
                 NavCommand.RaiseCanExecuteChanged();
             }
+        }
+        public object DialogViewModel
+        {
+            get => _dialogViewModel;
+            set => SetProperty(ref _dialogViewModel, value);
         }
         public MyICommand<string> NavCommand { get; private set; }
         public MyICommand UndoCommand { get; private set; }
@@ -197,6 +203,17 @@ namespace NetworkService.ViewModel
         private void ShowToastNotification(NotificationContent notificationContent)
         {
             _notificationManager.Show(notificationContent, "WindowNotificationArea");
+        }
+
+        public async Task<bool> ShowConfirmDialog(string message)
+        {
+            var dialogVM = new DialogViewModel(message);
+            DialogViewModel = dialogVM;
+
+            bool result = await dialogVM.DialogTask;
+
+            DialogViewModel = null;
+            return result;
         }
     }
 }

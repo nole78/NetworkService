@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:NetworkService"
         xmlns:views="clr-namespace:NetworkService.Views"
         xmlns:viewmodels="clr-namespace:NetworkService.ViewModel"
+        xmlns:converters="clr-namespace:NetworkService.Converters"
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:notifications="clr-namespace:Notification.Wpf.Controls;assembly=Notification.Wpf"
         mc:Ignorable="d"
@@ -46,8 +47,13 @@
         <DataTemplate DataType="{x:Type viewmodels:NetworkEntitiesViewModel}">
             <views:NetworkEntitiesView/>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:DialogViewModel}">
+            <views:ConfirmActionView/>
+        </DataTemplate>
+        <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
     </Window.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -59,7 +65,27 @@
                                         Position="TopRight"
                                         Grid.RowSpan="2"
                                         Name="WindowNotificationArea"
-                                        Panel.ZIndex="1000"/>
+                                        Panel.ZIndex="999"/>
+
+        <Grid Background="#A0000000" Grid.RowSpan="3" Panel.ZIndex="1000">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Visibility"
+                    Value="Collapsed"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding DialogViewModel, Converter={StaticResource NullToBoolConverter}}" Value="True">
+                            <Setter Property="Visibility"
+                            Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <ContentControl Content="{Binding DialogViewModel}"
+                            Height="150"
+                            Width="250"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+        </Grid>
 
         <Grid Background="{StaticResource HeaderBackgroundBrush}">
             <Grid.ColumnDefinitions>

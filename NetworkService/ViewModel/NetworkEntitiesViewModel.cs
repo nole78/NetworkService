@@ -104,28 +104,37 @@ namespace NetworkService.ViewModel
         }
 
         #region Command Implementations
-        public void OnCreateCommand()
+        public async void OnCreateCommand()
         {
             CreateEnergyResource.Validate();
             if(CreateEnergyResource.IsValid)
             {
-                DistributedEnergyResource newResource = new DistributedEnergyResource(0, CreateEnergyResource.Name, CreateEnergyResource.Type, null);
-                AppDatabase.Instance.AddResource(newResource);
+                var canCreate = await GetApproval($"Are you sure you want to create resource  {CreateEnergyResource.Name}?");
+                if (canCreate)
+                {
 
+                    DistributedEnergyResource newResource = new DistributedEnergyResource(0, CreateEnergyResource.Name, CreateEnergyResource.Type, null);
+                    AppDatabase.Instance.AddResource(newResource);
 
-                CreateEnergyResource.Name = "";
-                CreateEnergyResource.Type = null;
+                    CreateEnergyResource.Name = "";
+                    CreateEnergyResource.Type = null;
+                }
             }
             else
             {
                 AppDatabase.Instance.ActionFailiure("Faield to add resource.");
             }
         }
-        public void OnDeleteCommand()
+        public async void OnDeleteCommand()
         {
             if(SelectedResource != null)
             {
-                AppDatabase.Instance.RemoveResource(SelectedResource.Id);
+                var canDelete = await GetApproval($"Are you sure you want to delete resoruce {SelectedResource.Name}?");
+
+                if (canDelete)
+                {
+                    AppDatabase.Instance.RemoveResource(SelectedResource.Id);
+                }
             }
         }
 
@@ -145,5 +154,12 @@ namespace NetworkService.ViewModel
 
         private bool CanClearSearch() => FilterActive;
         #endregion
+
+        private async Task<bool> GetApproval(string message)
+        {
+            var mainVM = App.Current.MainWindow.DataContext as MainWindowViewModel;
+
+            return await mainVM.ShowConfirmDialog(message);
+        }
     }
 }
