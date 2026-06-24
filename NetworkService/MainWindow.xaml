@@ -28,11 +28,11 @@
                     Modifiers="Ctrl"
                     Command="{Binding CloseCommand}"/>
         <KeyBinding Key="Left"
-                    Modifiers="Ctrl"
+                    Modifiers="Alt"
                     Command="{Binding NavDirectionCommand}"
                     CommandParameter="left"/>
         <KeyBinding Key="Right"
-                    Modifiers="Ctrl"
+                    Modifiers="Alt"
                     Command="{Binding NavDirectionCommand}"
                     CommandParameter="right"/>
     </Window.InputBindings>
