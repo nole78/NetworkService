@@ -15,6 +15,26 @@
     <Window.DataContext>
         <viewmodels:MainWindowViewModel/>
     </Window.DataContext>
+
+    <Window.InputBindings>
+        <KeyBinding Key="Z"
+                    Modifiers="Ctrl"
+                    Command="{Binding UndoCommand}"/>
+        <KeyBinding Key="Tab"
+                    Modifiers="Ctrl"
+                    Command="{Binding NavPrevCommand}"/>
+        <KeyBinding Key="Delete"
+                    Modifiers="Ctrl"
+                    Command="{Binding CloseCommand}"/>
+        <KeyBinding Key="Left"
+                    Modifiers="Ctrl"
+                    Command="{Binding NavDirectionCommand}"
+                    CommandParameter="left"/>
+        <KeyBinding Key="Right"
+                    Modifiers="Ctrl"
+                    Command="{Binding NavDirectionCommand}"
+                    CommandParameter="right"/>
+    </Window.InputBindings>
     
     <Window.Resources>
         <DataTemplate DataType="{x:Type viewmodels:MeasurementGraphViewModel}">
@@ -35,6 +55,7 @@
             <RowDefinition Height="180"/>
         </Grid.RowDefinitions>
         <notifications:NotificationArea MaxItems="3"
+                                        IsTabStop="False"
                                         Position="TopRight"
                                         Grid.RowSpan="2"
                                         Name="WindowNotificationArea"
@@ -72,16 +93,21 @@
             
             <Button Grid.Column="4"
                     Content="Undo"
+                    IsTabStop="False"
                     Command="{Binding UndoCommand}"
                     Style="{StaticResource ConfirmButtonStyle}"/>
 
             <Button Grid.Column="5"
                     Content="Close"
+                    IsTabStop="False"
                     Style="{StaticResource CancelButtonStyle}"
                     Command="{Binding CloseCommand}"/>
 
         </Grid>
-        <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}"/>
-        <views:TerminalView Grid.Row="2"/>
+        <ContentControl Grid.Row="1" 
+                        Content="{Binding CurrentViewModel}"
+                        IsTabStop="False"/>
+        <views:TerminalView Grid.Row="2"
+                            IsTabStop="False"/>
     </Grid>
 </Window>

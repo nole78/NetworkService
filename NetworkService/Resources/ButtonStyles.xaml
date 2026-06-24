@@ -48,6 +48,10 @@
                 <Setter Property="Foreground"
                         Value="Black"/>
             </Trigger>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter Property="BorderBrush"
+                        Value="{StaticResource SelectedBorderBrush}"/>
+            </Trigger>
         </Style.Triggers>
     </Style>
 
@@ -98,6 +102,8 @@
     </Style>
 
     <Style TargetType="Button" x:Key="NavigationButtonStyle">
+        <Setter Property="IsTabStop"
+                Value="False"/>
         <Setter Property="FontWeight"
             Value="Bold"/>
         <Setter Property="FontSize"
@@ -156,6 +162,19 @@
                 Value="Calibri"/>
         <Setter Property="Foreground"
                 Value="{StaticResource BorderBrush}"/>
+        <Setter Property="BorderBrush"
+                Value="{StaticResource BorderBrush}"/>
+        <Setter Property="BorderThickness"
+                Value="2"/>
+        <Setter Property="Background"
+                Value="{StaticResource InputBackgroundBrush}"/>
+        <Style.Triggers>
+            <Trigger Property="IsFocused"
+                     Value="True">
+                <Setter Property="BorderBrush"
+                        Value="{StaticResource  SelectedBorderBrush}"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>

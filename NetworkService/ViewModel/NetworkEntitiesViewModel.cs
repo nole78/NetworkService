@@ -103,6 +103,7 @@ namespace NetworkService.ViewModel
             return false;
         }
 
+        #region Command Implementations
         public void OnCreateCommand()
         {
             CreateEnergyResource.Validate();
@@ -143,5 +144,6 @@ namespace NetworkService.ViewModel
         }
 
         private bool CanClearSearch() => FilterActive;
+        #endregion
     }
 }

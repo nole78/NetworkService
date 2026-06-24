@@ -95,10 +95,10 @@
                 Value="False"/>
         <Setter Property="CanUserDeleteRows"
                 Value="False"/>
-        <Setter Property="Margin"
-                Value="0 0 5 5"/>
         <Setter Property="HeadersVisibility"
                 Value="Column"/>
+        <Setter Property="Margin"
+                Value="0 0 5 5"/>
         <Setter Property="Background"
                 Value="{StaticResource BackgroundBrush}"/>
         <Setter Property="BorderBrush"
@@ -107,6 +107,16 @@
                 Value="2"/>
         <Setter Property="FontFamily"
                 Value="Calibri"/>
+        <Setter Property="SelectionUnit" 
+                Value="FullRow"/>
+        <Setter Property="SelectionMode" 
+                Value="Single"/>
+        <Setter Property="KeyboardNavigation.TabNavigation" 
+                Value="Once"/>
+        <Setter Property="Focusable"
+                Value="False"/>
+        <Setter Property="IsTabStop"
+                Value="False"/>
         <Setter Property="FontSize"
                 Value="16"/>
         <Setter Property="ColumnHeaderStyle">
@@ -127,6 +137,23 @@
                 </Style>
             </Setter.Value>
         </Setter>
+        <Setter Property="RowStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Focusable"
+                            Value="True"/>
+                    <Setter Property="IsTabStop"
+                            Value="True"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsFocused"
+                                 Value="True">
+                            <Setter Property="IsSelected"
+                                    Value="True"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>
         <Setter Property="CellStyle">
             <Setter.Value>
                 <Style TargetType="DataGridCell">
@@ -135,6 +162,8 @@
                     <Setter Property="Foreground"
                             Value="Black"/>
                     <Setter Property="IsTabStop"
+                            Value="False"/>
+                    <Setter Property="Focusable"
                             Value="False"/>
                     <Style.Triggers>
                         <Trigger Property="IsSelected" 
@@ -148,6 +177,13 @@
                 </Style>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsFocused"
+                     Value="True">
+                <Setter Property="BorderBrush"
+                        Value="{StaticResource SelectedBorderBrush}"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>

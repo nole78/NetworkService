@@ -20,6 +20,7 @@ namespace NetworkService.ViewModel
         public NetworkDisplayViewModel networkDisplayViewModel;
         public MeasurementGraphViewModel measurementGraphViewModel;
         private BindableBase _currentViewModel;
+        private BindableBase _prevViewModel;
         private readonly LoggerService _logger;
         private readonly MeasurementProcessingService _processor;
         private readonly NotificationManager _notificationManager;
@@ -37,12 +38,16 @@ namespace NetworkService.ViewModel
         public MyICommand<string> NavCommand { get; private set; }
         public MyICommand UndoCommand { get; private set; }
         public MyICommand CloseCommand { get; private set; }
+        public MyICommand NavPrevCommand {  get; private set; }
+        public MyICommand<string> NavDirectionCommand { get; private set; }
         #endregion
         public MainWindowViewModel()
         {
             NavCommand = new MyICommand<string>(OnNavCommand, CanNavigate);
             UndoCommand = new MyICommand(OnUndoCommand, CanUndo);
             CloseCommand = new MyICommand(() => Application.Current.Shutdown());
+            NavPrevCommand = new MyICommand(OnNavPrevCommand);
+            NavDirectionCommand = new MyICommand<string>(OnNavDirectionCommand);
 
             AppDatabase.Instance.PropertyChanged += (sender, e) =>
             {
@@ -119,6 +124,7 @@ namespace NetworkService.ViewModel
         #region Commands Implementation
         private void OnNavCommand(string destination)
         {
+            _prevViewModel = CurrentViewModel;
             switch (destination) 
             {
                 case "entity":
@@ -129,6 +135,38 @@ namespace NetworkService.ViewModel
                     break;
                 case "display":
                     CurrentViewModel = networkDisplayViewModel;
+                    break;
+            }
+        }
+
+        private void OnNavPrevCommand()
+        {
+            if(_prevViewModel != null)
+            {
+                (CurrentViewModel, _prevViewModel) = (_prevViewModel, CurrentViewModel);
+            }
+        }
+
+        private void OnNavDirectionCommand(string direction)
+        {
+            
+            switch (direction)
+            {
+                case "left":
+                    {
+                        if (CurrentViewModel == networkDisplayViewModel) 
+                            CurrentViewModel = networkEntitiesViewModel;
+                        else if (CurrentViewModel == measurementGraphViewModel)
+                            CurrentViewModel = networkDisplayViewModel;
+                    }
+                    break;
+                case "right":
+                    {
+                        if (CurrentViewModel == networkEntitiesViewModel)
+                            CurrentViewModel = networkDisplayViewModel;
+                        else if (CurrentViewModel == networkDisplayViewModel)
+                            CurrentViewModel = measurementGraphViewModel;
+                    }
                     break;
             }
         }
