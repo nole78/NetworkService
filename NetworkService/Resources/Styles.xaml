@@ -75,7 +75,7 @@
     </Style>
 
 
-    <Style TargetType="TreeView">
+    <Style TargetType="TreeView" x:Key="TreeViewStyle">
         <Setter Property="Background"
                 Value="{StaticResource BackgroundBrush}"/>
         <Setter Property="BorderBrush"

@@ -176,14 +176,41 @@
             <RowDefinition Height="8*"/>
         </Grid.RowDefinitions>
 
-        <Label Style="{StaticResource  HeaderLabelStyle}"
-           Content="Resources"
-           HorizontalAlignment="Left"
-           Margin="5 0 0 0"/>
+        <Label Content="Resources"
+               HorizontalAlignment="Left"
+               Margin="5 0 0 0">
+            <Label.Style>
+                <Style TargetType="Label" BasedOn="{StaticResource HeaderLabelStyle}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding DrawMode}" Value="True">
+                            <Setter Property="Opacity"
+                                Value="0.4"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Label.Style>
+        </Label>
+        
         <TreeView Grid.Row="1" 
                   Margin="5"
                   ItemsSource="{Binding TreeViewNodes}"
                   Cursor="Arrow">
+            <TreeView.Style>
+                <Style TargetType="TreeView" BasedOn="{StaticResource TreeViewStyle}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding DataContext.DrawMode, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                            <Setter Property="Cursor"
+                                    Value="No"/>
+                            <Setter Property="IsTabStop"
+                                    Value="False"/>
+                            <Setter Property="Opacity"
+                                    Value="0.4"/>
+                            <Setter Property="IsEnabled"
+                                    Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TreeView.Style>
             <behaviors:Interaction.Triggers>
                 <behaviors:EventTrigger EventName="SelectedItemChanged">
                     <behaviors:CallMethodAction TargetObject="{Binding}"
@@ -197,24 +224,12 @@
                     <TextBlock FontWeight="SemiBold" Text="{Binding TypeName}"/>
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type model:DistributedEnergyResource}">
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Cursor="Hand">
                         <TextBlock Text="{Binding Id, StringFormat='#{0} '}"
                                    Foreground="White"
                                    FontWeight="ExtraBold"/>
                         <TextBlock Text="{Binding Name}"
                                    FontWeight="Bold"/>
-                        <StackPanel.Style>
-                            <Style TargetType="StackPanel">
-                                <Setter Property="Cursor"
-                                        Value="Hand"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding DataContext.DrawMode, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
-                                        <Setter Property="Cursor"
-                                                Value="No"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </StackPanel.Style>
                     </StackPanel>
                 </DataTemplate>
             </TreeView.Resources>
@@ -244,6 +259,7 @@
             <Button Grid.Column="1"
                     HorizontalAlignment="Right"
                     Margin="0 0 5 0"
+                    TabIndex="0"
                     Command="{Binding DrawModeChangeCommand}">
                 <Button.Style>
                     <Style TargetType="Button" BasedOn="{StaticResource ConfirmButtonStyle}">
@@ -278,7 +294,11 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <ItemsControl ItemsSource="{Binding Connections}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Grid.ColumnSpan="4" Panel.ZIndex="2" IsHitTestVisible="False">
+            <ItemsControl ItemsSource="{Binding Connections}" 
+                          Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Grid.ColumnSpan="4" 
+                          Panel.ZIndex="2" 
+                          IsHitTestVisible="False"
+                          IsTabStop="False">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Canvas Name="LineCanvas" IsItemsHost="True" Background="Transparent"/>

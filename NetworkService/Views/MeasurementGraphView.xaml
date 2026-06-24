@@ -92,7 +92,7 @@
 
         <Canvas Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="5" 
                 Background="{StaticResource BackgroundBrush}"
-                Name="GraphCanvas">
+                Name="GraphCanvas" >
 
             <Line Stroke="Black" StrokeThickness="2" Panel.ZIndex="1"
                   X1="{Binding (Canvas.Left), ElementName=Circle1, Converter={StaticResource AddValueConverter}, ConverterParameter=15}"
@@ -157,7 +157,7 @@
                     <Style  TargetType="Line">
                         <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Nodes[3].IsVisible}" Value="False">
+                            <DataTrigger Binding="{Binding Nodes[4].IsVisible}" Value="False">
                                 <Setter Property="Visibility"
                             Value="Collapsed"/>
                             </DataTrigger>
@@ -168,19 +168,24 @@
 
             <ContentControl Template="{StaticResource GraphNode}" Content="{Binding Nodes[0]}" Name="Circle1" 
                             Canvas.Left="40" Canvas.Top="{Binding Nodes[0].Position}"
-                            Panel.ZIndex="2"/>
+                            Panel.ZIndex="2"
+                            IsTabStop="False"/>
             <ContentControl Template="{StaticResource GraphNode}" Content="{Binding Nodes[1]}" Name="Circle2" 
                             Canvas.Left="150" Canvas.Top="{Binding Nodes[1].Position}"
-                            Panel.ZIndex="2"/>
+                            Panel.ZIndex="2"
+                            IsTabStop="False"/>
             <ContentControl Template="{StaticResource GraphNode}" Content="{Binding Nodes[2]}" Name="Circle3" 
                             Canvas.Left="260" Canvas.Top="{Binding Nodes[2].Position}"
-                            Panel.ZIndex="2"/>
+                            Panel.ZIndex="2"
+                            IsTabStop="False"/>
             <ContentControl Template="{StaticResource GraphNode}" Content="{Binding Nodes[3]}" Name="Circle4" 
                             Canvas.Left="370" Canvas.Top="{Binding Nodes[3].Position}"
-                            Panel.ZIndex="2"/>
+                            Panel.ZIndex="2"
+                            IsTabStop="False"/>
             <ContentControl Template="{StaticResource GraphNode}" Content="{Binding Nodes[4]}" Name="Circle5" 
                             Canvas.Left="480" Canvas.Top="{Binding Nodes[3].Position}"
-                            Panel.ZIndex="2"/>
+                            Panel.ZIndex="2"
+                            IsTabStop="False"/>
 
             <Line X1="110" Y1="0" X2="110" Y2="{Binding ActualHeight, ElementName=GraphCanvas}" Stroke="{StaticResource BorderBrush}" Panel.ZIndex="0"/>
             <Line X1="220" Y1="0" X2="220" Y2="{Binding ActualHeight, ElementName=GraphCanvas}" Stroke="{StaticResource BorderBrush}" Panel.ZIndex="0"/>
@@ -189,7 +194,7 @@
             
             <Label Canvas.Bottom="0" Content="{Binding Times[0]}" Canvas.Left="40"
                    Foreground="{StaticResource BorderBrush}"
-                   FontWeight="Bold"/>
+                   FontWeight="Bold" />
             
             <Label Canvas.Bottom="0" Content="{Binding Times[1]}" Canvas.Left="150"
                    Foreground="{StaticResource BorderBrush}"

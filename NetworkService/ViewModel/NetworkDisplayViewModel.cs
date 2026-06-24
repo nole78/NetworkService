@@ -133,9 +133,12 @@ namespace NetworkService.ViewModel
                         return;
                     }
 
-                    SelectedResource = slot.Resource;
-                    _sourceSlotIdx = slotIdx;
-                    DragDrop.DoDragDrop((DependencyObject)sender, slot.Resource, DragDropEffects.Move);
+                    if (slot.Resource != null)
+                    {
+                        SelectedResource = slot.Resource;
+                        _sourceSlotIdx = slotIdx;
+                        DragDrop.DoDragDrop((DependencyObject)sender, slot.Resource, DragDropEffects.Move);
+                    }
                 }
             }
         }
