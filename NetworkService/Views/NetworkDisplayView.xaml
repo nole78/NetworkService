@@ -113,6 +113,24 @@
                             <ImageBrush ImageSource="{Binding Content.Resource.Type.ImagePath, RelativeSource={RelativeSource TemplatedParent}}"/>
                         </Canvas.Background>
                     </Canvas>
+                    <Canvas Panel.ZIndex="1"
+                            Width="50"
+                            ToolTip="Area to drag and drop resource in"
+                            Height="50">
+                        <Canvas.Style>
+                            <Style TargetType="Canvas">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Content.Resource, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullToBoolConverter}}" Value="True" >
+                                        <Setter Property="Visibility"
+                                                Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Canvas.Style>
+                        <Canvas.Background>
+                            <ImageBrush ImageSource="/Assets/drop_here.png"/>
+                        </Canvas.Background>
+                    </Canvas>
 
                     <Grid Grid.Row="1" 
                           Panel.ZIndex="10">
@@ -274,6 +292,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
             <Label Content="Network"
@@ -292,8 +311,38 @@
             </Label>
 
             <Button Grid.Column="1"
+                    Width="120"
+                    ToolTip="Press Esc to exit"
+                    Height="35"
+                    Command="{Binding CancelSelectionCommand}">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource ConfirmButtonStyle}">
+                        <Setter Property="Visibility"
+                                Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsSelectingSlotMode}" Value="True">
+                                <Setter Property="Visibility"
+                                        Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Background>
+                    <SolidColorBrush Color="#FFE8BF21" Opacity="0.4"/>
+                </Button.Background>
+                <TextBlock Text="Selection Mode"
+                       Foreground="DarkOrange"
+                       FontFamily="Calibri"
+                       FontSize="16"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center">
+                </TextBlock>
+            </Button>
+
+            <Button Grid.Column="2"
                     HorizontalAlignment="Right"
                     Margin="0 0 5 0"
+                    ToolTip="Turn Drawing mode on"
                     TabIndex="0"
                     Command="{Binding DrawModeChangeCommand}">
                 <Button.Style>

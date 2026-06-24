@@ -190,7 +190,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Assets\drop_here.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\solar panel.png" />
     <Resource Include="Assets\wind generator.png" />
