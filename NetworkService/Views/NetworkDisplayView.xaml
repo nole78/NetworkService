@@ -10,11 +10,24 @@
              xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:converters="clr-namespace:NetworkService.Converters"
              mc:Ignorable="d" 
+             x:Name="RootView"
              d:DesignHeight="400" d:DesignWidth="800">
     <UserControl.DataContext>
         <viewmodels:NetworkDisplayViewModel/>
     </UserControl.DataContext>
-    
+
+    <UserControl.InputBindings>
+        <KeyBinding Key="Enter" Command="{Binding EnterCommand}"
+                    CommandParameter="{Binding ElementName=FirstSlot}"/>
+        
+        <KeyBinding Key="Escape" Command="{Binding CancelSelectionCommand}"/>
+
+        <KeyBinding Key="Up" Command="{Binding MoveFocusCommand}" CommandParameter="Up"/>
+        <KeyBinding Key="Down" Command="{Binding MoveFocusCommand}" CommandParameter="Down"/>
+        <KeyBinding Key="Left" Command="{Binding MoveFocusCommand}" CommandParameter="Left"/>
+        <KeyBinding Key="Right" Command="{Binding MoveFocusCommand}" CommandParameter="Right"/>
+    </UserControl.InputBindings>
+
     <UserControl.Resources>
         <converters:SlotToPositionConverter x:Key="SlotToPositionConverter"/>
         <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
@@ -35,6 +48,10 @@
                                         Value="{StaticResource SelectedBorderBrush}"/>
                                 <Setter Property="BorderThickness"
                                         Value="4"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Content.IsKeyboardFocused, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                                <Setter Property="BorderBrush" Value="Orange"/>
+                                <Setter Property="BorderThickness" Value="3"/>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding DataContext.DrawMode, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
                                 <Setter Property="Cursor"
@@ -190,11 +207,20 @@
                 </Style>
             </Label.Style>
         </Label>
-        
+
         <TreeView Grid.Row="1" 
                   Margin="5"
                   ItemsSource="{Binding TreeViewNodes}"
                   Cursor="Arrow">
+
+            <behaviors:Interaction.Triggers>
+                <behaviors:EventTrigger EventName="SelectedItemChanged">
+                    <behaviors:ChangePropertyAction TargetObject="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                            PropertyName="SelectedTreeResource" 
+                                            Value="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=TreeView}}"/>
+                </behaviors:EventTrigger>
+            </behaviors:Interaction.Triggers>
+            
             <TreeView.Style>
                 <Style TargetType="TreeView" BasedOn="{StaticResource TreeViewStyle}">
                     <Style.Triggers>
@@ -208,16 +234,17 @@
                             <Setter Property="IsEnabled"
                                     Value="False"/>
                         </DataTrigger>
+                        <DataTrigger Binding="{Binding DataContext.IsSelectingSlotMode, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="True">
+                            <Setter Property="Focusable" 
+                                    Value="False"/>
+                            <Setter Property="IsTabStop" 
+                                    Value="False"/>
+                            <Setter Property="KeyboardNavigation.DirectionalNavigation" Value="None"/>
+                        </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </TreeView.Style>
-            <behaviors:Interaction.Triggers>
-                <behaviors:EventTrigger EventName="SelectedItemChanged">
-                    <behaviors:CallMethodAction TargetObject="{Binding}"
-                                                MethodName="OnDragStart"/>
-                </behaviors:EventTrigger>
-            </behaviors:Interaction.Triggers>
-            
+
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type viewmodels:TreeViewTypeGroup}"
                                           ItemsSource="{Binding Resources}">
@@ -225,6 +252,14 @@
                 </HierarchicalDataTemplate>
                 <DataTemplate DataType="{x:Type model:DistributedEnergyResource}">
                     <StackPanel Orientation="Horizontal" Cursor="Hand">
+
+                        <behaviors:Interaction.Triggers>
+                            <behaviors:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <behaviors:CallMethodAction TargetObject="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                            MethodName="OnDragStart"/>
+                            </behaviors:EventTrigger>
+                        </behaviors:Interaction.Triggers>
+
                         <TextBlock Text="{Binding Id, StringFormat='#{0} '}"
                                    Foreground="White"
                                    FontWeight="ExtraBold"/>
@@ -343,7 +378,8 @@
             <ContentControl Template="{StaticResource Node}"
                             Content="{Binding Slots[0]}"
                             AllowDrop="True"
-                            Tag="0"/>
+                            Tag="0"
+                            Name="FirstSlot"/>
 
             <ContentControl Template="{StaticResource Node}" Grid.Column="1"
                             Content="{Binding Slots[1]}"

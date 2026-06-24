@@ -24,11 +24,16 @@ namespace NetworkService.ViewModel
     }
     public class NetworkDisplayViewModel : BindableBase
     {
+        private const int COLUMNS = 4;
+        private const int TOTAL_SLOTS = 12;
         private List<TreeViewTypeGroup> _treeViewNodes;
         private DistributedEnergyResource _selectedResource;
+        private object _selectedTreeResource;
         private int _sourceSlotIdx = -1;
         private bool _drawMode = false;
         private int _firstSelectedSlotIdx = -1;
+        private int _focusedSlotIdx = -1;
+        private bool _isSelectingSlotMode = false;
 
         #region Properties
         public List<TreeViewTypeGroup> TreeViewNodes 
@@ -41,13 +46,27 @@ namespace NetworkService.ViewModel
             get => _selectedResource;
             set => SetProperty(ref _selectedResource, value);
         }
+        public object SelectedTreeResource
+        {
+            get => _selectedTreeResource;
+            set => SetProperty(ref _selectedTreeResource, value);
+        }
         public bool DrawMode
         {
             get => _drawMode;
             set => SetProperty(ref _drawMode, value);
         }
+        public bool IsSelectingSlotMode
+        {
+            get => _isSelectingSlotMode;
+            set => SetProperty(ref _isSelectingSlotMode, value);
+        }
         public MyICommand<int> RemoveFromGridCommand { get; set; }
         public MyICommand DrawModeChangeCommand { get; set; }
+        public MyICommand<object> EnterCommand { get; set; }
+        public MyICommand<string> MoveFocusCommand { get; set; }
+        public MyICommand CancelSelectionCommand { get; set; }
+
         public GridSlot[] Slots { get => AppDatabase.Instance.GridSlots; }
         public ObservableCollection<LineConnection> Connections { get => AppDatabase.Instance.Connections; }
         #endregion
@@ -61,6 +80,9 @@ namespace NetworkService.ViewModel
 
             RemoveFromGridCommand = new MyICommand<int>(OnRemoveFromGrid);
             DrawModeChangeCommand = new MyICommand(OnDrawModeChanged);
+            EnterCommand = new MyICommand<object>(OnEnter);
+            MoveFocusCommand = new MyICommand<string>(OnMoveFocus);
+            CancelSelectionCommand = new MyICommand(OnCancelSelection);
         }
 
         #region Event subscribers
@@ -93,15 +115,16 @@ namespace NetworkService.ViewModel
         }
 
         #region DragAndDrop Events
-        public void OnDragStart(object sender, RoutedPropertyChangedEventArgs<object> e)
+        public void OnDragStart(object sender, EventArgs e)
         {
             if (DrawMode)
                 return;
 
-            if (e.NewValue is DistributedEnergyResource resource)
+            if (sender is FrameworkElement element && element.DataContext is DistributedEnergyResource resource)
             {
                 SelectedResource = resource;
-                DragDrop.DoDragDrop((DependencyObject)sender, resource, DragDropEffects.Move);
+
+                DragDrop.DoDragDrop(element, resource, DragDropEffects.Move);
             }
         }
 
@@ -223,6 +246,7 @@ namespace NetworkService.ViewModel
                 _firstSelectedSlotIdx = -1;
             }
         }
+        #region Commands Implementation
 
         private void OnDrawModeChanged()
         {
@@ -235,5 +259,81 @@ namespace NetworkService.ViewModel
                 }
             }
         }
+
+        private void OnEnter(object parameter)
+        {
+            if (!IsSelectingSlotMode)
+            {
+                if (SelectedTreeResource is DistributedEnergyResource resource)
+                {
+                    SelectedResource = resource;
+
+                    IsSelectingSlotMode = true;
+                    _focusedSlotIdx = 0;
+                    Slots[_focusedSlotIdx].IsKeyboardFocused = true;
+
+                    if (parameter is FrameworkElement rootElement)
+                    {
+                        // 1. Prebacujemo fizički fokus tastature na UserControl
+                        rootElement.Focus();
+                        Keyboard.Focus(rootElement);
+
+                        // 2. Postavljamo logički fokus u trenutnom FocusScope-u na taj isti element
+                        var focusScope = FocusManager.GetFocusScope(rootElement);
+                        FocusManager.SetFocusedElement(focusScope, rootElement);
+                    }
+                }
+            }
+            else
+            {
+                if (SelectedResource != null)
+                {
+                    AppDatabase.Instance.PlaceResourceOnGrid(SelectedResource, _focusedSlotIdx);
+                }
+                OnCancelSelection();
+            }
+        }
+        private void OnCancelSelection()
+        {
+            IsSelectingSlotMode = false;
+
+            foreach (var slot in Slots)
+            {
+                slot.IsKeyboardFocused = false;
+            }
+            _focusedSlotIdx = -1;
+        }
+        private void OnMoveFocus(string direction)
+        {
+            if (!_isSelectingSlotMode) return;
+
+            Slots[_focusedSlotIdx].IsKeyboardFocused = false;
+
+            switch (direction)
+            {
+                case "Up":
+                    if (_focusedSlotIdx - COLUMNS >= 0)
+                        _focusedSlotIdx -= COLUMNS;
+                    break;
+
+                case "Down":
+                    if (_focusedSlotIdx + COLUMNS < TOTAL_SLOTS)
+                        _focusedSlotIdx += COLUMNS;
+                    break;
+
+                case "Left":
+                    if (_focusedSlotIdx % COLUMNS != 0)
+                        _focusedSlotIdx--;
+                    break;
+
+                case "Right":
+                    if ((_focusedSlotIdx + 1) % COLUMNS != 0)
+                        _focusedSlotIdx++;
+                    break;
+            }
+
+            Slots[_focusedSlotIdx].IsKeyboardFocused = true;
+        }
+        #endregion
     }
 }

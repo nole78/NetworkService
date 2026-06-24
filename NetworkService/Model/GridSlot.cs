@@ -10,6 +10,7 @@ namespace NetworkService.Model
     {
         private DistributedEnergyResource _resource = null;
         private bool _isSelected = false;
+        private bool _isKeyboardFocused = false;
 
         #region Properties
         public DistributedEnergyResource Resource
@@ -21,6 +22,11 @@ namespace NetworkService.Model
         {
             get => _isSelected;
             set => SetProperty(ref _isSelected, value);
+        }
+        public bool IsKeyboardFocused
+        {
+            get => _isKeyboardFocused;
+            set => SetProperty(ref _isKeyboardFocused, value);
         }
         #endregion
         public GridSlot(){}
