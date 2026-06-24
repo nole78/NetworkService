@@ -6,12 +6,19 @@
              xmlns:local="clr-namespace:NetworkService.Views"
              xmlns:viewmodels="clr-namespace:NetworkService.ViewModel"
              mc:Ignorable="d" 
+             IsTabStop="False"
              d:DesignHeight="150" d:DesignWidth="250">
 
-    <Border CornerRadius="5" 
+    <Border CornerRadius="5"
             Background="{StaticResource BackgroundBrush}"
             BorderThickness="2"
             BorderBrush="{StaticResource BorderBrush}">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Setter Property="FocusManager.FocusedElement"
+                        Value="{Binding ElementName=ConfirmButton}"/>
+            </Style>
+        </Border.Style>
     <Grid>
 
         <Grid.RowDefinitions>
@@ -40,11 +47,14 @@
                 </Grid.ColumnDefinitions>
 
                 <Button Content="Confirm"
+                        Name="ConfirmButton"
                         Style="{StaticResource ConfirmButtonStyle}"
                         Background="{StaticResource BorderBrush}"
                         Foreground="White"
+                        IsDefault="True"
                         Command="{Binding ResponseCommand}"
                         CommandParameter="True"/>
+                
                 <Button Content="Cancel"
                         Grid.Column="1"
                         Style="{StaticResource  CancelButtonStyle}"
