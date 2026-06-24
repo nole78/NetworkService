@@ -86,6 +86,34 @@
                 Value="Calibri"/>
         <Setter Property="FontSize"
                 Value="16"/>
+        <Setter Property="KeyboardNavigation.TabNavigation" 
+                Value="Once"/>
+        <Setter Property="Focusable"
+                Value="False"/>
+        <Setter Property="IsTabStop"
+                Value="False"/>
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="TreeViewItem">
+                    <Setter Property="IsTabStop"
+                            Value="True"/>
+                    <Style.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" 
+                                     Color="{StaticResource Color1}"/>
+
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" 
+                                     Color="White"/>
+
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" 
+                                     Color="{StaticResource Color1}" 
+                                     Opacity="0.5"/>
+
+                        <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
+                                     Color="White"/>
+                    </Style.Resources>
+                </Style>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="DataGrid">
