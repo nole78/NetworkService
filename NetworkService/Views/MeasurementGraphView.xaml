@@ -59,7 +59,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="0.5*"/>
             <RowDefinition/>
-            <RowDefinition Height="3*"/>
+            <RowDefinition Height="1.3*"/>
+            <RowDefinition Height="1.3*"/>
         </Grid.RowDefinitions>
 
         <Label Style="{StaticResource HeaderLabelStyle}"
@@ -90,7 +91,58 @@
             </ComboBox>
         </Grid>
 
-        <Canvas Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Margin="5" 
+        <Grid Grid.Row="2" 
+              Margin="5"
+              Background="{StaticResource BackgroundBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Label Style="{StaticResource HeaderLabelStyle}"
+                   Content="Legend"
+                   HorizontalAlignment="Left"
+                   Margin="5 0 0 0"/>
+
+            <Border Grid.Row="1" 
+                    HorizontalAlignment="Right"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="2"
+                    Width="30" Height="30"
+                    CornerRadius="10">
+                <Rectangle Fill="Lime"
+                           RadiusX="10" RadiusY="10"/>
+            </Border>
+
+            <Label Grid.Row="1" Grid.Column="1"
+                   Content="Valid value"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource LabelInputStyle}"/>
+
+            <Border Grid.Row="2" 
+                    HorizontalAlignment="Right"
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="2"
+                    Width="30" Height="30"
+                    CornerRadius="10">
+                <Rectangle Fill="Red"
+                           RadiusX="10" RadiusY="10"/>
+            </Border>
+
+            <Label Grid.Row="2" Grid.Column="1"
+                   Content="Inalid value"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource LabelInputStyle}"/>
+        </Grid>
+        
+
+        <Canvas Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" Margin="5" 
                 Background="{StaticResource BackgroundBrush}"
                 Name="GraphCanvas" >
 
