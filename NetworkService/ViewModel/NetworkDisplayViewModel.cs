@@ -62,6 +62,7 @@ namespace NetworkService.ViewModel
             set => SetProperty(ref _isSelectingSlotMode, value);
         }
         public MyICommand<int> RemoveFromGridCommand { get; set; }
+        public MyICommand RemoveFocusedFromGridCommand { get; set; }
         public MyICommand DrawModeChangeCommand { get; set; }
         public MyICommand<object> EnterCommand { get; set; }
         public MyICommand<string> MoveFocusCommand { get; set; }
@@ -79,6 +80,7 @@ namespace NetworkService.ViewModel
             AppDatabase.Instance.PropertyChanged += Database_PropertyChanged;
 
             RemoveFromGridCommand = new MyICommand<int>(OnRemoveFromGrid);
+            RemoveFocusedFromGridCommand = new MyICommand(OnRemoveFocusedFromGrid);
             DrawModeChangeCommand = new MyICommand(OnDrawModeChanged);
             EnterCommand = new MyICommand<object>(OnEnter);
             MoveFocusCommand = new MyICommand<string>(OnMoveFocus);
@@ -204,24 +206,6 @@ namespace NetworkService.ViewModel
         }
         #endregion
 
-        private void OnRemoveFromGrid(int id)
-        {
-            int idx = -1;
-            for (int i = 0; i < Slots.Length; i++)
-            {
-                if (Slots[i].Resource != null && Slots[i].Resource.Id == id)
-                {
-                    idx = i;
-                    break;
-                }
-            }
-
-            if(idx != -1)
-            {
-                AppDatabase.Instance.RemoveResourceFromGrid(idx);
-            }
-        }
-
         private void HandleSlotClickInDrawMode(int clickedSlotIdx)
         {
             if (_firstSelectedSlotIdx == -1)
@@ -246,8 +230,35 @@ namespace NetworkService.ViewModel
                 _firstSelectedSlotIdx = -1;
             }
         }
-        #region Commands Implementation
 
+        #region Commands Implementation
+        private void OnRemoveFromGrid(int id)
+        {
+            int idx = -1;
+            for (int i = 0; i < Slots.Length; i++)
+            {
+                if (Slots[i].Resource != null && Slots[i].Resource.Id == id)
+                {
+                    idx = i;
+                    break;
+                }
+            }
+
+            if (idx != -1)
+            {
+                AppDatabase.Instance.RemoveResourceFromGrid(idx);
+            }
+        }
+        private void OnRemoveFocusedFromGrid()
+        {
+            if (_focusedSlotIdx == -1)
+                return;
+
+            if (Slots[_focusedSlotIdx].Resource == null)
+                return;
+
+            AppDatabase.Instance.RemoveResourceFromGrid(_focusedSlotIdx);
+        }
         private void OnDrawModeChanged()
         {
             DrawMode = !DrawMode;

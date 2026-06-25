@@ -380,6 +380,7 @@
                 <KeyBinding Key="Down" Command="{Binding MoveFocusCommand}" CommandParameter="Down"/>
                 <KeyBinding Key="Left" Command="{Binding MoveFocusCommand}" CommandParameter="Left"/>
                 <KeyBinding Key="Right" Command="{Binding MoveFocusCommand}" CommandParameter="Right"/>
+                <KeyBinding Key="D" Modifiers="Ctrl" Command="{Binding RemoveFocusedFromGridCommand}"/>
             </Grid.InputBindings>
             
             <Grid.ColumnDefinitions>
