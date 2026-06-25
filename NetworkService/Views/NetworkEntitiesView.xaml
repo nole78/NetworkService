@@ -245,7 +245,8 @@
                       ItemsSource="{Binding EnergyResources}"
                       SelectedItem="{Binding SelectedResource, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                 <DataGrid.InputBindings>
-                    <KeyBinding Key="Delete"
+                    <KeyBinding Key="D"
+                                Modifiers="Ctrl"
                                 Command="{Binding DeleteCommand}"/>
                 </DataGrid.InputBindings>
                 <DataGrid.Columns>

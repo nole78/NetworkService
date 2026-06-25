@@ -129,11 +129,12 @@ namespace NetworkService.ViewModel
         {
             if(SelectedResource != null)
             {
+                var toDeleteId = SelectedResource.Id;
+                
                 var canDelete = await GetApproval($"Are you sure you want to delete resoruce {SelectedResource.Name}?");
-
                 if (canDelete)
                 {
-                    AppDatabase.Instance.RemoveResource(SelectedResource.Id);
+                    AppDatabase.Instance.RemoveResource(toDeleteId);
                 }
             }
         }
