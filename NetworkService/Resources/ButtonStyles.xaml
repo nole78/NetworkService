@@ -2,6 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style TargetType="Button" x:Key="ConfirmButtonStyle">
+        <Setter Property="FocusVisualStyle"
+                Value="{x:Null}"/>
         <Setter Property="FontWeight"
                 Value="Bold"/>
         <Setter Property="FontSize"
@@ -56,6 +58,8 @@
     </Style>
 
     <Style TargetType="Button" x:Key="CancelButtonStyle">
+        <Setter Property="FocusVisualStyle"
+                Value="{x:Null}"/>
         <Setter Property="FontWeight"
             Value="Bold"/>
         <Setter Property="FontSize"
@@ -105,17 +109,17 @@
         <Setter Property="IsTabStop"
                 Value="False"/>
         <Setter Property="FontWeight"
-            Value="Bold"/>
+                Value="Bold"/>
         <Setter Property="FontSize"
-            Value="14"/>
+                Value="14"/>
         <Setter Property="Height"
-            Value="35"/>
+                Value="35"/>
         <Setter Property="Width"
-            Value="120"/>
+                Value="120"/>
         <Setter Property="Cursor"
-            Value="Hand"/>
+                Value="Hand"/>
         <Setter Property="FontFamily"
-            Value="Calibri"/>
+                Value="Calibri"/>
         <Setter Property="Background"
                 Value="{StaticResource InputBackgroundBrush}"/>
         <Setter Property="BorderBrush"
@@ -154,6 +158,8 @@
     </Style>
 
     <Style TargetType="RadioButton">
+        <Setter Property="FocusVisualStyle"
+                Value="{x:Null}"/>
         <Setter Property="FontWeight"
                 Value="Bold"/>
         <Setter Property="FontSize"

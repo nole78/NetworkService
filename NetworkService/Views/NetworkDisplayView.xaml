@@ -19,7 +19,6 @@
     <UserControl.InputBindings>
         <KeyBinding Key="Enter" Command="{Binding EnterCommand}"
                     CommandParameter="{Binding ElementName=GridSlots}"/>
-
         <KeyBinding Key="Escape" Command="{Binding CancelSelectionCommand}"/>
     </UserControl.InputBindings>
 
@@ -307,35 +306,6 @@
                 </Label.Style>
             </Label>
 
-            <Button Grid.Column="1"
-                    Width="120"
-                    ToolTip="Press Esc to exit"
-                    Height="35"
-                    Command="{Binding CancelSelectionCommand}">
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource ConfirmButtonStyle}">
-                        <Setter Property="Visibility"
-                                Value="Collapsed"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsSelectingSlotMode}" Value="True">
-                                <Setter Property="Visibility"
-                                        Value="Visible"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-                <Button.Background>
-                    <SolidColorBrush Color="#FFE8BF21" Opacity="0.4"/>
-                </Button.Background>
-                <TextBlock Text="Selection Mode"
-                       Foreground="DarkOrange"
-                       FontFamily="Calibri"
-                       FontSize="16"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center">
-                </TextBlock>
-            </Button>
-
             <Button Grid.Column="2"
                     HorizontalAlignment="Right"
                     Margin="0 0 5 0"
@@ -363,6 +333,7 @@
               Grid.Row="1"
               Focusable="True"
               x:Name="GridSlots"
+              FocusVisualStyle="{x:Null}"
               Margin="5">
             <behaviors:Interaction.Triggers>
                 <behaviors:EventTrigger EventName="GotFocus">

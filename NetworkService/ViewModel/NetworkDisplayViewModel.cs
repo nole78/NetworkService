@@ -295,7 +295,14 @@ namespace NetworkService.ViewModel
                         }
                         if(fromIdx != -1 && fromIdx != _focusedSlotIdx && _focusedSlotIdx != -1)
                         {
-                            AppDatabase.Instance.MoveResourceOnGrid(fromIdx,_focusedSlotIdx);
+                            if (DrawMode)
+                            {
+                                AppDatabase.Instance.ConnectResourcesOnGrid(fromIdx, _focusedSlotIdx);
+                            }
+                            else
+                            {
+                                AppDatabase.Instance.MoveResourceOnGrid(fromIdx, _focusedSlotIdx);
+                            }
                         }
                         OnCancelSelection();
                     }

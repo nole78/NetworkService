@@ -2,6 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style TargetType="TextBox" x:Key="InputTextBoxStyle">
+        <Setter Property="FocusVisualStyle"
+                Value="{x:Null}"/>
         <Setter Property="Height"
                 Value="35"/>
         <Setter Property="Margin"
@@ -42,6 +44,8 @@
     </Style>
 
     <Style TargetType="ComboBox" x:Key="ComboStyle">
+        <Setter Property="FocusVisualStyle"
+                Value="{x:Null}"/>
         <Setter Property="Background" 
                 Value="{StaticResource InputBackgroundBrush}"/>
         <Setter Property="BorderThickness" 
