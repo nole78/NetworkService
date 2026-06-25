@@ -9,6 +9,7 @@
         xmlns:converters="clr-namespace:NetworkService.Converters"
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:notifications="clr-namespace:Notification.Wpf.Controls;assembly=Notification.Wpf"
+        xmlns:behaviours="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         WindowStyle="None"
         Background="{StaticResource InputBackgroundBrush}"
@@ -109,7 +110,8 @@
                             VerticalAlignment="Center"/>
         </Grid>
 
-        <Grid Background="{StaticResource HeaderBackgroundBrush}">
+        <Grid Background="{StaticResource HeaderBackgroundBrush}" 
+              MouseLeftButtonDown="Grid_PreviewMouseDown">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.5*"/>
                 <ColumnDefinition/>
