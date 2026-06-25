@@ -264,7 +264,32 @@ namespace NetworkService.ViewModel
         {
             if (!IsSelectingSlotMode)
             {
-                if (SelectedTreeResource is DistributedEnergyResource resource)
+                if (_focusedSlotIdx != -1)
+                {
+                    if (SelectedResource == null && Slots[_focusedSlotIdx].Resource != null)
+                    {
+                        Slots[_focusedSlotIdx].IsSelected = true;
+                        SelectedResource = Slots[_focusedSlotIdx].Resource;
+                    }
+                    else
+                    {
+                        int fromIdx = -1;
+                        for(int i = 0; i < Slots.Length; i++)
+                        {
+                            if (Slots[i].IsSelected == true)
+                            {
+                                fromIdx = i;
+                                break;
+                            }
+                        }
+                        if(fromIdx != -1 && fromIdx != _focusedSlotIdx && _focusedSlotIdx != -1)
+                        {
+                            AppDatabase.Instance.MoveResourceOnGrid(fromIdx,_focusedSlotIdx);
+                        }
+                        OnCancelSelection();
+                    }
+                }
+                else if (SelectedTreeResource is DistributedEnergyResource resource)
                 {
                     SelectedResource = resource;
 
@@ -274,11 +299,11 @@ namespace NetworkService.ViewModel
 
                     if (parameter is FrameworkElement rootElement)
                     {
-                        // 1. Prebacujemo fizički fokus tastature na UserControl
+                        // Physic Focus
                         rootElement.Focus();
                         Keyboard.Focus(rootElement);
 
-                        // 2. Postavljamo logički fokus u trenutnom FocusScope-u na taj isti element
+                        // Logic Focus
                         var focusScope = FocusManager.GetFocusScope(rootElement);
                         FocusManager.SetFocusedElement(focusScope, rootElement);
                     }
@@ -300,14 +325,19 @@ namespace NetworkService.ViewModel
             foreach (var slot in Slots)
             {
                 slot.IsKeyboardFocused = false;
+                slot.IsSelected = false;
             }
+
+            SelectedResource = null;
             _focusedSlotIdx = -1;
+            _firstSelectedSlotIdx = -1;
         }
         private void OnMoveFocus(string direction)
         {
-            if (!_isSelectingSlotMode) return;
-
-            Slots[_focusedSlotIdx].IsKeyboardFocused = false;
+            if (_focusedSlotIdx != -1)
+                Slots[_focusedSlotIdx].IsKeyboardFocused = false;
+            else
+                _focusedSlotIdx = 0;
 
             switch (direction)
             {
@@ -335,5 +365,16 @@ namespace NetworkService.ViewModel
             Slots[_focusedSlotIdx].IsKeyboardFocused = true;
         }
         #endregion
+    
+        public void OnSlotsFocus(object sender, EventArgs e)
+        {
+            Slots[0].IsKeyboardFocused = true;
+            _focusedSlotIdx = 0;
+        }
+
+        public void OnSlotsLostFocus(object sender, EventArgs e)
+        {
+            OnCancelSelection();
+        }
     }
 }

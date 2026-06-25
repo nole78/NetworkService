@@ -18,26 +18,22 @@
 
     <UserControl.InputBindings>
         <KeyBinding Key="Enter" Command="{Binding EnterCommand}"
-                    CommandParameter="{Binding ElementName=FirstSlot}"/>
-        
-        <KeyBinding Key="Escape" Command="{Binding CancelSelectionCommand}"/>
+                    CommandParameter="{Binding ElementName=GridSlots}"/>
 
-        <KeyBinding Key="Up" Command="{Binding MoveFocusCommand}" CommandParameter="Up"/>
-        <KeyBinding Key="Down" Command="{Binding MoveFocusCommand}" CommandParameter="Down"/>
-        <KeyBinding Key="Left" Command="{Binding MoveFocusCommand}" CommandParameter="Left"/>
-        <KeyBinding Key="Right" Command="{Binding MoveFocusCommand}" CommandParameter="Right"/>
+        <KeyBinding Key="Escape" Command="{Binding CancelSelectionCommand}"/>
     </UserControl.InputBindings>
 
     <UserControl.Resources>
         <converters:SlotToPositionConverter x:Key="SlotToPositionConverter"/>
         <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
         <ControlTemplate x:Key="Node" TargetType="ContentControl">
-            <Border Margin="5" 
-                    BorderThickness="2" 
+            <Border Margin="5"
                     ClipToBounds="True" 
                     AllowDrop="True">
                 <Border.Style>
                     <Style TargetType="Border">
+                        <Setter Property="BorderThickness"
+                                Value="2"/>
                         <Setter Property="BorderBrush"
                                 Value="{StaticResource BorderBrush}"/>
                         <Setter Property="Cursor"
@@ -132,7 +128,7 @@
                         </Canvas.Background>
                     </Canvas>
 
-                    <Grid Grid.Row="1" 
+                    <Grid Grid.Row="1"
                           Panel.ZIndex="10">
                         <Grid.Style>
                             <Style TargetType="Grid">
@@ -152,6 +148,7 @@
                             <ColumnDefinition Width="2*"/>
                         </Grid.ColumnDefinitions>
                         <Button Width="30" Height="30"
+                                IsTabStop="False"
                                 Background="Transparent"
                                 BorderBrush="Transparent"
                                 VerticalAlignment="Center"
@@ -363,8 +360,28 @@
         </Grid>
 
         <Grid Grid.Column="1"
-          Grid.Row="1"
-          Margin="5">
+              Grid.Row="1"
+              Focusable="True"
+              x:Name="GridSlots"
+              Margin="5">
+            <behaviors:Interaction.Triggers>
+                <behaviors:EventTrigger EventName="GotFocus">
+                    <behaviors:CallMethodAction TargetObject="{Binding}"
+                                                MethodName="OnSlotsFocus"/>
+                </behaviors:EventTrigger>
+                <behaviors:EventTrigger EventName="LostFocus">
+                    <behaviors:CallMethodAction TargetObject="{Binding}"
+                                MethodName="OnSlotsLostFocus"/>
+                </behaviors:EventTrigger>
+
+            </behaviors:Interaction.Triggers>
+            <Grid.InputBindings>
+                <KeyBinding Key="Up" Command="{Binding MoveFocusCommand}" CommandParameter="Up"/>
+                <KeyBinding Key="Down" Command="{Binding MoveFocusCommand}" CommandParameter="Down"/>
+                <KeyBinding Key="Left" Command="{Binding MoveFocusCommand}" CommandParameter="Left"/>
+                <KeyBinding Key="Right" Command="{Binding MoveFocusCommand}" CommandParameter="Right"/>
+            </Grid.InputBindings>
+            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -428,61 +445,72 @@
                             Content="{Binding Slots[0]}"
                             AllowDrop="True"
                             Tag="0"
-                            Name="FirstSlot"/>
+                            IsTabStop="False"/>
 
             <ContentControl Template="{StaticResource Node}" Grid.Column="1"
                             Content="{Binding Slots[1]}"
                             AllowDrop="True"
+                            IsTabStop="False"
                             Tag="1"/>
 
             <ContentControl Template="{StaticResource Node}" Grid.Column="2"
                             Content="{Binding Slots[2]}"
                             AllowDrop="True"
+                            IsTabStop="False"
                             Tag="2"/>
 
             <ContentControl Template="{StaticResource Node}" Grid.Column="3"
                             Content="{Binding Slots[3]}"
                             AllowDrop="True"
+                            IsTabStop="False"
                             Tag="3"/>
 
             <ContentControl Template="{StaticResource Node}" Grid.Row="1"
                             Content="{Binding Slots[4]}"
                             AllowDrop="True"
+                            IsTabStop="False"
                             Tag="4"/>
 
             <ContentControl Template="{StaticResource Node}" Grid.Row="1" Grid.Column="1"
                             Content="{Binding Slots[5]}"
                             AllowDrop="True"
+                            IsTabStop="False"
                             Tag="5"/>
 
             <ContentControl Template="{StaticResource Node}" Grid.Row="1" Grid.Column="2"
                             Content="{Binding Slots[6]}"
                             AllowDrop="True"
+                            IsTabStop="False"
                             Tag="6"/>
 
             <ContentControl Template="{StaticResource Node}" Grid.Row="1" Grid.Column="3"
                             Content="{Binding Slots[7]}"
                             AllowDrop="True"
+                            IsTabStop="False"
                             Tag="7"/>
 
             <ContentControl Template="{StaticResource Node}" Grid.Row="2"
                             Content="{Binding Slots[8]}"
                             AllowDrop="True"
+                            IsTabStop="False"
                             Tag="8"/>
 
             <ContentControl Template="{StaticResource Node}" Grid.Row="2" Grid.Column="1"
                             Content="{Binding Slots[9]}"
                             AllowDrop="True"
+                            IsTabStop="False"
                             Tag="9"/>
 
             <ContentControl Template="{StaticResource Node}" Grid.Row="2" Grid.Column="2"
                             Content="{Binding Slots[10]}"
                             AllowDrop="True"
+                            IsTabStop="False"
                             Tag="10"/>
 
             <ContentControl Template="{StaticResource Node}" Grid.Row="2" Grid.Column="3"
                             Content="{Binding Slots[11]}"
                             AllowDrop="True"
+                            IsTabStop="False"
                             Tag="11"/>
 
         </Grid>
