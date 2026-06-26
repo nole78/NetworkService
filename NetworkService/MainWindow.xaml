@@ -127,28 +127,33 @@
                     Content="Entity"
                     Command="{Binding NavCommand}"
                     CommandParameter="entity"
+                    ToolTip="Go to entity page"
                     Style="{StaticResource NavigationButtonStyle}"/>
 
             <Button Grid.Column="2"
                     Content="Display"
                     Command="{Binding NavCommand}"
                     CommandParameter="display"
+                    ToolTip="Go to netowrk display page"
                     Style="{StaticResource NavigationButtonStyle}"/>
 
             <Button Grid.Column="3"
                     Content="Graph"
                     Command="{Binding NavCommand}"
                     CommandParameter="graph"
+                    ToolTip="Go to graph measurments page"
                     Style="{StaticResource NavigationButtonStyle}"/>
 
             <Button Grid.Column="4"
                     Content="Undo"
                     IsTabStop="False"
+                    ToolTip="Undo last action"
                     Command="{Binding UndoCommand}"
                     Style="{StaticResource ConfirmButtonStyle}"/>
 
             <Button Grid.Column="5"
                     Content="Close"
+                    ToolTip="Close the application"
                     IsTabStop="False"
                     Style="{StaticResource CancelButtonStyle}"
                     Command="{Binding CloseCommand}"/>

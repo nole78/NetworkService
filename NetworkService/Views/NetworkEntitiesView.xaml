@@ -144,6 +144,7 @@
                         Grid.RowSpan="2"
                         VerticalAlignment="Bottom"
                         Content="Search"
+                        ToolTip="Apply search filters"
                         Command="{Binding SearchCommand}"
                         Style="{StaticResource ConfirmButtonStyle}"
                         Foreground="White"
@@ -151,6 +152,7 @@
                 
                 <Button Grid.Column="1" 
                         Grid.Row="2" 
+                        ToolTip="Clear search filters"
                         Content="Clear"
                         Command="{Binding ClearSearchCommand}"
                         Style="{StaticResource CancelButtonStyle}"/>
@@ -211,6 +213,7 @@
                 <Button Content="Add" 
                         Grid.Column="1" 
                         Grid.Row="4"
+                        ToolTip="Add new resource"
                         Command="{Binding CreateCommand}"
                         Style="{StaticResource ConfirmButtonStyle}"
                         Foreground="White"
@@ -228,6 +231,7 @@
             <Button HorizontalAlignment="Right"
                     Content="Delete"
                     Margin="0 0 5 0"
+                    ToolTip="Delete selected resource"
                     IsTabStop="False"
                     Command="{Binding DeleteCommand}"
                     IsEnabled="{Binding SelectedResource, Converter={StaticResource NullToBoolConverter}}">
