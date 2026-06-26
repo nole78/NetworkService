@@ -124,12 +124,11 @@ namespace NetworkService.Services
         private TerminalLine HelpCommand()
         {
             string response = "List of valid commands:\n";
-            for (int i = 0; i < _validCommands.Count; i++)
-            {
-                response += $"\t{i + 1}." + _validCommands[i];
-                if (i < _validCommands.Count - 1)
-                    response += "\n";
-            }
+            response += "\thelp\t- get list of all commands\n" +
+                "\tundo\t- undo last command\n" +
+                "\tadd\t- add new resource\n" +
+                "\tdelete\t- delete existing resource\n" +
+                "\tgrid\t- grid modifier commands (write \"grid help\" to get list of all grid commands)";
             return new TerminalLine(response, LineType.Response);
         }
 
@@ -266,12 +265,11 @@ namespace NetworkService.Services
         private TerminalLine ExecuteGridHelpCommand()
         {
             string response = "List of valid grid commands:\n";
-            for (int i = 0; i < _validCommands.Count; i++)
-            {
-                response += $"\t{i + 1}.grid " + _validCommands[i];
-                if (i < _validCommands.Count - 1)
-                    response += "\n";
-            }
+            response += "\thelp\t- get a list of all valid grid commands\n" +
+                        "\tmove\t- move resource from one grid slot to another\n" +
+                        "\tremove\t- remove resource from the grid slot\n" +
+                        "\tput\t- put existing resource onto the grid\n" +
+                        "\tconnect\t- connect two resources on the grid";
             return new TerminalLine(response, LineType.Response);
         }
 

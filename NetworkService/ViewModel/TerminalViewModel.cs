@@ -4,9 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
 
@@ -46,6 +49,7 @@ namespace NetworkService.ViewModel
             GetNewerCommand = new MyICommand(OnGetNewerCommand);
             _terminalService = new TerminalService();
             Command = "";
+            TerminalLines.Add(new TerminalLine("Write help to get a list of all valid commands", LineType.Response));
         }
 
         private void OnTerminalCommandExecute()
